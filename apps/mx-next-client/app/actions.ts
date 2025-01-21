@@ -1,6 +1,6 @@
 "use server";
 
-import { encodedRedirect } from "@/utils/utils";
+import { encodedRedirect } from "@/lib/utils/navigation/encodeRedirect";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 

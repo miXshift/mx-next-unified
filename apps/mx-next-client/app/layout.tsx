@@ -1,5 +1,5 @@
-import HeaderAuth from "@/components/header-auth";
-import { ThemeSwitcher } from "@/components/theme-switcher";
+import HeaderAuth from "@/components/landing/header-auth";
+import { ThemeSwitcher } from "@/ui/theme-switcher";
 import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import Link from "next/link";
@@ -41,7 +41,7 @@ export default function RootLayout({
                   <div className="flex gap-5 items-center font-semibold">
                     <Link href={"/"}>mixshift</Link>
                   </div>
-                   <HeaderAuth />
+                  
                 </div>
               </nav>
               <div className="flex flex-col gap-20 max-w-5xl p-5">
