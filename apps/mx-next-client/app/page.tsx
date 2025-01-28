@@ -1,4 +1,4 @@
-import Home from "@/lib/ui/home";
+import Home from "@components/home";
 
 export default async function Index() {
   return (

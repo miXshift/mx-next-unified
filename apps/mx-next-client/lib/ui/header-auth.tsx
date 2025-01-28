@@ -1,6 +1,6 @@
 import { signOutAction } from "@/app/actions";
 import Link from "next/link";
-import { Button } from "@/lib/ui/button";
+import { Button } from "@components/button";
 
 export default async function AuthButton() {
   const user = null;

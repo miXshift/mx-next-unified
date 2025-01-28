@@ -1,5 +1,5 @@
 import { ArrowRight, Box, Shield } from "lucide-react"
-import { ThemeSwitcher } from "@/lib/ui/theme-switcher"
+import { ThemeSwitcher } from "@components/theme-switcher"
 import { Button } from "./button"
 import Logo from "./logo"
 import Link from "next/link"
