@@ -11,7 +11,7 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Sass platform for Amazon sellers",
+  title: "Mixshift",
   description: "The fastest way to increase your Amazon sales",
 };
 
