@@ -1,8 +1,8 @@
 import { signInAction } from "@/app/actions";
-import { FormMessage, Message } from "@/ui/form-message";
-import { SubmitButton } from "@/ui/submit-button";
-import { Input } from "@/ui/input";
-import { Label } from "@/ui/label";
+import { FormMessage, Message } from "@/lib/ui/form-message";
+import { SubmitButton } from "@/lib/ui/submit-button";
+import { Input } from "@/lib/ui/input";
+import { Label } from "@/lib/ui/label";
 import Link from "next/link";
 
 export default async function Login(props: { searchParams: Promise<Message> }) {
