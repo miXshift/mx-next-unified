@@ -1,6 +1,6 @@
 // components/Logo.tsx
 'use client'
-import { ASSETS } from '@/lib/constants/assets'
+import { ASSETS } from '@constants/assets'
 import { useTheme } from "next-themes"
 import Image from "next/image"
 import { useEffect, useState } from "react"
