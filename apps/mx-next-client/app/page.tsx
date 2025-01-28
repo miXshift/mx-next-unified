@@ -1,9 +1,9 @@
-import Hero from "@/ui/hero";
+import Home from "@/ui/home";
 
-export default async function Home() {
+export default async function Index() {
   return (
     <>
-      <Hero />
+      <Home />
     </>
   );
 }
