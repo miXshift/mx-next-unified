@@ -2,6 +2,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "local": "next dev -H mixshift.local",
     "build": "next build",
     "start": "next start",
     "lint": "eslint . --ext .ts,.tsx",
