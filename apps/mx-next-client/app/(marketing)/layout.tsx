@@ -1,11 +1,15 @@
-"use client";
+'use client';
 
-import { ArrowRight } from "lucide-react";
-import { Button } from "@components/button";
-import Logo from "@components/logo";
-import { ThemeSwitcher } from "@components/theme-switcher";
+import { ArrowRight } from 'lucide-react';
+import { Button } from '@components/button';
+import Logo from '@components/logo';
+import { ThemeSwitcher } from '@components/theme-switcher';
 
-export default async function MarketingLayout({ children }: { children: React.ReactNode }) {
+export default async function MarketingLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <header className="border-b">

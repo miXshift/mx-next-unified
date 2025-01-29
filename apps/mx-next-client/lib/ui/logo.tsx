@@ -1,28 +1,23 @@
 // components/Logo.tsx
-'use client'
-import { ASSETS } from '@constants/assets'
-import { useTheme } from "next-themes"
-import Image from "next/image"
-import { useEffect, useState } from "react"
+'use client';
+import { ASSETS } from '@constants/assets';
+import { useTheme } from 'next-themes';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
 export default function Logo() {
-  const { theme, resolvedTheme } = useTheme()
-  const [mounted, setMounted] = useState(false)
+  const { theme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
   // Prevent hydration mismatch
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    setMounted(true);
+  }, []);
 
   if (!mounted) {
     return (
-      <Image
-        src={ASSETS.logos.light}
-        alt="Logo"
-        width={120}
-        height={40}
-      />
-    )
+      <Image src={ASSETS.logos.light} alt="Logo" width={120} height={40} />
+    );
   }
 
   return (
@@ -32,5 +27,5 @@ export default function Logo() {
       width={120}
       height={40}
     />
-  )
+  );
 }

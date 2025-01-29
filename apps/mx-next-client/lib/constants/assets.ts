@@ -9,4 +9,4 @@ export const ASSETS = {
   images: {
     hero: '/images/hero/banner.jpg',
   },
-} as const
+} as const;

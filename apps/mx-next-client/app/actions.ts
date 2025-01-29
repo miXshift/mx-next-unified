@@ -1,19 +1,19 @@
-"use server";
+'use server';
 
-import { encodedRedirect } from "@utils/uri";
-import { headers } from "next/headers";
-import { redirect } from "next/navigation";
+import { encodedRedirect } from '@utils/uri';
+import { headers } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 export const signUpAction = async (formData: FormData) => {
-  const email = formData.get("email")?.toString();
-  const password = formData.get("password")?.toString();
+  const email = formData.get('email')?.toString();
+  const password = formData.get('password')?.toString();
   // const origin = (await headers()).get("origin");
 
   if (!email || !password) {
     return encodedRedirect(
-      "error",
-      "/sign-up",
-      "Email and password are required",
+      'error',
+      '/sign-up',
+      'Email and password are required'
     );
   }
 
@@ -21,24 +21,24 @@ export const signUpAction = async (formData: FormData) => {
 };
 
 export const signInAction = async (formData: FormData) => {
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
+  const email = formData.get('email') as string;
+  const password = formData.get('password') as string;
 
-// send request to server
+  // send request to server
 
-  return redirect("/protected");
+  return redirect('/protected');
 };
 
 export const forgotPasswordAction = async (formData: FormData) => {
-  const email = formData.get("email")?.toString();
-  const origin = (await headers()).get("origin");
-  const callbackUrl = formData.get("callbackUrl")?.toString();
+  const email = formData.get('email')?.toString();
+  const origin = (await headers()).get('origin');
+  const callbackUrl = formData.get('callbackUrl')?.toString();
 
   if (!email) {
-    return encodedRedirect("error", "/forgot-password", "Email is required");
+    return encodedRedirect('error', '/forgot-password', 'Email is required');
   }
 
- // send request to server
+  // send request to server
 
   // if (error) {
   //   console.error(error.message);
@@ -54,30 +54,29 @@ export const forgotPasswordAction = async (formData: FormData) => {
   // }
 
   return encodedRedirect(
-    "success",
-    "/forgot-password",
-    "Check your email for a link to reset your password.",
+    'success',
+    '/forgot-password',
+    'Check your email for a link to reset your password.'
   );
 };
 
 export const resetPasswordAction = async (formData: FormData) => {
-
-  const password = formData.get("password") as string;
-  const confirmPassword = formData.get("confirmPassword") as string;
+  const password = formData.get('password') as string;
+  const confirmPassword = formData.get('confirmPassword') as string;
 
   if (!password || !confirmPassword) {
     encodedRedirect(
-      "error",
-      "/protected/reset-password",
-      "Password and confirm password are required",
+      'error',
+      '/protected/reset-password',
+      'Password and confirm password are required'
     );
   }
 
   if (password !== confirmPassword) {
     encodedRedirect(
-      "error",
-      "/protected/reset-password",
-      "Passwords do not match",
+      'error',
+      '/protected/reset-password',
+      'Passwords do not match'
     );
   }
 
@@ -91,9 +90,9 @@ export const resetPasswordAction = async (formData: FormData) => {
   //   );
   // }
 
-  encodedRedirect("success", "/protected/reset-password", "Password updated");
+  encodedRedirect('success', '/protected/reset-password', 'Password updated');
 };
 
 export const signOutAction = async () => {
-  return redirect("/sign-in");
+  return redirect('/sign-in');
 };

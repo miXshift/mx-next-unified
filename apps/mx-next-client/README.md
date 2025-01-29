@@ -21,3 +21,4 @@ cd project-name
 npm install
 # or
 yarn install
+```

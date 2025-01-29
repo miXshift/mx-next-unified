@@ -1,5 +1,5 @@
 import { Card, CardHeader, CardTitle, CardContent } from '@components/card';
-import { BarChart, Users, DollarSign, ArrowUpRight } from "lucide-react";
+import { BarChart, Users, DollarSign, ArrowUpRight } from 'lucide-react';
 
 export default function Dashboard() {
   return (
@@ -61,7 +61,7 @@ export default function Dashboard() {
           </CardHeader>
           <CardContent>
             <div className="space-y-8">
-              {[1, 2, 3, 4, 5].map((i) => (
+              {[1, 2, 3, 4, 5].map(i => (
                 <div key={i} className="flex items-center">
                   <div className="space-y-1">
                     <p className="text-sm font-medium leading-none">

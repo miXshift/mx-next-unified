@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { cn } from "@/lib/utils/styling";
+import { cn } from '@/lib/utils/styling';
 import {
   LayoutDashboard,
   BarChart,
@@ -12,23 +12,27 @@ import {
   Menu,
   X,
   Bell,
-} from "lucide-react";
-import { useState } from "react";
-import { Button } from "@components/button";
-import Logo from "@components/logo";
-import { ThemeSwitcher } from "@components/theme-switcher";
-import { Sheet, SheetTrigger, SheetContent } from "@components/sheet";
+} from 'lucide-react';
+import { useState } from 'react';
+import { Button } from '@components/button';
+import Logo from '@components/logo';
+import { ThemeSwitcher } from '@components/theme-switcher';
+import { Sheet, SheetTrigger, SheetContent } from '@components/sheet';
 
 const navigation = [
-  { name: "Dashboard", icon: LayoutDashboard, href: "#" },
-  { name: "Analytics", icon: BarChart, href: "#" },
-  { name: "Customers", icon: Users, href: "#" },
-  { name: "Documents", icon: FileText, href: "#" },
-  { name: "Settings", icon: Settings, href: "#" },
-  { name: "Help", icon: HelpCircle, href: "#" },
+  { name: 'Dashboard', icon: LayoutDashboard, href: '#' },
+  { name: 'Analytics', icon: BarChart, href: '#' },
+  { name: 'Customers', icon: Users, href: '#' },
+  { name: 'Documents', icon: FileText, href: '#' },
+  { name: 'Settings', icon: Settings, href: '#' },
+  { name: 'Help', icon: HelpCircle, href: '#' },
 ];
 
-export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default async function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   return (
@@ -36,8 +40,8 @@ export default async function DashboardLayout({ children }: { children: React.Re
       {/* Desktop Sidebar */}
       <div
         className={cn(
-          "hidden lg:flex flex-col border-r bg-card transition-all duration-300",
-          isSidebarOpen ? "w-64" : "w-20"
+          'hidden lg:flex flex-col border-r bg-card transition-all duration-300',
+          isSidebarOpen ? 'w-64' : 'w-20'
         )}
       >
         <div className="h-16 flex items-center justify-between px-4 border-b">
@@ -60,13 +64,13 @@ export default async function DashboardLayout({ children }: { children: React.Re
         </div>
         <nav className="flex-1 p-4">
           <ul className="space-y-2">
-            {navigation.map((item) => (
+            {navigation.map(item => (
               <li key={item.name}>
                 <Button
                   variant="ghost"
                   className={cn(
-                    "w-full justify-start",
-                    !isSidebarOpen && "justify-center px-2"
+                    'w-full justify-start',
+                    !isSidebarOpen && 'justify-center px-2'
                   )}
                 >
                   <item.icon className="h-5 w-5" />
@@ -98,7 +102,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
           </div>
           <nav className="p-4">
             <ul className="space-y-2">
-              {navigation.map((item) => (
+              {navigation.map(item => (
                 <li key={item.name}>
                   <Button variant="ghost" className="w-full justify-start">
                     <item.icon className="h-5 w-5" />

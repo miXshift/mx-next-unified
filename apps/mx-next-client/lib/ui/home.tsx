@@ -1,8 +1,8 @@
-import { ArrowRight, Box, Shield } from "lucide-react"
-import { ThemeSwitcher } from "@components/theme-switcher"
-import { Button } from "./button"
-import { Logo } from "./logo-large"
-import Link from "next/link"
+import { ArrowRight, Box, Shield } from 'lucide-react';
+import { ThemeSwitcher } from '@components/theme-switcher';
+import { Button } from './button';
+import { Logo } from './logo-large';
+import Link from 'next/link';
 
 export default function Home() {
   return (

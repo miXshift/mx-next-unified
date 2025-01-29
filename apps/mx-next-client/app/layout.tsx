@@ -1,19 +1,19 @@
 import { ThemeProvider } from '@components/theme-provider';
-import '@styles/globals.css'
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import '@styles/globals.css';
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000";
+  : 'http://localhost:3000';
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Mixshift",
-  description: "The fastest way to increase your Amazon sales",
+  title: 'Mixshift',
+  description: 'The fastest way to increase your Amazon sales',
 };
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ['latin'] });
 export default function RootLayout({
   children,
 }: Readonly<{
