@@ -5,11 +5,16 @@ import { Button } from '@components/button';
 import { Input } from '@components/input';
 import { Label } from '@components/label';
 import { cn } from '@utils/styling';
-import { HazeIcon as Amazon, Chrome } from 'lucide-react';
+import { signUpAction, signInAction } from '@modules/auth/auth.actions';
+import { Chrome } from 'lucide-react';
 import Icon from '@/lib/ui/icon';
+import { FormMessage, Message } from '@/lib/ui/form-message';
+import { SubmitButton } from '@/lib/ui/submit-button';
+import Link from 'next/link';
 
 interface AuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
   type?: 'signin' | 'signup';
+  message: Message;
 }
 
 export function AuthForm({
@@ -18,7 +23,11 @@ export function AuthForm({
   ...props
 }: AuthFormProps) {
   const [formType, setFormType] = useState<'signin' | 'signup'>(type);
-  console.log('formType', formType);
+  const formAction = formType === 'signin' ? signInAction : signUpAction;
+  const message = props.message;
+  console.log(formType);
+  console.log(formAction.name);
+
   return (
     <div className={cn('w-full max-w-md mx-auto', className)} {...props}>
       <div className="flex flex-col items-center space-y-6">
@@ -85,7 +94,12 @@ export function AuthForm({
         <form className="w-full space-y-4">
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" placeholder="john.doe@gmail.com" />
+            <Input
+              id="email"
+              type="email"
+              placeholder="john.doe@gmail.com"
+              required
+            />
           </div>
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
@@ -93,14 +107,30 @@ export function AuthForm({
               id="password"
               type="password"
               placeholder="****************"
+              required
             />
           </div>
-          <Button
-            type="submit"
+          <SubmitButton
             className="w-full bg-[#10B981] hover:bg-[#10B981]/90"
+            formAction={formAction}
+            pendingText="sending..."
           >
             {formType === 'signin' ? 'Sign In' : 'Sign Up'}
-          </Button>
+          </SubmitButton>
+          <FormMessage message={message} />
+
+          {/* Footer */}
+          <div className="text-center text-sm">
+            <span className="text-muted-foreground">
+              Forgot your password?{' '}
+            </span>
+            <Link
+              className="text-[#10B981] hover:underline font-medium"
+              href="/forgot-password"
+            >
+              Reset
+            </Link>
+          </div>
         </form>
       </div>
     </div>
