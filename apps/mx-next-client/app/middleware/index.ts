@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { handleSubdomain } from './subdomain';
 import { handleAuth } from './auth';
+import { handleLanding } from './landing';
 
 // Export the main middleware function
 export function middleware(request: NextRequest) {
@@ -11,6 +12,7 @@ export function middleware(request: NextRequest) {
   // Chain middleware functions
   response = handleSubdomain(request, response);
   response = handleAuth(request, response);
+  response = handleLanding(request, response);
 
   return response;
 }
