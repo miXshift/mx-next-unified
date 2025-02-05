@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+import chalk, { type ChalkInstance } from 'chalk';
 
 type LogLevel = 'info' | 'warn' | 'error' | 'debug';
 type LogCategory =
@@ -37,7 +37,7 @@ class Logger {
   private isDevelopment: boolean;
   private renderCounts: Map<string, number> = new Map();
 
-  private categoryColors: Record<LogCategory, chalk.ChalkFunction> = {
+  private categoryColors: Record<LogCategory, ChalkInstance> = {
     component: chalk.cyan,
     page: chalk.magenta,
     action: chalk.yellow,
@@ -48,7 +48,7 @@ class Logger {
     hook: chalk.hex('#FF69B4'), // Hot pink for hooks
   };
 
-  private levelColors: Record<LogLevel, chalk.ChalkFunction> = {
+  private levelColors: Record<LogLevel, ChalkInstance> = {
     info: chalk.blue,
     warn: chalk.yellow,
     error: chalk.red,
