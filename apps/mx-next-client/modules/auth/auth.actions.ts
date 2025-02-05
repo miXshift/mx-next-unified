@@ -94,5 +94,5 @@ export const resetPasswordAction = async (formData: FormData) => {
 };
 
 export const signOutAction = async () => {
-  return redirect('/sign-in');
+  return redirect('/');
 };
