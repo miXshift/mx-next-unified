@@ -1,39 +1,57 @@
 import type { Config } from 'tailwindcss';
 
-const config = {
+const config: Config = {
   darkMode: ['class'],
   content: [
     './lib/**/*.{ts,tsx}',
     './modules/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
   ],
-  prefix: '',
   theme: {
-    container: {
-      center: true,
-      padding: '2rem',
-      screens: {
-        '2xl': '1400px',
-      },
-    },
     extend: {
       colors: {
-        border: 'hsl(var(--border))',
-        input: 'hsl(var(--input))',
-        ring: 'hsl(var(--ring))',
-        background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
+        // Primary Colors
         primary: {
+          50: 'hsl(var(--primary-50))',
+          100: 'hsl(var(--primary-100))',
+          200: 'hsl(var(--primary-200))',
+          300: 'hsl(var(--primary-300))',
+          400: 'hsl(var(--primary-400))',
+          500: 'hsl(var(--primary-500))',
+          600: 'hsl(var(--primary-600))',
+          700: 'hsl(var(--primary-700))',
+          800: 'hsl(var(--primary-800))',
+          900: 'hsl(var(--primary-900))',
+          950: 'hsl(var(--primary-950))',
           DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))',
         },
+        // Secondary Colors
         secondary: {
+          50: 'hsl(var(--secondary-50))',
+          100: 'hsl(var(--secondary-100))',
+          200: 'hsl(var(--secondary-200))',
+          300: 'hsl(var(--secondary-300))',
+          400: 'hsl(var(--secondary-400))',
+          500: 'hsl(var(--secondary-500))',
+          600: 'hsl(var(--secondary-600))',
+          700: 'hsl(var(--secondary-700))',
+          800: 'hsl(var(--secondary-800))',
+          900: 'hsl(var(--secondary-900))',
+          950: 'hsl(var(--secondary-950))',
           DEFAULT: 'hsl(var(--secondary))',
           foreground: 'hsl(var(--secondary-foreground))',
         },
-        destructive: {
-          DEFAULT: 'hsl(var(--destructive))',
-          foreground: 'hsl(var(--destructive-foreground))',
+        // System Colors
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
+        card: {
+          DEFAULT: 'hsl(var(--card))',
+          foreground: 'hsl(var(--card-foreground))',
+        },
+        popover: {
+          DEFAULT: 'hsl(var(--popover))',
+          foreground: 'hsl(var(--popover-foreground))',
         },
         muted: {
           DEFAULT: 'hsl(var(--muted))',
@@ -43,14 +61,13 @@ const config = {
           DEFAULT: 'hsl(var(--accent))',
           foreground: 'hsl(var(--accent-foreground))',
         },
-        popover: {
-          DEFAULT: 'hsl(var(--popover))',
-          foreground: 'hsl(var(--popover-foreground))',
+        destructive: {
+          DEFAULT: 'hsl(var(--destructive))',
+          foreground: 'hsl(var(--destructive-foreground))',
         },
-        card: {
-          DEFAULT: 'hsl(var(--card))',
-          foreground: 'hsl(var(--card-foreground))',
-        },
+        border: 'hsl(var(--border))',
+        input: 'hsl(var(--input))',
+        ring: 'hsl(var(--ring))',
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -74,6 +91,6 @@ const config = {
     },
   },
   plugins: [require('tailwindcss-animate')],
-} satisfies Config;
+};
 
 export default config;
