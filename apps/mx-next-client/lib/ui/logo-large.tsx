@@ -2,21 +2,29 @@
 
 import { useTheme } from 'next-themes';
 import { cn } from '@utils/styling';
+import { useState, useEffect } from 'react';
 
 interface LogoProps {
   className?: string;
   size?: 'default' | 'large';
 }
 
-export function Logo({ className, size = 'default' }: LogoProps) {
+export function LogoLarge({ className, size = 'default' }: LogoProps) {
   const { theme } = useTheme();
-  const isDark = true;
+  const isDark = theme === 'dark';
+  const [hasAnimated, setHasAnimated] = useState(false);
 
-  const width = size === 'large' ? '680' : '80';
-  const height = size === 'large' ? '102' : '16';
+  useEffect(() => {
+    setHasAnimated(true);
+  }, []);
+
+  const width = size === 'large' ? '480' : '80'; // Doubled from 240 to 480
+  const height = size === 'large' ? '96' : '16'; // Doubled from 48 to 96
   const classes = cn(
-    'transition-colors duration-200',
+    'transition-all duration-700',
     size === 'large' && 'my-8',
+    !hasAnimated && 'opacity-0 scale-95 translate-y-4',
+    hasAnimated && 'opacity-100 scale-100 translate-y-0',
     className
   );
 
