@@ -1,8 +1,4 @@
-import { ArrowRight, Box, Shield } from 'lucide-react';
-import { ThemeSwitcher } from '@components/theme-switcher';
-import { Button } from './button';
-import { Logo } from './logo-large';
-import Link from 'next/link';
+import { LogoLarge } from './logo-large';
 
 export default function Home() {
   return (
@@ -11,7 +7,7 @@ export default function Home() {
         <div className="container mx-auto px-4 py-24 flex flex-col items-center text-center">
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
             <div className="flex justify-center">
-              <Logo size="large" />
+              <LogoLarge size="large" />
             </div>
           </h1>
           <p className="mt-6 text-xl text-muted-foreground max-w-2xl">
