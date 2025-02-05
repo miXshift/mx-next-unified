@@ -2,7 +2,7 @@
 
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@components/button';
-import Logo from '@components/logo';
+import { Logo } from '@components/logo';
 import { ThemeSwitcher } from '@components/theme-switcher';
 
 export default async function MarketingLayout({
