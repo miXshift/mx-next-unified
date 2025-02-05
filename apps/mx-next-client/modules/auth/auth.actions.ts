@@ -7,17 +7,19 @@ import { redirect } from 'next/navigation';
 export const signUpAction = async (formData: FormData) => {
   const email = formData.get('email')?.toString();
   const password = formData.get('password')?.toString();
-  // const origin = (await headers()).get("origin");
 
-  if (!email || !password) {
-    return encodedRedirect(
-      'error',
-      '/sign-up',
-      'Email and password are required'
-    );
-  }
+  // if (!email || !password) {
+  //   return encodedRedirect(
+  //     'error',
+  //     '/sign-up',
+  //     'Email and password are required'
+  //   );
+  // }
 
   // send request to server
+
+  // send to onboarding
+  return redirect('/onboarding');
 };
 
 export const signInAction = async (formData: FormData) => {
@@ -26,7 +28,7 @@ export const signInAction = async (formData: FormData) => {
 
   // send request to server
 
-  return redirect('/protected');
+  return redirect('/dashboard');
 };
 
 export const forgotPasswordAction = async (formData: FormData) => {
