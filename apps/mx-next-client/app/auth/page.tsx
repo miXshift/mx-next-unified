@@ -13,11 +13,11 @@ export default async function AuthPage(props: {
     );
   }
   return (
-    <div className="container relative min-h-screen flex items-center justify-center">
+    <main className="min-h-screen min-w-screen flex items-center justify-center bg-secondary/30">
       <AuthForm
-        className="border rounded-xl shadow-sm p-8"
+        className="bg-card border rounded-xl shadow-sm p-8 transition-all duration-200 hover:shadow-md"
         message={searchParams}
       />
-    </div>
+    </main>
   );
 }
