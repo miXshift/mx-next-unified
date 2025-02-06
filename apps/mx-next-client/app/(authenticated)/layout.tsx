@@ -10,12 +10,12 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full flex">
       <AppSidebar />
       <SidebarInset>
         <div className="flex-1 flex flex-col w-full">
           <AppLayoutHeader />
-          <main className="flex-1 p-6">{children}</main>
+          <main className="flex-1 p-6 w-full">{children}</main>
           <AppLayoutFooter />
         </div>
       </SidebarInset>
