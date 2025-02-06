@@ -16,13 +16,18 @@ export default function Icon() {
 
   if (!mounted) {
     return (
-      <Image src={ASSETS.icons.white} alt="Icon" width={100} height={100} />
+      <Image
+        src={resolvedTheme === 'dark' ? ASSETS.icon.light : ASSETS.icon.dark}
+        alt="Icon"
+        width={100}
+        height={100}
+      />
     );
   }
 
   return (
     <Image
-      src={resolvedTheme === 'dark' ? ASSETS.icons.dark : ASSETS.icons.white}
+      src={resolvedTheme === 'dark' ? ASSETS.icon.light : ASSETS.icon.dark}
       alt="Icon"
       width={100}
       height={100}

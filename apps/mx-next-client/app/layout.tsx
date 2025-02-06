@@ -1,3 +1,4 @@
+import { SidebarProvider } from '@/lib/ui/sidebar';
 import { ThemeProvider } from '@components/theme-provider';
 import '@styles/globals.css';
 import { Inter } from 'next/font/google';
@@ -23,9 +24,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          {children}
-        </ThemeProvider>
+        <SidebarProvider>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            {children}
+          </ThemeProvider>
+        </SidebarProvider>
         <Analytics />
       </body>
     </html>

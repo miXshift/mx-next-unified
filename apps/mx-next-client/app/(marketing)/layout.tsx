@@ -2,8 +2,8 @@
 
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@components/button';
-import { Logo } from '@components/logo';
 import { ThemeSwitcher } from '@components/theme-switcher';
+import Logo from '@/lib/ui/logo';
 
 export default async function MarketingLayout({
   children,
@@ -11,7 +11,7 @@ export default async function MarketingLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen flex flex-col bg-background">
+    <div className="min-h-screen w-full flex flex-col bg-background">
       <header className="border-b">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <Logo />

@@ -4,28 +4,42 @@ import { ASSETS } from '@constants/assets';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { useSidebar } from './sidebar';
 
-export function Logo() {
-  const { theme, resolvedTheme } = useTheme();
+export default function Logo() {
+  const { open } = useSidebar();
+  const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
-  // Prevent hydration mismatch
   useEffect(() => {
     setMounted(true);
   }, []);
 
   if (!mounted) {
     return (
-      <Image src={ASSETS.logos.light} alt="Logo" width={120} height={40} />
+      <Image
+        src={ASSETS.logos.light}
+        alt="Logo"
+        width={open ? 180 : 50}
+        height={open ? 40 : 50}
+      />
     );
   }
 
   return (
     <Image
-      src={resolvedTheme === 'dark' ? ASSETS.logos.dark : ASSETS.logos.light}
+      src={
+        open
+          ? resolvedTheme === 'dark'
+            ? ASSETS.logos.dark
+            : ASSETS.logos.light
+          : resolvedTheme === 'dark'
+            ? ASSETS.icon.light
+            : ASSETS.icon.dark
+      }
       alt="Logo"
-      width={120}
-      height={40}
+      width={open ? 180 : 50}
+      height={open ? 40 : 50}
     />
   );
 }
