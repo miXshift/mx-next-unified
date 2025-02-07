@@ -5,11 +5,11 @@ export function handleLanding(
   request: NextRequest,
   response: NextResponse
 ): NextResponse {
-     const url = request.nextUrl.clone();
+  const url = request.nextUrl.clone();
   // // If user is logged in, redirect to dashboard
   if (request.nextUrl.pathname === '/') {
     url.pathname = '/auth';
-    return NextResponse.redirect(url)
+    return NextResponse.redirect(url);
   }
   return response;
 }
