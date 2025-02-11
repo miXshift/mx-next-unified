@@ -4,7 +4,7 @@ import { ASSETS } from '@constants/assets';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { useSidebar } from './sidebar';
+import { useSidebar } from '../ui/sidebar';
 
 export default function Logo() {
   const { open } = useSidebar();

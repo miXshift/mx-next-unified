@@ -18,8 +18,8 @@ export function LogoLarge({ className, size = 'default' }: LogoProps) {
     setHasAnimated(true);
   }, []);
 
-  const width = size === 'large' ? '480' : '80'; // Doubled from 240 to 480
-  const height = size === 'large' ? '96' : '16'; // Doubled from 48 to 96
+  const width = size === 'large' ? '250' : '80'; // Doubled from 240 to 480
+  const height = size === 'large' ? '46' : '16'; // Doubled from 48 to 96
   const classes = cn(
     'transition-all duration-700',
     size === 'large' && 'my-8',

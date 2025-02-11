@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardTitle, CardContent } from '@components/card';
+import { Card, CardHeader, CardTitle, CardContent } from '@ui/card';
 import { BarChart, Users, DollarSign, ArrowUpRight } from 'lucide-react';
 
 export default function Dashboard() {

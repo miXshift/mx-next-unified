@@ -1,5 +1,5 @@
 import { SidebarProvider } from '@/lib/ui/sidebar';
-import { ThemeProvider } from '@components/theme-provider';
+import { ThemeProvider } from '@providers/theme-provider';
 import '@styles/globals.css';
 import { Inter } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';

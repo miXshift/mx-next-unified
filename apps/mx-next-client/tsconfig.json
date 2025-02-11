@@ -21,13 +21,15 @@
     ],
     "paths": {
       "@/*": ["./*"],
-      "@components/*": ["./lib/ui/*"],
+      "@ui/*": ["./lib/ui/*"],
+      "@components/*": ["./lib/components/*"],
       "@constants/*": ["./lib/constants/*"],
       "@hooks/*": ["./lib/hooks/*"],
       "@styles/*": ["./public/styles/*"],
       "@types/*": ["./lib/types/*"],
       "@utils/*": ["./lib/utils/*"],
-      "@modules/*": ["./modules/*"]
+      "@modules/*": ["./modules/*"],
+      "@providers/*": ["./lib/providers/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

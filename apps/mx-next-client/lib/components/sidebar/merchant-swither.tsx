@@ -11,13 +11,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
-} from '@components/dropdown-menu';
+} from '@ui/dropdown-menu';
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from '@components/sidebar';
+} from '@ui/sidebar';
 import Link from 'next/link';
 
 export function MerchantSwitcher({

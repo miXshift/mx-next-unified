@@ -1,9 +1,9 @@
 'use client';
 
 import { ArrowRight } from 'lucide-react';
-import { Button } from '@components/button';
+import { Button } from '@ui/button';
 import { ThemeSwitcher } from '@components/theme-switcher';
-import Logo from '@/lib/ui/logo';
+import Logo from '@components/logo';
 
 export default async function MarketingLayout({
   children,

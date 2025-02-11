@@ -1,15 +1,15 @@
 'use client';
 
 import { useState } from 'react';
-import { Button } from '@components/button';
-import { Input } from '@components/input';
-import { Label } from '@components/label';
+import { Button } from '@ui/button';
+import { Input } from '@ui/input';
+import { Label } from '@ui/label';
 import { cn } from '@utils/styling';
 import { signUpAction, signInAction } from '@modules/auth/auth.actions';
 import { Chrome } from 'lucide-react';
 import Icon from '@/lib/ui/icon';
-import { FormMessage, Message } from '@/lib/ui/form-message';
-import { SubmitButton } from '@/lib/ui/submit-button';
+import { FormMessage, Message } from '@components/form-message';
+import { SubmitButton } from '@components/submit-button';
 import Link from 'next/link';
 
 interface AuthFormProps extends React.HTMLAttributes<HTMLDivElement> {

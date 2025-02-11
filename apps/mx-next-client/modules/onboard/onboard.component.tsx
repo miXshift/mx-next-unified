@@ -1,7 +1,6 @@
 'use client';
 
-import { LogoLarge } from '@components/logo-large';
-import { Button } from '@components/button';
+import { Button } from '@ui/button';
 import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 import { logger } from '@utils/logger';
 import { useEffect } from 'react';
@@ -11,6 +10,7 @@ import {
   STEP_DESCRIPTIONS,
   ONBOARDING_STEPS,
 } from './onboard.types';
+import Logo from '@components/logo';
 
 interface OnboardingLayoutProps {
   children: React.ReactNode;
@@ -43,13 +43,15 @@ export function OnboardContainer({ children }: OnboardingLayoutProps) {
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col min-w-screen w-full">
       <header className="bg-background border-b">
         <div className="container mx-auto px-4">
-          <div className="h-32 flex items-center justify-center gap-12">
-            <LogoLarge size="large" />
-            <ArrowRight className="h-8 w-8 text-muted-foreground" />
-            <h1 className="text-2xl font-bold tracking-tight">Onboarding</h1>
+          <div className="h-32 flex items-center gap-12 justify-between">
+            <Logo />
+            <div className="flex items-center gap-4">
+              <ArrowRight className="h-8 w-8 text-muted-foreground" />
+              <h1 className="text-2xl font-bold tracking-tight">Onboarding</h1>
+            </div>
           </div>
         </div>
       </header>
