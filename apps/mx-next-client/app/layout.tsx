@@ -1,8 +1,7 @@
-import { SidebarProvider } from '@ui/sidebar';
-import { ThemeProvider } from '@providers/theme-provider';
 import '@styles/globals.css';
 import { Inter } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
+import AppProviders from '@/lib/providers/app-provider';
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -24,11 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <SidebarProvider>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            {children}
-          </ThemeProvider>
-        </SidebarProvider>
+        <AppProviders>{children}</AppProviders>
         <Analytics />
       </body>
     </html>

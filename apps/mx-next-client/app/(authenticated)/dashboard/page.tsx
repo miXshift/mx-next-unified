@@ -1,6 +1,10 @@
+'use client';
 import ReportsDashboardTable from '@/modules/analytics/report-table';
+import { useAppHeader } from '@/lib/providers/app-provider/appheader-provider';
+import { Button } from '@/lib/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@ui/card';
 import { BarChart, Users, DollarSign, ArrowUpRight } from 'lucide-react';
+import { useEffect } from 'react';
 
 const recentActivities = [
   { id: '1', message: 'New user signed up', time: '2 hours ago' },
@@ -11,6 +15,29 @@ const recentActivities = [
 ];
 
 export default function Dashboard() {
+  const { setBreadcrumbs, setTitle, setCustomHeader } = useAppHeader();
+
+  useEffect(() => {
+    setTitle('Dashboard');
+    setBreadcrumbs([
+      { label: 'Breadcrumb 1', href: '/dashboard' },
+      { label: 'Breadcrumb 2', href: '/dashboard' },
+      { label: 'Breadcrumb 3', href: '/dashboard' },
+    ]);
+    setCustomHeader(
+      <div className="flex gap-2">
+        <Button variant="outline">Secondary</Button>
+        <Button variant="default">Primary</Button>
+      </div>
+    );
+
+    return () => {
+      setTitle('');
+      setBreadcrumbs([]);
+      setCustomHeader(null);
+    };
+  }, [setTitle, setBreadcrumbs, setCustomHeader]);
+
   return (
     <div className="flex gap-5 flex-col">
       <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
