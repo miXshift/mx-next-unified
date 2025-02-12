@@ -18,7 +18,7 @@ import {
   SidebarHeader,
   SidebarRail,
   useSidebar,
-} from '../../ui/sidebar';
+} from '@ui/sidebar';
 import { ModeToggle } from './theme-switcher';
 import { NavOrgs } from './nav-org';
 import { cn } from '@/lib/utils/styling';

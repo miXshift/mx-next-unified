@@ -7,7 +7,7 @@ import { Label } from '@ui/label';
 import { cn } from '@utils/styling';
 import { signUpAction, signInAction } from '@modules/auth/auth.actions';
 import { Chrome } from 'lucide-react';
-import Icon from '@/lib/ui/icon';
+import Icon from '@ui/icon';
 import { FormMessage, Message } from '@components/form-message';
 import { SubmitButton } from '@components/submit-button';
 import Link from 'next/link';

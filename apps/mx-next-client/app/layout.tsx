@@ -1,4 +1,4 @@
-import { SidebarProvider } from '@/lib/ui/sidebar';
+import { SidebarProvider } from '@ui/sidebar';
 import { ThemeProvider } from '@providers/theme-provider';
 import '@styles/globals.css';
 import { Inter } from 'next/font/google';

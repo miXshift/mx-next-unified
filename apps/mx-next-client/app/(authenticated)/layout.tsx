@@ -1,8 +1,8 @@
 'use client';
-import AppLayoutFooter from '@/lib/components/app-layout/app-layout-footer';
-import AppLayoutHeader from '@/lib/components/app-layout/app-layout-header';
-import { AppSidebar } from '@/lib/components/sidebar/app-sidebar';
-import { SidebarInset } from '@/lib/ui/sidebar';
+import AppLayoutFooter from '@components/app-layout/app-layout-footer';
+import AppLayoutHeader from '@components/app-layout/app-layout-header';
+import { AppSidebar } from '@components/sidebar/app-sidebar';
+import { SidebarInset } from '@ui/sidebar';
 
 export default function DashboardLayout({
   children,
@@ -15,7 +15,9 @@ export default function DashboardLayout({
       <SidebarInset>
         <div className="flex-1 flex flex-col w-full">
           <AppLayoutHeader />
-          <main className="flex-1 p-6 w-full">{children}</main>
+          <main className="flex-1 p-6 w-full bg-slate-200 dark:bg-slate-600">
+            {children}
+          </main>
           <AppLayoutFooter />
         </div>
       </SidebarInset>

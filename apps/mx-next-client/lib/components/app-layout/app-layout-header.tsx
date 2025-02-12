@@ -1,5 +1,5 @@
-import { Button } from '@/lib/ui/button';
-import { Sheet, SheetTrigger } from '@/lib/ui/sheet';
+import { Button } from '@ui/button';
+import { Sheet, SheetTrigger } from '@ui/sheet';
 import { Menu } from 'lucide-react';
 import React from 'react';
 
@@ -13,7 +13,7 @@ export default function AppLayoutHeader({
   header,
 }: AppLayoutHeaderProps) {
   return (
-    <header className="h-16 border-b bg-card">
+    <header className="h-16 border-b bg-cards sticky top-0 z-10 bg-background shadow-sm">
       <div className="h-full px-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Sheet>

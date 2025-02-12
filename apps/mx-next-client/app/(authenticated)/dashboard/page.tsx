@@ -1,10 +1,19 @@
+import ReportsDashboardTable from '@/modules/analytics/report-table';
 import { Card, CardHeader, CardTitle, CardContent } from '@ui/card';
 import { BarChart, Users, DollarSign, ArrowUpRight } from 'lucide-react';
 
+const recentActivities = [
+  { id: '1', message: 'New user signed up', time: '2 hours ago' },
+  { id: '2', message: 'New user signed up', time: '3 hours ago' },
+  { id: '3', message: 'New user signed up', time: '4 hours ago' },
+  { id: '4', message: 'New user signed up', time: '5 hours ago' },
+  { id: '5', message: 'New user signed up', time: '6 hours ago' },
+];
+
 export default function Dashboard() {
   return (
-    <>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <div className="flex gap-5 flex-col">
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
@@ -54,27 +63,32 @@ export default function Dashboard() {
           </CardContent>
         </Card>
       </div>
-      <div className="mt-8">
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent Activity</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-8">
-              {[1, 2, 3, 4, 5].map(i => (
-                <div key={i} className="flex items-center">
-                  <div className="space-y-1">
-                    <p className="text-sm font-medium leading-none">
-                      New user signed up
-                    </p>
-                    <p className="text-sm text-muted-foreground">2 hours ago</p>
-                  </div>
+      <Card>
+        <CardContent>
+          <ReportsDashboardTable />
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>Recent Activity</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-8">
+            {recentActivities.map(activity => (
+              <div key={activity.id} className="flex items-center">
+                <div className="space-y-1">
+                  <p className="text-sm font-medium leading-none">
+                    {activity.message}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    {activity.time}
+                  </p>
                 </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    </>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
 }

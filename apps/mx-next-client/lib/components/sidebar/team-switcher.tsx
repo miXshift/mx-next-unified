@@ -2,13 +2,9 @@
 
 import * as React from 'react';
 
-import {
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from '../../ui/sidebar';
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@ui/sidebar';
 import Link from 'next/link';
-import { Avatar, AvatarFallback, AvatarImage } from '@/lib/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@ui/avatar';
 
 export function TeamSwitcher({
   teams,
