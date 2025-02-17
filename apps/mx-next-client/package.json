@@ -9,6 +9,10 @@
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "format": "prettier --write \"**/*.{ts,tsx,json,md}\""
   },
+  "engines": {
+    "node": ">=22",
+    "pnpm": ">=10"
+  },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/sortable": "^10.0.0",
@@ -23,9 +27,11 @@
     "@radix-ui/react-select": "^2.1.6",
     "@radix-ui/react-separator": "^1.1.2",
     "@radix-ui/react-slot": "^1.1.0",
-    "@tanstack/react-table": "^8.20.6",
     "@radix-ui/react-toast": "^1.2.6",
     "@radix-ui/react-tooltip": "^1.1.8",
+    "@supabase/ssr": "^0.5.2",
+    "@supabase/supabase-js": "^2.48.1",
+    "@tanstack/react-table": "^8.20.6",
     "@vercel/analytics": "^1.4.1",
     "autoprefixer": "10.4.20",
     "chalk": "^5.4.1",
@@ -58,5 +64,5 @@
     "tailwindcss-animate": "^1.0.7",
     "typescript": "5.7.2"
   },
-  "packageManager": "pnpm@9.15.3+sha512.1f79bc245a66eb0b07c5d4d83131240774642caaa86ef7d0434ab47c0d16f66b04e21e0c086eb61e62c77efc4d7f7ec071afad3796af64892fae66509173893a"
+  "packageManager": "pnpm@10.4.1"
 }
