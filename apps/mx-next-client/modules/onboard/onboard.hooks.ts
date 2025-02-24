@@ -1,13 +1,22 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { OnboardingStep, ONBOARDING_STEPS } from './onboard.types';
 import { logger } from '@utils/logger';
+
+interface StepValidation {
+  isValid: boolean;
+  canSkip?: boolean;
+}
 
 export function useOnboardStep() {
   const [currentStep, setCurrentStep] =
     useState<OnboardingStep>('collect-lead');
   const [isLoading, setIsLoading] = useState(true);
+  const [stepValidation, setStepValidation] = useState<StepValidation>({
+    isValid: false,
+  });
+  const validationRef = useRef(stepValidation);
 
   // Log initial render
   logger.hook('Hook rendered', 'useOnboardStep', { type: 'render' });
@@ -30,20 +39,31 @@ export function useOnboardStep() {
     setIsLoading(false);
   }, []);
 
-  const goToStep = useCallback(
-    (step: OnboardingStep) => {
-      logger.hook('Navigating to step', 'useOnboardStep', {
-        type: 'callback',
-        prevValue: currentStep,
-        nextValue: step,
-      });
+  // Update ref when state changes
+  useEffect(() => {
+    validationRef.current = stepValidation;
+  }, [stepValidation]);
 
-      setCurrentStep(step);
-      localStorage.setItem('onboardingStep', step);
-      logger.action('Updated onboarding step', step);
-    },
-    [currentStep]
-  );
+  const goToStep = useCallback((step: OnboardingStep) => {
+    const currentValidation = validationRef.current;
+
+    console.log('Attempting navigation:', {
+      from: currentStep,
+      to: step,
+      validation: currentValidation,
+    });
+
+    // Direct state updates without Promise.resolve()
+    setCurrentStep(step);
+    localStorage.setItem('onboardingStep', step);
+    setStepValidation({ isValid: false });
+
+    logger.hook('Navigation complete', 'useOnboardStep', {
+      type: 'callback',
+      prevValue: currentStep,
+      nextValue: step,
+    });
+  }, []);
 
   const goToNextStep = useCallback(() => {
     const currentIndex = ONBOARDING_STEPS.indexOf(currentStep);
@@ -56,7 +76,7 @@ export function useOnboardStep() {
       });
       goToStep(nextStep);
     }
-  }, [currentStep, goToStep]);
+  }, [goToStep]);
 
   const goToPreviousStep = useCallback(() => {
     const currentIndex = ONBOARDING_STEPS.indexOf(currentStep);
@@ -71,14 +91,9 @@ export function useOnboardStep() {
     }
   }, [currentStep, goToStep]);
 
-  // Log whenever currentStep changes
+  // Force re-render when currentStep changes
   useEffect(() => {
-    logger.hook('Step changed', 'useOnboardStep', {
-      type: 'effect',
-      dependencies: ['currentStep'],
-      prevValue: undefined,
-      nextValue: currentStep,
-    });
+    console.log('Step actually changed to:', currentStep);
   }, [currentStep]);
 
   return {
@@ -92,5 +107,9 @@ export function useOnboardStep() {
     progress:
       ((ONBOARDING_STEPS.indexOf(currentStep) + 1) / ONBOARDING_STEPS.length) *
       100,
+    setStepValidity: (validation: StepValidation) => {
+      console.log('Setting validation:', validation);
+      setStepValidation(validation);
+    },
   };
 }

@@ -32,10 +32,12 @@ export interface DataTableProps<TData extends RowData, TValue = unknown> {
   renderSubComponent?: (row: Row<TData>) => React.ReactNode;
   bulkActions?: BulkAction<TData>[];
   onFilter?: (filteredData: TData[]) => void;
+  onSelectionChange?: (selectedCount: number) => void;
   customActions?: React.ReactNode;
   initialState?: TableInitialState;
   enableTableConfig?: boolean;
   downloadOptions?: DownloadOption[];
+  onStateChange?: (state: TableState) => void;
 }
 export interface DownloadOption {
   id: string;

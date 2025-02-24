@@ -32,3 +32,17 @@ export const STEP_DESCRIPTIONS: Record<OnboardingStep, string> = {
   'connect-amazon': 'Connect your Amazon account',
   'activate-merchants': 'Set up your merchant accounts',
 };
+
+export const SKIPPABLE_STEPS = ['invite-members'] as const;
+export type SkippableStep = (typeof SKIPPABLE_STEPS)[number];
+
+// Helper function to check if a step is skippable
+export const isStepSkippable = (step: OnboardingStep): boolean =>
+  SKIPPABLE_STEPS.includes(step as SkippableStep);
+
+export const ONBOARDING_ACTIONS = {
+  SET_STEP: 'SET_STEP',
+  SET_LOADING: 'SET_LOADING',
+  SET_VALIDATION: 'SET_VALIDATION',
+  UPDATE_STEP_DATA: 'UPDATE_STEP_DATA',
+} as const;

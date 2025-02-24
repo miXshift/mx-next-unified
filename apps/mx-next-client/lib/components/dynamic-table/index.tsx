@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   useReactTable,
   getCoreRowModel,
@@ -49,6 +49,7 @@ export function DynamicTable<TData extends RowData, TValue = unknown>({
   initialState,
   enableTableConfig = false,
   downloadOptions,
+  onStateChange,
 }: DataTableProps<TData, TValue>) {
   // Table state management
   const {
@@ -151,6 +152,17 @@ export function DynamicTable<TData extends RowData, TValue = unknown>({
     manualGrouping: false,
     getSubRows: undefined,
   });
+
+  // Add effect to handle state changes
+  useEffect(() => {
+    onStateChange?.({
+      sorting,
+      grouping,
+      columnVisibility,
+      rowSelection,
+      expanded,
+    });
+  }, [sorting, grouping, columnVisibility, rowSelection, expanded]);
 
   return (
     <div className="space-y-4">
@@ -270,3 +282,11 @@ export function DynamicTable<TData extends RowData, TValue = unknown>({
     </div>
   );
 }
+
+const HiddenText = ({ id, value }: { id: string; value: string }) => {
+  return (
+    <span id={id} style={{ display: 'none' }}>
+      {value}
+    </span>
+  );
+};

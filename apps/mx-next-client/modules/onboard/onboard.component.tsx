@@ -1,133 +1,180 @@
 'use client';
 
 import { Button } from '@ui/button';
-import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
-import { logger } from '@utils/logger';
-import { useEffect } from 'react';
-import { useOnboardStep } from './onboard.hooks';
+import { useCallback } from 'react';
+import { useOnboarding } from './onboard.context';
 import {
   STEP_TITLES,
   STEP_DESCRIPTIONS,
-  ONBOARDING_STEPS,
+  isStepSkippable,
 } from './onboard.types';
 import Logo from '@components/logo';
+import { LeadForm } from './steps/collect-lead';
+import { ProfileForm } from './steps/create-profile';
+import { OrganizationForm } from './steps/create-organization';
+import { InviteMembersForm } from './steps/invite-members';
+import { AmazonConnectionForm } from './steps/connect-amazon';
+import { ActivateMerchantsForm } from './steps/activate-merchants';
+import { Spinner } from '@/lib/components/spinner';
+import { useDialog } from '@/lib/providers/app-provider/dialog-provider';
+import { useRouter } from 'next/navigation';
+import confetti from 'canvas-confetti';
+import { useToast } from '@/lib/hooks/use-toasts';
+import { StepNavigation, StepHeader, StepFooter } from './components';
 
-interface OnboardingLayoutProps {
-  children: React.ReactNode;
-}
+const stepComponents = {
+  'collect-lead': LeadForm,
+  'create-profile': ProfileForm,
+  'create-organization': OrganizationForm,
+  'invite-members': InviteMembersForm,
+  'connect-amazon': AmazonConnectionForm,
+  'activate-merchants': ActivateMerchantsForm,
+} as const;
 
-export function OnboardContainer({ children }: OnboardingLayoutProps) {
+export function OnboardContainer() {
   const {
     currentStep,
     goToPreviousStep,
     goToNextStep,
-    goToStep,
     isFirstStep,
     isLastStep,
     isLoading,
-  } = useOnboardStep();
+    stepValidation,
+    setStepValidity,
+    formData,
+    updateStepData,
+  } = useOnboarding();
+  const { showDialog, hideDialog } = useDialog();
+  const router = useRouter();
+  const { toast } = useToast();
 
-  useEffect(() => {
-    logger.component('Onboarding layout mounted', 'OnboardingLayout');
-    return () => {
-      logger.component('Onboarding layout unmounted', 'OnboardingLayout');
+  const fireConfetti = () => {
+    const duration = 3000;
+    const interval = 250;
+    const end = Date.now() + duration;
+
+    const launch = () => {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { x: 0.5, y: 0.1 },
+        colors: ['#4F46E5', '#10B981', '#F59E0B', '#EF4444', '#EC4899'],
+      });
+
+      if (Date.now() < end) {
+        setTimeout(launch, interval);
+      }
     };
-  }, []);
+
+    launch();
+  };
+
+  const canProceed = useCallback(() => {
+    if (stepValidation.canSkip && isStepSkippable(currentStep)) {
+      return true;
+    }
+    return stepValidation.isValid && formData[currentStep];
+  }, [currentStep, formData, stepValidation]);
+
+  const handleComplete = useCallback(async () => {
+    if (isLastStep && canProceed()) {
+      fireConfetti();
+      toast({
+        title: '🎉 Welcome to MixShift!',
+        description:
+          "You've successfully completed onboarding. Your journey to better Amazon management starts now.",
+        duration: 5000,
+      });
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      router.push('/dashboard');
+    } else {
+      goToNextStep();
+    }
+  }, [isLastStep, canProceed, router, goToNextStep, toast]);
+
+  const handleSkip = useCallback(() => {
+    if (formData[currentStep]) {
+      showDialog({
+        title: 'Skip this step?',
+        description: 'Any information entered will not be saved.',
+        footer: (
+          <div className="flex gap-2 justify-end w-full">
+            <Button variant="outline" onClick={hideDialog}>
+              Cancel
+            </Button>
+            <Button
+              onClick={() => {
+                hideDialog();
+                updateStepData(currentStep, null);
+                goToNextStep();
+              }}
+            >
+              Skip
+            </Button>
+          </div>
+        ),
+        size: 'sm',
+      });
+    } else {
+      goToNextStep();
+    }
+  }, [
+    currentStep,
+    formData,
+    showDialog,
+    hideDialog,
+    updateStepData,
+    goToNextStep,
+  ]);
+
+  const StepComponent = stepComponents[currentStep];
+  const getCanSkip = (step: keyof typeof stepComponents) =>
+    step === 'invite-members' ? isStepSkippable(step) : false;
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-pulse">Loading...</div>
-      </div>
-    );
+    return <Spinner className="h-8 w-8 text-primary" />;
   }
 
   return (
-    <div className="min-h-screen flex flex-col min-w-screen w-full">
-      <header className="bg-background border-b">
-        <div className="container mx-auto px-4">
-          <div className="h-32 flex items-center gap-12 justify-between">
-            <Logo />
-            <div className="flex items-center gap-4">
-              <ArrowRight className="h-8 w-8 text-muted-foreground" />
-              <h1 className="text-2xl font-bold tracking-tight">Onboarding</h1>
-            </div>
-          </div>
-        </div>
-      </header>
+    <div className="flex min-h-screen w-full">
+      {/* Sidebar navigation */}
+      <aside className="w-[240px] border-r min-h-screen">
+        <StepNavigation currentStep={currentStep} />
+      </aside>
 
-      <div className="flex-1 bg-secondary/30">
-        <main className="container mx-auto px-4 py-12">
-          <div className="max-w-3xl mx-auto">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold tracking-tight mb-3">
-                {STEP_TITLES[currentStep]}
-              </h2>
-              <p className="text-lg text-muted-foreground">
-                {STEP_DESCRIPTIONS[currentStep]}
-              </p>
-            </div>
-
-            <div className="bg-card border rounded-xl shadow-sm p-8 transition-all duration-200 hover:shadow-md">
-              {children}
-            </div>
+      {/* Main content area */}
+      <div className="flex-1 flex flex-col w-full">
+        <main className="flex-1 px-12 py-8">
+          <div className="max-w-4xl mx-auto">
+            <StepHeader
+              title={STEP_TITLES[currentStep]}
+              description={STEP_DESCRIPTIONS[currentStep]}
+            />
+            <StepComponent
+              onValidationChange={isValid =>
+                setStepValidity({
+                  isValid,
+                  canSkip: getCanSkip(currentStep),
+                })
+              }
+            />
           </div>
         </main>
+
+        <StepFooter
+          isFirstStep={isFirstStep}
+          isLastStep={isLastStep}
+          currentStep={currentStep}
+          stepValidation={{
+            canSkip: stepValidation.canSkip || false,
+            isValid: stepValidation.isValid,
+          }}
+          canProceed={canProceed}
+          onPrevious={goToPreviousStep}
+          onNext={handleComplete}
+          onSkip={handleSkip}
+        />
       </div>
-
-      <footer className="bg-background border-t py-8">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto">
-            <div className="flex items-center justify-between gap-8">
-              {/* Navigation Buttons */}
-              <Button
-                variant="outline"
-                size="lg"
-                className="min-w-[140px] text-base"
-                onClick={goToPreviousStep}
-                disabled={isFirstStep}
-              >
-                <ChevronLeft className="mr-2 h-5 w-5" />
-                Back
-              </Button>
-
-              {/* Step Tracker */}
-              <div className="flex items-center gap-3">
-                {ONBOARDING_STEPS.map((step, index) => {
-                  const isActive = step === currentStep;
-                  const isCompleted =
-                    ONBOARDING_STEPS.indexOf(currentStep) > index;
-
-                  return (
-                    <button
-                      key={step}
-                      onClick={() => goToStep(step)}
-                      className={`w-2.5 h-2.5 rounded-full transition-all duration-200 ${
-                        isActive
-                          ? 'bg-primary w-4'
-                          : isCompleted
-                            ? 'bg-primary/60'
-                            : 'bg-muted'
-                      }`}
-                      title={STEP_TITLES[step]}
-                    />
-                  );
-                })}
-              </div>
-
-              <Button
-                size="lg"
-                className="min-w-[140px] text-base"
-                onClick={goToNextStep}
-                disabled={isLastStep}
-              >
-                Next
-                <ChevronRight className="ml-2 h-5 w-5" />
-              </Button>
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }
