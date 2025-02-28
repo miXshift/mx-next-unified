@@ -2,9 +2,10 @@
 import ReportsDashboardTable from '@/modules/analytics/report-table';
 import { useAppHeader } from '@/lib/providers/app-provider/appheader-provider';
 import { Button } from '@/lib/ui/button';
-import { Card, CardHeader, CardTitle, CardContent } from '@ui/card';
+import { Card, CardHeader, CardTitle, CardContent } from '@/lib/ui/card';
 import { BarChart, Users, DollarSign, ArrowUpRight } from 'lucide-react';
 import { useEffect } from 'react';
+import { DynamicChartDemo } from '@/lib/components/dynamic-chart/demo';
 
 const recentActivities = [
   { id: '1', message: 'New user signed up', time: '2 hours ago' },
@@ -90,6 +91,8 @@ export default function Dashboard() {
           </CardContent>
         </Card>
       </div>
+      <DynamicChartDemo />
+
       <Card>
         <CardContent>
           <ReportsDashboardTable />
