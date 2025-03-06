@@ -64,37 +64,68 @@ export type ChartSchema =
   | MixedChartSchema;
 
 export interface ChartOptions {
-  title?: string;
-  subtitle?: string;
-  xAxisLabel?: string;
-  yAxisLabel?: string;
-  theme?: 'light' | 'dark' | 'system';
-  height?: number | string;
-  width?: number | string;
-  legend?: boolean;
-  tooltip?: boolean;
-  animation?: boolean;
-  credits?: boolean;
   chart?: {
     type?: ChartType;
-    height?: number | string;
-    width?: number | string;
+    backgroundColor?: string;
+    style?: {
+      fontFamily?: string;
+    };
+    height?: string | number;
     [key: string]: any;
   };
-  yAxis?: Array<{
-    title?: { text: string };
-    opposite?: boolean;
-    [key: string]: any;
-  }>;
+  colors?: string[];
+  title?: {
+    text?: string;
+    useHTML?: boolean;
+    align?: 'left' | 'center' | 'right';
+    style?: {
+      color?: string;
+      fontSize?: string;
+      fontWeight?: string;
+    };
+  };
+  credits?: {
+    enabled?: boolean;
+  };
   plotOptions?: {
-    [key: string]: {
-      colorByPoint?: boolean;
-      grouping?: boolean;
-      pointPadding?: number;
-      borderWidth?: number;
+    series?: {
+      borderRadius?: number;
+      maxPointWidth?: number;
+      [key: string]: any;
+    };
+    waterfall?: {
+      [key: string]: any;
+    };
+    column?: {
+      [key: string]: any;
+    };
+    area?: {
+      [key: string]: any;
+    };
+    line?: {
       [key: string]: any;
     };
   };
+  xAxis?: {
+    [key: string]: any;
+  };
+  yAxis?: {
+    [key: string]: any;
+  };
+  tooltip?: {
+    useHTML?: boolean;
+    headerFormat?: string;
+    pointFormat?: string;
+    formatter?: (this: TooltipFormatterContextObject) => string;
+    valuePrefix?: string;
+    valueDecimals?: number;
+    shared?: boolean;
+    [key: string]: any;
+  };
+  legend?: {
+    [key: string]: any;
+  };
+  [key: string]: any;
 }
 
 export interface ChartInteractiveOptions {
@@ -126,6 +157,8 @@ export interface ChartTheme {
   title: {
     style: {
       color: string;
+      fontSize?: string;
+      fontWeight?: string;
     };
   };
   subtitle: {
@@ -161,10 +194,40 @@ export interface ChartTheme {
       color: string;
     };
   };
+  plotOptions?: {
+    area?: {
+      fillOpacity?: number;
+    };
+    waterfall?: {
+      colors?: {
+        positive: string;
+        negative: string;
+      };
+    };
+  };
 }
 
 export interface ProcessedChartData {
   series: Options['series'];
   xAxis?: Options['xAxis'];
   yAxis?: Options['yAxis'];
+}
+
+export interface TooltipPoint {
+  series: {
+    name: string;
+    color: string;
+  };
+  x: string | number;
+  y: number;
+}
+
+export interface TooltipFormatterContextObject {
+  points: TooltipPoint[];
+  x: string | number;
+  y: number;
+  series: {
+    name: string;
+    color: string;
+  };
 }

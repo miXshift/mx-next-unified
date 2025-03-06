@@ -2,34 +2,34 @@
 
 import { Card } from '@/lib/ui/card';
 import { DynamicChart } from './index';
-import type { ChartSchema } from './types';
+import type { ChartSchema, TooltipPoint } from './types';
 import { useTheme } from 'next-themes';
 
 // Account Changes Data
 const ACCOUNT_CHANGES_DATA = [
   {
     name: 'ASP - MicroFlex - 93256 - Case - 1P - VR',
-    value: 505.65,
+    value: 11505.65,
     isPositive: true,
   },
   {
     name: 'MSP - MicroFlex - 93732 - B0B94JMKQ8 - CQ - BOOST - PT - VR',
-    value: 422.44,
+    value: 11422.44,
     isPositive: true,
   },
   {
     name: 'SBV - MicroFlex - 93256 - Disp - CQ - 1P - VR',
-    value: 385.1,
+    value: 11385.1,
     isPositive: true,
   },
   {
     name: 'MSP - MicroFlex - 93732 - B0B94PC694 - CQ - B2B - BOOST - PT - VR',
-    value: 370.61,
+    value: 11370.61,
     isPositive: true,
   },
   {
     name: 'MSP - MicroFlex - 93732 - B0B94LCDHM - KW - BOOST - Size - VR',
-    value: 359.18,
+    value: 11359.18,
     isPositive: true,
   },
   { name: 'ASP - HyFlex - 11840 - VR', value: -1314.25, isPositive: false },
@@ -81,28 +81,48 @@ export function DynamicChartDemo() {
       {/* Account Changes Chart */}
       <Card className="p-6">
         <DynamicChart
-          type="column"
+          type="waterfall"
           data={ACCOUNT_CHANGES_DATA}
           schema={{
             categoryKey: 'name',
             valueKey: 'value',
           }}
           options={{
-            title: 'Account Changes',
+            title: {
+              text: 'Account Changes',
+              align: 'left',
+              style: {
+                fontSize: '16px'
+              }
+            },
             height: 500,
             theme: resolvedTheme as 'light' | 'dark',
             chart: {
               backgroundColor: 'transparent',
+              style: {
+                fontFamily: 'inherit'
+              }
             },
             yAxisLabel: '$ Change',
             plotOptions: {
-              column: {
-                colorByPoint: true,
-                grouping: false,
+              waterfall: {
                 pointPadding: 0.1,
                 borderWidth: 0,
-              },
+                dataLabels: {
+                  enabled: true,
+                  format: '${point.y:,.2f}'
+                }
+              }
             },
+            tooltip: {
+              useHTML: true,
+              headerFormat: '<small>{point.key}</small><br/>',
+              pointFormat: '<b>${point.y:,.2f}</b>',
+              shared: true
+            },
+            legend: {
+              enabled: false // Completely disable the legend
+            }
           }}
         />
       </Card>
@@ -130,16 +150,81 @@ export function DynamicChartDemo() {
             ],
           }}
           options={{
-            title: 'Sales Mix',
-            height: 400,
-            theme: resolvedTheme as 'light' | 'dark',
-            chart: {
-              backgroundColor: 'transparent',
+            title: {
+              text: 'Sales Mix',
+              align: 'left',
+            },
+            xAxis: {
+              categories: SALES_MIX_DATA.map(item => item.date),
             },
             yAxis: [
-              { title: { text: 'Sales ($)' } },
-              { title: { text: 'Percentage' }, opposite: true, max: 100 },
+              {
+                title: { text: 'Sales ($)' },
+                labels: {
+                  format: '${value:,.0f}',
+                },
+              },
+              {
+                title: { text: 'Percentage' },
+                labels: {
+                  format: '{value}%',
+                },
+                opposite: true,
+                max: 100,
+              },
             ],
+            tooltip: {
+              shared: true,
+              useHTML: true,
+              headerFormat: '<small>{point.key}</small><br/>',
+              pointFormat:
+                '<span style="color:{series.color}">\u25CF</span> {series.name}: <b>{point.y:,.1f}{series.tooltipSuffix}</b><br/>',
+            },
+            plotOptions: {
+              series: {
+                marker: {
+                  enabled: true,
+                  symbol: 'circle',
+                },
+              },
+              column: {
+                borderWidth: 0,
+                tooltip: {
+                  valueSuffix: '$',
+                },
+              },
+              line: {
+                tooltip: {
+                  valueSuffix: '%',
+                },
+              },
+            },
+            series: [
+              {
+                name: 'Ad Sales',
+                type: 'column',
+                data: SALES_MIX_DATA.map(item => item.adSales),
+                tooltipSuffix: '$',
+              },
+              {
+                name: 'Ordered Product Sales',
+                type: 'column',
+                data: SALES_MIX_DATA.map(item => item.productSales),
+                tooltipSuffix: '$',
+              },
+              {
+                name: 'Ads % of Tot. Sales',
+                type: 'line',
+                yAxis: 1,
+                data: SALES_MIX_DATA.map(item => item.adsPercent),
+                tooltipSuffix: '%',
+              },
+            ],
+            legend: {
+              align: 'right',
+              verticalAlign: 'middle',
+              layout: 'vertical',
+            },
           }}
         />
       </Card>
@@ -158,16 +243,80 @@ export function DynamicChartDemo() {
             ],
           }}
           options={{
-            title: 'Advertising Return',
-            height: 400,
-            theme: resolvedTheme as 'light' | 'dark',
-            chart: {
-              backgroundColor: 'transparent',
+            title: {
+              text: 'Advertising Return',
+              align: 'left',
+            },
+            xAxis: {
+              categories: AD_RETURN_DATA.map(item => item.date),
             },
             yAxis: [
-              { title: { text: 'Value ($)' } },
-              { title: { text: 'ROAS' }, opposite: true },
+              {
+                title: { text: 'Value ($)' },
+                labels: {
+                  format: '${value:,.0f}',
+                },
+              },
+              {
+                title: { text: 'ROAS' },
+                labels: {
+                  format: '{value}x',
+                },
+                opposite: true,
+              },
             ],
+            tooltip: {
+              shared: true,
+              useHTML: true,
+              headerFormat: '<small>{point.key}</small><br/>',
+              pointFormat:
+                '<span style="color:{series.color}">\u25CF</span> {series.name}: <b>{point.y:,.1f}{series.tooltipSuffix}</b><br/>',
+            },
+            plotOptions: {
+              series: {
+                marker: {
+                  enabled: true,
+                  symbol: 'circle',
+                },
+              },
+              area: {
+                fillOpacity: 0.25,
+                tooltip: {
+                  valueSuffix: '$',
+                },
+              },
+              line: {
+                tooltip: {
+                  valueSuffix: 'x',
+                },
+              },
+            },
+            series: [
+              {
+                name: 'CPA',
+                type: 'area',
+                data: AD_RETURN_DATA.map(item => item.cpa),
+                tooltipSuffix: '$',
+              },
+              {
+                name: 'AOV',
+                type: 'area',
+                data: AD_RETURN_DATA.map(item => item.aov),
+                tooltipSuffix: '$',
+              },
+              {
+                name: 'ROAS',
+                type: 'line',
+                yAxis: 1,
+                data: AD_RETURN_DATA.map(item => item.roas),
+                tooltipSuffix: 'x',
+              },
+            ],
+            legend: {
+              align: 'right',
+              verticalAlign: 'middle',
+              layout: 'vertical',
+            },
           }}
         />
       </Card>

@@ -29,16 +29,8 @@ export async function initializeHighcharts(): Promise<boolean> {
       }
     });
 
-    // Import and initialize waterfall module separately
-    try {
-      const { default: waterfallModule } = await import(
-        'highcharts/modules/variwide'
-      );
-      waterfallModule(Highcharts);
-      console.log('Waterfall module initialized');
-    } catch (e) {
-      console.warn('Waterfall module initialization warning:', e);
-    }
+    // Note: Waterfall charts are included in highcharts-more module
+    // No need for a separate waterfall module import
 
     // Basic global options
     Highcharts.setOptions({

@@ -2,112 +2,134 @@ import { ChartTheme } from './types';
 
 export const LIGHT_THEME: ChartTheme = {
   colors: [
-    '#2563eb', // blue-600
-    '#16a34a', // green-600
-    '#dc2626', // red-600
-    '#ca8a04', // yellow-600
-    '#9333ea', // purple-600
-    '#0891b2', // cyan-600
-    '#ea580c', // orange-600
+    'hsl(217.2 91.2% 59.8%)', // blue-500 (for primary series)
+    'hsl(142.1 70.6% 45.3%)', // green-500 (for secondary series)
+    'hsl(346.8 77.2% 49.8%)', // rose-500
+    'hsl(24.6 95% 53.1%)', // orange-500
+    'hsl(262.1 83.3% 57.8%)', // purple-500
   ],
   chart: {
-    backgroundColor: '#ffffff',
+    backgroundColor: 'transparent',
     style: {
       fontFamily: 'var(--font-sans)',
     },
   },
   title: {
     style: {
-      color: '#0f172a', // slate-900
+      color: 'hsl(222.2 47.4% 11.2%)', // slate-950
+      fontSize: '16px',
+      fontWeight: '500',
     },
   },
   subtitle: {
     style: {
-      color: '#475569', // slate-600
+      color: 'hsl(215.4 16.3% 46.9%)', // slate-500
     },
   },
   xAxis: {
     labels: {
       style: {
-        color: '#475569', // slate-600
+        color: 'hsl(215.4 16.3% 46.9%)', // slate-500
       },
     },
-    gridLineColor: '#e2e8f0', // slate-200
+    gridLineColor: 'hsl(214.3 31.8% 91.4%)', // slate-200
   },
   yAxis: {
     labels: {
       style: {
-        color: '#475569', // slate-600
+        color: 'hsl(215.4 16.3% 46.9%)', // slate-500
       },
     },
-    gridLineColor: '#e2e8f0', // slate-200
+    gridLineColor: 'hsl(214.3 31.8% 91.4%)', // slate-200
   },
   legend: {
     itemStyle: {
-      color: '#475569', // slate-600
+      color: 'hsl(215.4 16.3% 46.9%)', // slate-500
     },
   },
   tooltip: {
-    backgroundColor: '#ffffff',
-    borderColor: '#e2e8f0', // slate-200
+    backgroundColor: 'hsl(0 0% 100%)', // white
+    borderColor: 'hsl(214.3 31.8% 91.4%)', // slate-200
     style: {
-      color: '#0f172a', // slate-900
+      color: 'hsl(222.2 47.4% 11.2%)', // slate-950
+    },
+  },
+  plotOptions: {
+    area: {
+      fillOpacity: 0.2,
+    },
+    waterfall: {
+      colors: {
+        positive: 'hsl(142.1 70.6% 45.3%)', // green-500 - match green in Sales Mix chart
+        negative: 'hsl(217.2 91.2% 59.8%)', // blue-500 - Use primary blue instead of red
+      },
     },
   },
 };
 
 export const DARK_THEME: ChartTheme = {
   colors: [
-    '#3b82f6', // blue-500
-    '#22c55e', // green-500
-    '#ef4444', // red-500
-    '#eab308', // yellow-500
-    '#a855f7', // purple-500
-    '#06b6d4', // cyan-500
-    '#f97316', // orange-500
+    'hsl(217.2 91.2% 69.8%)', // blue-400 (brighter for dark mode)
+    'hsl(142.1 76.2% 56.3%)', // green-400 (brighter for dark mode)
+    'hsl(346.8 77.2% 59.8%)', // rose-400
+    'hsl(24.6 95% 63.1%)', // orange-400
+    'hsl(262.1 83.3% 67.8%)', // purple-400
   ],
   chart: {
-    backgroundColor: '#1e293b', // slate-800
+    backgroundColor: 'transparent',
     style: {
       fontFamily: 'var(--font-sans)',
     },
   },
   title: {
     style: {
-      color: '#f8fafc', // slate-50
+      color: 'hsl(210 40% 98%)', // slate-50
+      fontSize: '16px',
+      fontWeight: '500',
     },
   },
   subtitle: {
     style: {
-      color: '#cbd5e1', // slate-300
+      color: 'hsl(215.4 16.3% 76.9%)', // slate-300
     },
   },
   xAxis: {
     labels: {
       style: {
-        color: '#cbd5e1', // slate-300
+        color: 'hsl(215.4 16.3% 76.9%)', // slate-300
       },
     },
-    gridLineColor: '#334155', // slate-700
+    gridLineColor: 'hsl(215.4 16.3% 46.9%)', // slate-500
   },
   yAxis: {
     labels: {
       style: {
-        color: '#cbd5e1', // slate-300
+        color: 'hsl(215.4 16.3% 76.9%)', // slate-300
       },
     },
-    gridLineColor: '#334155', // slate-700
+    gridLineColor: 'hsl(215.4 16.3% 46.9%)', // slate-500
   },
   legend: {
     itemStyle: {
-      color: '#cbd5e1', // slate-300
+      color: 'hsl(215.4 16.3% 76.9%)', // slate-300
     },
   },
   tooltip: {
-    backgroundColor: '#1e293b', // slate-800
-    borderColor: '#334155', // slate-700
+    backgroundColor: 'hsl(217.2 32.6% 17.5%)', // slate-800
+    borderColor: 'hsl(215.4 16.3% 46.9%)', // slate-500
     style: {
-      color: '#f8fafc', // slate-50
+      color: 'hsl(210 40% 98%)', // slate-50
+    },
+  },
+  plotOptions: {
+    area: {
+      fillOpacity: 0.1,
+    },
+    waterfall: {
+      colors: {
+        positive: 'hsl(142.1 84.2% 67.3%)', // green-300 - match green in Sales Mix chart
+        negative: 'hsl(217.2 91.2% 85.8%)', // blue-200 - Use primary blue instead of red
+      },
     },
   },
 };

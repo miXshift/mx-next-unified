@@ -213,23 +213,25 @@ function processWaterfallData(
   const processedData = data.map(item => ({
     name: item[categoryKey],
     y: Number(item[valueKey]),
-    color: item.isPositive ? '#16a34a' : item.isTotal ? '#0f172a' : '#dc2626',
-    isIntermediateSum: item.isTotal,
+    isSum: item.isTotal || false,
+    isIntermediateSum: item.isTotal || false,
   }));
 
   return {
     series: [
       {
         type: 'waterfall',
-        name: valueKey,
+        name: '',  // Empty string for no name at all
+        showInLegend: false,  // Hide from legend
         data: processedData,
         pointPadding: 0.2,
         dataLabels: {
           enabled: true,
           formatter: function (this: any) {
-            return `${this.y >= 0 ? '+' : ''}${this.y.toFixed(2)}`;
+            const value = this.y;
+            return `${value >= 0 ? '+' : ''}$${Math.abs(value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
           },
-        },
+        }
       },
     ] as SeriesOptionsType[],
   };
@@ -291,28 +293,126 @@ function processMixedData(
 }
 
 export function formatTooltip(
-  point: any,
+  tooltipContext: any,
   type: ChartType,
   schema: ChartSchema
 ): string {
+  // Shared tooltip showing multiple series
+  if (tooltipContext.points && tooltipContext.points.length > 0) {
+    // Skip showing tooltips for waterfall charts (handled by single point case)
+    if (type === 'waterfall') {
+      const point = tooltipContext.points[0];
+      const value = point.y;
+      // Format the value with proper currency
+      const formattedValue =
+        value >= 0
+          ? `+$${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+          : `-$${Math.abs(value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+      // Show the point name without any series labels
+      if (point.key || (point.point && point.point.name)) {
+        const name = point.key || (point.point && point.point.name);
+        return `<b>${name}</b><br/>${formattedValue}`;
+      }
+
+      // Fallback
+      return formattedValue;
+    }
+
+    const dateStr =
+      tooltipContext.points[0].x instanceof Date
+        ? tooltipContext.points[0].x.toLocaleDateString()
+        : tooltipContext.points[0].x;
+
+    let html = `<small>${dateStr}</small><br/>`;
+
+    tooltipContext.points.forEach((point: any) => {
+      const value = point.y;
+
+      if (typeof value === 'number') {
+        // Format based on series name or type
+        let formattedValue = '';
+
+        if (point.series.name.includes('ROAS')) {
+          formattedValue = `${value.toFixed(1)}x`;
+        } else if (point.series.name.includes('%')) {
+          formattedValue = `${value.toFixed(1)}%`;
+        } else {
+          // Assume monetary value by default
+          formattedValue = `$${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        }
+
+        html += `<span style="color:${point.series.color}">\u25CF</span> ${point.series.name}: <b>${formattedValue}</b><br/>`;
+      }
+    });
+
+    return html;
+  }
+
+  // Single point tooltip
   switch (type) {
     case 'pie': {
       const { categoryKey, valueKey } = schema as PieChartSchema;
-      return `${point.name}: ${point.y}`;
+      const value = tooltipContext.y;
+      return `<b>${tooltipContext.point.name}</b>: $${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
     }
     case 'heatmap': {
       const { xKey, yKey, valueKey } = schema as HeatmapChartSchema;
-      return `${point.series.xAxis.categories[point.x]}, ${
-        point.series.yAxis.categories[point.y]
-      }: ${point.value}`;
+      const xCategory =
+        tooltipContext.series.xAxis.categories[tooltipContext.point.x];
+      const yCategory =
+        tooltipContext.series.yAxis.categories[tooltipContext.point.y];
+      const value = tooltipContext.point.value;
+      return `<b>${xCategory}, ${yCategory}</b>: ${value}`;
+    }
+    case 'waterfall': {
+      const value = tooltipContext.y;
+
+      // Format the value with proper currency
+      const formattedValue =
+        value >= 0
+          ? `+$${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+          : `-$${Math.abs(value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+      // For waterfall charts, just display the name and value directly, no series name or labels
+      if (tooltipContext.point && tooltipContext.point.name) {
+        return `<b>${tooltipContext.point.name}</b><br/>${formattedValue}`;
+      }
+
+      // Fallback if name isn't available
+      return formattedValue;
     }
     case 'column': {
-      const { categoryKey, valueKey } = schema as PieChartSchema;
-      return `${point.name}: ${point.y >= 0 ? '+' : ''}${point.y.toFixed(2)}`;
+      const value = tooltipContext.y;
+      // Format value with proper currency
+      const formattedValue = `$${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+      // For column charts, just display the name and value directly, no series name or labels
+      if (tooltipContext.point && tooltipContext.point.name) {
+        return `<b>${tooltipContext.point.name}</b><br/>${formattedValue}`;
+      }
+
+      // Fallback if name isn't available
+      return formattedValue;
+    }
+    case 'mixed': {
+      const seriesName = tooltipContext.series.name;
+      const value = tooltipContext.y;
+
+      let formattedValue = '';
+      if (seriesName.includes('ROAS')) {
+        formattedValue = `${value.toFixed(1)}x`;
+      } else if (seriesName.includes('%')) {
+        formattedValue = `${value.toFixed(1)}%`;
+      } else {
+        formattedValue = `$${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      }
+
+      return `<b>${seriesName}</b>: ${formattedValue}`;
     }
     default: {
-      const { xKey, yKey } = schema as LineChartSchema;
-      return `${point.name}: ${point.y}`;
+      const value = tooltipContext.y;
+      return `<b>${tooltipContext.series.name}</b>: ${value.toLocaleString()}`;
     }
   }
 }

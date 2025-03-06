@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useTheme } from 'next-themes';
 import { Options } from 'highcharts';
 import { DynamicChartProps } from './types';
@@ -18,33 +18,113 @@ export function useChartConfig({
   const theme = options.theme || resolvedTheme || 'light';
   const chartTheme = theme === 'dark' ? DARK_THEME : LIGHT_THEME;
 
+  const handlePointClick = useCallback(
+    (event: any) => {
+      if (onPointClick) {
+        onPointClick(event.point);
+      }
+    },
+    [onPointClick]
+  );
+
+  const handleSeriesClick = useCallback(
+    (event: any) => {
+      if (onSeriesClick) {
+        onSeriesClick(event.target);
+      }
+    },
+    [onSeriesClick]
+  );
+
+  const processedData = useMemo(() => {
+    return processChartData(data, schema, type);
+  }, [data, schema, type]);
+
   return useMemo(() => {
-    const processedData = processChartData(data, schema, type);
-    console.log('Processed Chart Data:', processedData);
+    // Handle yAxis configuration
+    let yAxisConfig;
+    if (Array.isArray(options.yAxis)) {
+      yAxisConfig = options.yAxis.map(axis => ({
+        ...axis,
+        title: {
+          text:
+            typeof axis.title === 'string'
+              ? axis.title
+              : axis.title?.text || '',
+          style: {
+            ...chartTheme.yAxis.labels.style,
+            ...axis.title?.style,
+          },
+        },
+        labels: {
+          style: chartTheme.yAxis.labels.style,
+        },
+        gridLineColor: chartTheme.yAxis.gridLineColor,
+      }));
+    } else if (options.yAxis) {
+      yAxisConfig = {
+        ...options.yAxis,
+        title: {
+          text:
+            typeof options.yAxis.title === 'string'
+              ? options.yAxis.title
+              : options.yAxis.title?.text || '',
+          style: {
+            ...chartTheme.yAxis.labels.style,
+            ...options.yAxis.title?.style,
+          },
+        },
+        labels: {
+          style: chartTheme.yAxis.labels.style,
+        },
+        gridLineColor: chartTheme.yAxis.gridLineColor,
+      };
+    } else {
+      yAxisConfig = {
+        title: {
+          text: '',
+          style: chartTheme.yAxis.labels.style,
+        },
+        labels: {
+          style: chartTheme.yAxis.labels.style,
+        },
+        gridLineColor: chartTheme.yAxis.gridLineColor,
+      };
+    }
 
     const config: Options = {
+      ...options,
       chart: {
-        type: type === 'mixed' ? undefined : type,
-        height: options.height || 400,
-        backgroundColor:
-          options.chart?.backgroundColor || chartTheme.chart.backgroundColor,
+        ...options.chart,
+        type,
+        backgroundColor: chartTheme.chart.backgroundColor,
         style: {
           ...chartTheme.chart.style,
           fontFamily: 'inherit',
         },
-        animation: options.animation ?? true,
-        panning: {
-          enabled: true,
-          type: 'x',
-        },
-        panKey: 'shift',
+        height: options.height || 400,
       },
+      colors:
+        type === 'waterfall'
+          ? [
+              chartTheme.plotOptions?.waterfall?.colors?.positive ||
+                chartTheme.colors[0],
+              chartTheme.plotOptions?.waterfall?.colors?.negative ||
+                chartTheme.colors[2],
+            ]
+          : chartTheme.colors,
       title: {
-        text: options.title,
+        text:
+          typeof options.title === 'string'
+            ? options.title
+            : options.title?.text || '',
         style: chartTheme.title.style,
       },
       subtitle: {
-        text: options.subtitle,
+        text:
+          typeof options.subtitle === 'string'
+            ? options.subtitle
+            : options.subtitle?.text || '',
         style: chartTheme.subtitle.style,
       },
       xAxis: {
@@ -63,42 +143,20 @@ export function useChartConfig({
         tickColor: chartTheme.xAxis.gridLineColor,
         ...processedData.xAxis,
       },
-      yAxis: options.yAxis?.map(axis => ({
-        ...axis,
-        title: {
-          ...axis.title,
-          style: chartTheme.yAxis.labels.style,
-        },
-        labels: {
-          style: chartTheme.yAxis.labels.style,
-        },
-        gridLineColor: chartTheme.yAxis.gridLineColor,
-      })) || [
-        {
-          title: {
-            text: options.yAxisLabel,
-            style: chartTheme.yAxis.labels.style,
-          },
-          labels: {
-            style: chartTheme.yAxis.labels.style,
-          },
-          gridLineColor: chartTheme.yAxis.gridLineColor,
-        },
-      ],
-      colors: chartTheme.colors,
+      yAxis: yAxisConfig,
       plotOptions: {
         series: {
-          cursor: onPointClick || onSeriesClick ? 'pointer' : undefined,
+          cursor: onPointClick ? 'pointer' : 'default',
           events: {
-            click: onSeriesClick,
+            click: handleSeriesClick,
           },
           states: {
             hover: {
               enabled: true,
-              brightness: 0.1,
+              brightness: theme === 'dark' ? 0.2 : 0.1,
             },
             inactive: {
-              opacity: 0.5,
+              opacity: theme === 'dark' ? 0.7 : 0.5,
             },
           },
           marker: {
@@ -117,35 +175,76 @@ export function useChartConfig({
           borderWidth: 0,
         },
         area: {
-          fillOpacity: 0.5,
+          fillOpacity: chartTheme.plotOptions?.area?.fillOpacity || 0.2,
           lineWidth: 2,
           marker: {
-            enabled: false,
+            enabled: true,
+            radius: 4,
+            symbol: 'circle',
           },
         },
       },
       tooltip: {
-        enabled: options.tooltip ?? true,
+        enabled: true,
         backgroundColor: chartTheme.tooltip.backgroundColor,
         borderColor: chartTheme.tooltip.borderColor,
         style: chartTheme.tooltip.style,
         shared: true,
         useHTML: true,
+        headerFormat: '',
         formatter: function () {
           return formatTooltip(this, type, schema);
         },
       },
       legend: {
-        enabled: options.legend ?? true,
+        enabled: type !== 'waterfall' && (
+          typeof options.legend === 'boolean' ? options.legend : 
+          typeof options.legend === 'object' && options.legend !== null ? 
+            (options.legend.enabled !== undefined ? options.legend.enabled : true) : 
+            true
+        ),
         itemStyle: chartTheme.legend.itemStyle,
         align: 'center',
         verticalAlign: 'bottom',
       },
       credits: {
-        enabled: options.credits ?? false,
+        enabled: false,
       },
-      series: processedData.series,
+      series: processedData.series?.map(series => ({
+        ...series,
+        events: {
+          ...series.events,
+          click: handleSeriesClick,
+        },
+      })),
     };
+
+    // Add interactive features
+    if (interactiveOptions.zoom) {
+      // Use Object.assign to bypass TypeScript checking for zoomType
+      Object.assign(config.chart || {}, { zoomType: 'xy' });
+    }
+
+    if (interactiveOptions.pan) {
+      config.chart = {
+        ...config.chart,
+        panning: {
+          enabled: true,
+          type: 'xy',
+        },
+        panKey: 'shift',
+      };
+    }
+
+    if (interactiveOptions.drilldown) {
+      config.drilldown = {
+        activeDataLabelStyle: {
+          cursor: 'pointer',
+          fontWeight: 'bold',
+          textDecoration: 'underline',
+        },
+      };
+    }
 
     if (interactiveOptions.export) {
       config.exporting = {
@@ -158,16 +257,17 @@ export function useChartConfig({
       };
     }
 
-    console.log('Final Chart Config:', config);
     return config;
   }, [
-    type,
-    data,
-    schema,
     options,
-    interactiveOptions,
-    chartTheme,
+    type,
+    processedData,
+    handlePointClick,
+    handleSeriesClick,
     onPointClick,
     onSeriesClick,
+    interactiveOptions,
+    chartTheme,
+    theme,
   ]);
 }

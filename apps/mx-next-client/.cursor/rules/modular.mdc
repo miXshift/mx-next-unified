@@ -1,0 +1,37 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+
+When generating code, ensure every feature is organized into well-defined modules and each file is clearly named. Follow these guidelines:
+
+- **Feature Directory & Naming Convention:**
+    - Create a dedicated folder for each feature (e.g., `app/reports`).
+    - Use enhanced file names that include the feature name as a prefix:
+        - **Entry Page:** `reports.page.tsx`
+        - **Layout:** `reports.layout.tsx`
+        - **Components:** `reports.[ComponentName].tsx` (e.g., `reports.chart.tsx`)
+        - **Tests:** `reports.test.tsx`
+        - **Hooks:** `reports.useData.ts`
+        - **Services/API Calls:** `reports.api.ts` or `reports.service.ts`
+        - **Types:** `reports.types.ts`
+        - **Utilities:** `reports.utils.ts`
+        - **Styles:** `reports.styles.ts` or `reports.module.css`
+        - **Context:** `reports.context.tsx`
+- **Modular Code Structure:**
+    - **Components:** Place all reusable UI elements in a `components/` folder.
+    - **Hooks:** Store custom hooks (e.g., for data fetching or state management) in a `hooks/` folder.
+    - **Services/API:** Isolate API calls and business logic in a `services/` folder.
+    - **Types:** Keep TypeScript interfaces and type definitions in a `types/` folder.
+    - **Utilities:** Organize helper functions and shared logic in a `utils/` folder.
+    - **Styles:** Maintain styling in a dedicated `styles/` folder, using CSS modules or similar conventions.
+    - **Context & State Management:**
+        - Use a `contexts/` folder for React context providers and state management.
+        - For complex scenarios, consider dedicated state management modules (e.g., Redux, Zustand).
+    - **Error Handling:** Include error boundaries and related logic in a specific module for centralized error management.
+    - **Routing & Navigation:** Allocate a module for custom routing or dynamic navigation logic if needed.
+    - **Testing:** Organize unit and integration tests in a `tests/` folder, ensuring test files mirror the naming convention (e.g., `reports.test.tsx`).
+    - **Documentation:** Provide inline documentation or maintain Storybook files in a `docs/` folder for clarity and maintainability.
+    - **Configuration & Constants:** Centralize environment settings, API endpoints, and constants in a `config/` folder.
+    - **Assets & Localization:** Store static assets (images, icons) and localization files in dedicated folders (e.g., `assets/`, `localization/`).
