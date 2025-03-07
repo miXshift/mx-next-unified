@@ -2,11 +2,11 @@ import { ChartTheme } from './types';
 
 export const LIGHT_THEME: ChartTheme = {
   colors: [
-    'hsl(217.2 91.2% 59.8%)', // blue-500 (for primary series)
-    'hsl(142.1 70.6% 45.3%)', // green-500 (for secondary series)
-    'hsl(346.8 77.2% 49.8%)', // rose-500
+    'hsl(221.2 83.2% 53.3%)', // primary (blue)
+    'hsl(142.1 76.2% 36.3%)', // green-600 (secondary)
+    'hsl(346.8 77.2% 49.8%)', // rose-500 (accent)
     'hsl(24.6 95% 53.1%)', // orange-500
-    'hsl(262.1 83.3% 57.8%)', // purple-500
+    'hsl(280 90% 57%)', // violet (softer purple)
   ],
   chart: {
     backgroundColor: 'transparent',
@@ -18,7 +18,6 @@ export const LIGHT_THEME: ChartTheme = {
     style: {
       color: 'hsl(222.2 47.4% 11.2%)', // slate-950
       fontSize: '16px',
-      fontWeight: '500',
     },
   },
   subtitle: {
@@ -56,12 +55,12 @@ export const LIGHT_THEME: ChartTheme = {
   },
   plotOptions: {
     area: {
-      fillOpacity: 0.2,
+      fillOpacity: 0.15, // slightly reduced for less visual noise
     },
     waterfall: {
       colors: {
-        positive: 'hsl(142.1 70.6% 45.3%)', // green-500 - match green in Sales Mix chart
-        negative: 'hsl(217.2 91.2% 59.8%)', // blue-500 - Use primary blue instead of red
+        positive: 'hsl(142.1 76.2% 36.3%)', // green-600 - for positive values
+        negative: 'hsl(221.2 83.2% 53.3%)', // primary blue - for negative values
       },
     },
   },
@@ -69,11 +68,11 @@ export const LIGHT_THEME: ChartTheme = {
 
 export const DARK_THEME: ChartTheme = {
   colors: [
-    'hsl(217.2 91.2% 69.8%)', // blue-400 (brighter for dark mode)
-    'hsl(142.1 76.2% 56.3%)', // green-400 (brighter for dark mode)
-    'hsl(346.8 77.2% 59.8%)', // rose-400
+    'hsl(217.2 91.2% 69.8%)', // primary blue (brighter for dark mode)
+    'hsl(142.1 76.2% 66.3%)', // green-300 (brighter secondary)
+    'hsl(346.8 77.2% 59.8%)', // rose-400 (accent)
     'hsl(24.6 95% 63.1%)', // orange-400
-    'hsl(262.1 83.3% 67.8%)', // purple-400
+    'hsl(280 90% 67%)', // violet (softer purple)
   ],
   chart: {
     backgroundColor: 'transparent',
@@ -85,7 +84,6 @@ export const DARK_THEME: ChartTheme = {
     style: {
       color: 'hsl(210 40% 98%)', // slate-50
       fontSize: '16px',
-      fontWeight: '500',
     },
   },
   subtitle: {
@@ -99,7 +97,7 @@ export const DARK_THEME: ChartTheme = {
         color: 'hsl(215.4 16.3% 76.9%)', // slate-300
       },
     },
-    gridLineColor: 'hsl(215.4 16.3% 46.9%)', // slate-500
+    gridLineColor: 'hsl(215.4 16.3% 36.9%)', // slate-600 (higher contrast for dark mode)
   },
   yAxis: {
     labels: {
@@ -107,7 +105,7 @@ export const DARK_THEME: ChartTheme = {
         color: 'hsl(215.4 16.3% 76.9%)', // slate-300
       },
     },
-    gridLineColor: 'hsl(215.4 16.3% 46.9%)', // slate-500
+    gridLineColor: 'hsl(215.4 16.3% 36.9%)', // slate-600 (higher contrast for dark mode)
   },
   legend: {
     itemStyle: {
@@ -115,20 +113,20 @@ export const DARK_THEME: ChartTheme = {
     },
   },
   tooltip: {
-    backgroundColor: 'hsl(217.2 32.6% 17.5%)', // slate-800
-    borderColor: 'hsl(215.4 16.3% 46.9%)', // slate-500
+    backgroundColor: 'hsl(222.2 84% 4.9%)', // slate-950
+    borderColor: 'hsl(215.4 16.3% 36.9%)', // slate-600
     style: {
       color: 'hsl(210 40% 98%)', // slate-50
     },
   },
   plotOptions: {
     area: {
-      fillOpacity: 0.1,
+      fillOpacity: 0.1, // reduced for dark mode to avoid visual noise
     },
     waterfall: {
       colors: {
-        positive: 'hsl(142.1 84.2% 67.3%)', // green-300 - match green in Sales Mix chart
-        negative: 'hsl(217.2 91.2% 85.8%)', // blue-200 - Use primary blue instead of red
+        positive: 'hsl(142.1 76.2% 66.3%)', // green-300 - for positive values
+        negative: 'hsl(217.2 91.2% 69.8%)', // primary blue - for negative values
       },
     },
   },

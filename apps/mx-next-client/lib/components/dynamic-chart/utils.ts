@@ -221,8 +221,8 @@ function processWaterfallData(
     series: [
       {
         type: 'waterfall',
-        name: '',  // Empty string for no name at all
-        showInLegend: false,  // Hide from legend
+        name: '', // Empty string for no name at all
+        showInLegend: false, // Hide from legend
         data: processedData,
         pointPadding: 0.2,
         dataLabels: {
@@ -231,7 +231,7 @@ function processWaterfallData(
             const value = this.y;
             return `${value >= 0 ? '+' : ''}$${Math.abs(value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
           },
-        }
+        },
       },
     ] as SeriesOptionsType[],
   };
@@ -243,29 +243,32 @@ function processColumnData(
 ): ProcessedChartData {
   const { categoryKey, valueKey } = schema;
 
-  const processedData = data.map(item => ({
-    name: item[categoryKey],
-    y: Number(item[valueKey]),
-    color: item.isPositive ? '#16a34a' : item.isTotal ? '#0f172a' : '#dc2626',
-  }));
+  // Map the data to format required by column charts
+  const processedData = data.map(item => {
+    // Add color handling for positive/negative values to mimic waterfall chart
+    const value = Number(item[valueKey]);
+    const isPositive = item.isPositive || value > 0;
+    const isTotal = item.isTotal || false;
+
+    return {
+      name: item[categoryKey],
+      y: value,
+      // Color handling - similar to waterfall chart
+      color: isTotal ? '#0f172a' : isPositive ? '#16a34a' : '#2563eb',
+    };
+  });
 
   return {
     series: [
       {
         type: 'column',
-        name: valueKey,
+        // Don't specify a name to avoid the "value" label
+        // or use an empty string
+        name: '',
         data: processedData,
-        dataLabels: {
-          enabled: true,
-          formatter: function (this: any) {
-            return `${this.y >= 0 ? '+' : ''}${this.y.toFixed(2)}`;
-          },
-        },
+        showInLegend: false,
       },
     ] as SeriesOptionsType[],
-    xAxis: {
-      type: 'category',
-    },
   };
 }
 
@@ -316,7 +319,7 @@ export function formatTooltip(
       }
 
       // Fallback
-      return formattedValue;
+      return `<b>${formattedValue}</b>`;
     }
 
     const dateStr =
@@ -324,9 +327,30 @@ export function formatTooltip(
         ? tooltipContext.points[0].x.toLocaleDateString()
         : tooltipContext.points[0].x;
 
-    let html = `<small>${dateStr}</small><br/>`;
+    let html = `<b>${dateStr}</b><br/>`;
 
-    tooltipContext.points.forEach((point: any) => {
+    // Sort points to ensure consistent order
+    const sortedPoints = [...tooltipContext.points].sort((a, b) => {
+      // Define a specific order for series names if needed
+      const seriesOrder = [
+        'Ad Sales',
+        'Ordered Product Sales',
+        'Ads % of Tot. Sales',
+        'CPA',
+        'AOV',
+        'ROAS',
+      ];
+      const aIndex = seriesOrder.indexOf(a.series.name);
+      const bIndex = seriesOrder.indexOf(b.series.name);
+
+      if (aIndex >= 0 && bIndex >= 0) {
+        return aIndex - bIndex;
+      }
+
+      return 0; // Keep original order if not in the predefined list
+    });
+
+    sortedPoints.forEach((point: any) => {
       const value = point.y;
 
       if (typeof value === 'number') {
@@ -380,20 +404,18 @@ export function formatTooltip(
       }
 
       // Fallback if name isn't available
-      return formattedValue;
+      return `<b>${formattedValue}</b>`;
     }
     case 'column': {
       const value = tooltipContext.y;
       // Format value with proper currency
-      const formattedValue = `$${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      const formattedValue =
+        value >= 0
+          ? `+$${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+          : `-$${Math.abs(value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
-      // For column charts, just display the name and value directly, no series name or labels
-      if (tooltipContext.point && tooltipContext.point.name) {
-        return `<b>${tooltipContext.point.name}</b><br/>${formattedValue}`;
-      }
-
-      // Fallback if name isn't available
-      return formattedValue;
+      // Just return the formatted value without any additional elements
+      return `<b>${formattedValue}</b>`;
     }
     case 'mixed': {
       const seriesName = tooltipContext.series.name;
@@ -408,11 +430,11 @@ export function formatTooltip(
         formattedValue = `$${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
       }
 
-      return `<b>${seriesName}</b>: ${formattedValue}`;
+      return `<span style="color:${tooltipContext.series.color}">\u25CF</span> ${seriesName}: <b>${formattedValue}</b>`;
     }
     default: {
       const value = tooltipContext.y;
-      return `<b>${tooltipContext.series.name}</b>: ${value.toLocaleString()}`;
+      return `<span style="color:${tooltipContext.series.color}">\u25CF</span> ${tooltipContext.series.name}: <b>${value.toLocaleString()}</b>`;
     }
   }
 }

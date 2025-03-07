@@ -73,6 +73,16 @@ const AD_RETURN_DATA = [
   { date: '06/20/24', cpa: 14, aov: 44, roas: 9.0 },
 ];
 
+// Revenue Distribution Data
+const REVENUE_DISTRIBUTION_DATA = [
+  { category: 'Product A', value: 35000 },
+  { category: 'Product B', value: 28000 },
+  { category: 'Product C', value: 18500 },
+  { category: 'Product D', value: 12000 },
+  { category: 'Product E', value: 9500 },
+  { category: 'Other Products', value: 7000 },
+];
+
 export function DynamicChartDemo() {
   const { resolvedTheme } = useTheme();
 
@@ -81,7 +91,7 @@ export function DynamicChartDemo() {
       {/* Account Changes Chart */}
       <Card className="p-6">
         <DynamicChart
-          type="waterfall"
+          type="column"
           data={ACCOUNT_CHANGES_DATA}
           schema={{
             categoryKey: 'name',
@@ -91,38 +101,56 @@ export function DynamicChartDemo() {
             title: {
               text: 'Account Changes',
               align: 'left',
-              style: {
-                fontSize: '16px'
-              }
             },
             height: 500,
             theme: resolvedTheme as 'light' | 'dark',
             chart: {
               backgroundColor: 'transparent',
               style: {
-                fontFamily: 'inherit'
-              }
+                fontFamily: 'inherit',
+              },
             },
             yAxisLabel: '$ Change',
             plotOptions: {
-              waterfall: {
+              column: {
+                colorByPoint: true,
+                grouping: false,
                 pointPadding: 0.1,
                 borderWidth: 0,
                 dataLabels: {
                   enabled: true,
-                  format: '${point.y:,.2f}'
-                }
-              }
+                  formatter: function () {
+                    const value = this.y;
+                    if (typeof value !== 'number') return '';
+
+                    return value >= 0
+                      ? `+$${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+                      : `-$${Math.abs(value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                  },
+                },
+              },
             },
             tooltip: {
               useHTML: true,
-              headerFormat: '<small>{point.key}</small><br/>',
-              pointFormat: '<b>${point.y:,.2f}</b>',
-              shared: true
+              headerFormat: '',
+              pointFormat: '',
+              footerFormat: '',
+              followPointer: true,
+              formatter: function () {
+                const value = this.y;
+                if (typeof value !== 'number') return '';
+
+                const formattedValue =
+                  value >= 0
+                    ? `+$${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+                    : `-$${Math.abs(value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+                return `<b>${formattedValue}</b>`;
+              },
             },
             legend: {
-              enabled: false // Completely disable the legend
-            }
+              enabled: false, // Hide the legend specifically to remove "value" label
+            },
           }}
         />
       </Card>
@@ -176,9 +204,50 @@ export function DynamicChartDemo() {
             tooltip: {
               shared: true,
               useHTML: true,
-              headerFormat: '<small>{point.key}</small><br/>',
-              pointFormat:
-                '<span style="color:{series.color}">\u25CF</span> {series.name}: <b>{point.y:,.1f}{series.tooltipSuffix}</b><br/>',
+              headerFormat: '',
+              pointFormat: '',
+              footerFormat: '',
+              crosshairs: true,
+              followPointer: true,
+              formatter: function () {
+                if (this.points && this.points.length > 0) {
+                  const dateStr = this.points[0].x;
+                  let html = `<b>${dateStr}</b><br/>`;
+
+                  // Sort points to ensure consistent order
+                  const sortedPoints = [...this.points].sort((a, b) => {
+                    const seriesOrder = [
+                      'Ad Sales',
+                      'Ordered Product Sales',
+                      'Ads % of Tot. Sales',
+                    ];
+                    const aIndex = seriesOrder.indexOf(a.series.name);
+                    const bIndex = seriesOrder.indexOf(b.series.name);
+
+                    if (aIndex >= 0 && bIndex >= 0) {
+                      return aIndex - bIndex;
+                    }
+
+                    return 0;
+                  });
+
+                  sortedPoints.forEach(point => {
+                    const value = point.y;
+                    let formattedValue = '';
+
+                    if (point.series.name.includes('%')) {
+                      formattedValue = `${value.toFixed(1)}%`;
+                    } else {
+                      formattedValue = `$${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                    }
+
+                    html += `<span style="color:${point.series.color}">\u25CF</span> ${point.series.name}: <b>${formattedValue}</b><br/>`;
+                  });
+
+                  return html;
+                }
+                return '';
+              },
             },
             plotOptions: {
               series: {
@@ -268,9 +337,46 @@ export function DynamicChartDemo() {
             tooltip: {
               shared: true,
               useHTML: true,
-              headerFormat: '<small>{point.key}</small><br/>',
-              pointFormat:
-                '<span style="color:{series.color}">\u25CF</span> {series.name}: <b>{point.y:,.1f}{series.tooltipSuffix}</b><br/>',
+              headerFormat: '',
+              pointFormat: '',
+              footerFormat: '',
+              crosshairs: true,
+              followPointer: true,
+              formatter: function () {
+                if (this.points && this.points.length > 0) {
+                  const dateStr = this.points[0].x;
+                  let html = `<b>${dateStr}</b><br/>`;
+
+                  // Sort points to ensure consistent order
+                  const sortedPoints = [...this.points].sort((a, b) => {
+                    const seriesOrder = ['CPA', 'AOV', 'ROAS'];
+                    const aIndex = seriesOrder.indexOf(a.series.name);
+                    const bIndex = seriesOrder.indexOf(b.series.name);
+
+                    if (aIndex >= 0 && bIndex >= 0) {
+                      return aIndex - bIndex;
+                    }
+
+                    return 0;
+                  });
+
+                  sortedPoints.forEach(point => {
+                    const value = point.y;
+                    let formattedValue = '';
+
+                    if (point.series.name === 'ROAS') {
+                      formattedValue = `${value.toFixed(1)}x`;
+                    } else {
+                      formattedValue = `$${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                    }
+
+                    html += `<span style="color:${point.series.color}">\u25CF</span> ${point.series.name}: <b>${formattedValue}</b><br/>`;
+                  });
+
+                  return html;
+                }
+                return '';
+              },
             },
             plotOptions: {
               series: {
@@ -316,6 +422,75 @@ export function DynamicChartDemo() {
               align: 'right',
               verticalAlign: 'middle',
               layout: 'vertical',
+            },
+          }}
+        />
+      </Card>
+
+      {/* Revenue Distribution Chart */}
+      <Card className="p-6">
+        <DynamicChart
+          type="pie"
+          data={REVENUE_DISTRIBUTION_DATA}
+          schema={{
+            categoryKey: 'category',
+            valueKey: 'value',
+          }}
+          options={{
+            title: {
+              text: 'Revenue Distribution',
+              align: 'left',
+            },
+            height: 500,
+            theme: resolvedTheme as 'light' | 'dark',
+            chart: {
+              backgroundColor: 'transparent',
+              style: {
+                fontFamily: 'inherit',
+              },
+              options3d: {
+                enabled: true,
+                alpha: 45,
+                beta: 0,
+              },
+            },
+            plotOptions: {
+              series: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                borderWidth: 2,
+                borderColor:
+                  resolvedTheme === 'dark'
+                    ? 'hsl(222.2 84% 4.9%)'
+                    : 'hsl(0 0% 100%)',
+                innerSize: '40%',
+                depth: 35,
+              },
+            },
+            dataLabels: {
+              enabled: true,
+              format: '<b>{point.name}</b>: {point.percentage:.1f}%',
+              distance: 20,
+              style: {
+                color:
+                  resolvedTheme === 'dark'
+                    ? 'hsl(210 40% 98%)'
+                    : 'hsl(222.2 47.4% 11.2%)',
+                textOutline: 'none',
+              },
+            },
+            tooltip: {
+              useHTML: true,
+              headerFormat: '',
+              pointFormat: '',
+              footerFormat: '',
+              followPointer: true,
+            },
+            legend: {
+              enabled: true,
+              layout: 'vertical',
+              align: 'right',
+              verticalAlign: 'middle',
             },
           }}
         />

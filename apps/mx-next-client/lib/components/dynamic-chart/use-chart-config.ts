@@ -189,20 +189,26 @@ export function useChartConfig({
         backgroundColor: chartTheme.tooltip.backgroundColor,
         borderColor: chartTheme.tooltip.borderColor,
         style: chartTheme.tooltip.style,
-        shared: true,
+        shared: type !== 'column',
         useHTML: true,
         headerFormat: '',
+        followPointer: true,
+        pointFormat: '',
+        footerFormat: '',
         formatter: function () {
           return formatTooltip(this, type, schema);
         },
       },
       legend: {
-        enabled: type !== 'waterfall' && (
-          typeof options.legend === 'boolean' ? options.legend : 
-          typeof options.legend === 'object' && options.legend !== null ? 
-            (options.legend.enabled !== undefined ? options.legend.enabled : true) : 
-            true
-        ),
+        enabled:
+          type !== 'waterfall' &&
+          (typeof options.legend === 'boolean'
+            ? options.legend
+            : typeof options.legend === 'object' && options.legend !== null
+              ? options.legend.enabled !== undefined
+                ? options.legend.enabled
+                : true
+              : true),
         itemStyle: chartTheme.legend.itemStyle,
         align: 'center',
         verticalAlign: 'bottom',
