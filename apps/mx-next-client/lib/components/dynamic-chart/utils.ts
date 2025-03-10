@@ -322,12 +322,14 @@ export function formatTooltip(
       return `<b>${formattedValue}</b>`;
     }
 
+    // For date-based charts, display the date as a header
     const dateStr =
       tooltipContext.points[0].x instanceof Date
         ? tooltipContext.points[0].x.toLocaleDateString()
         : tooltipContext.points[0].x;
 
-    let html = `<b>${dateStr}</b><br/>`;
+    // Start HTML with just a header element for the date/category
+    let html = `<div style="font-weight: bold; margin-bottom: 5px;">${dateStr}</div>`;
 
     // Sort points to ensure consistent order
     const sortedPoints = [...tooltipContext.points].sort((a, b) => {
@@ -350,6 +352,7 @@ export function formatTooltip(
       return 0; // Keep original order if not in the predefined list
     });
 
+    // Add each point's data to the tooltip with proper formatting
     sortedPoints.forEach((point: any) => {
       const value = point.y;
 
@@ -366,14 +369,20 @@ export function formatTooltip(
           formattedValue = `$${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
         }
 
-        html += `<span style="color:${point.series.color}">\u25CF</span> ${point.series.name}: <b>${formattedValue}</b><br/>`;
+        // Use colored dot indicator followed by series name and value
+        html += `<div style="display: flex; align-items: center; margin: 3px 0;">
+          <span style="color:${point.series.color}; margin-right: 5px;">●</span> 
+          <span style="flex: 1;">${point.series.name}:</span> 
+          <span style="font-weight: bold; margin-left: 5px;">${formattedValue}</span>
+        </div>`;
       }
     });
 
     return html;
   }
 
-  // Single point tooltip
+  // Single point tooltip - we'll keep most of the existing code for individual chart types
+  // but improve formatting for better clarity
   switch (type) {
     case 'pie': {
       const { categoryKey, valueKey } = schema as PieChartSchema;
@@ -414,7 +423,12 @@ export function formatTooltip(
           ? `+$${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
           : `-$${Math.abs(value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
-      // Just return the formatted value without any additional elements
+      // Add the series name instead of just showing the value
+      if (tooltipContext.series && tooltipContext.series.name) {
+        return `<div style="font-weight: bold;">${tooltipContext.series.name}</div>${formattedValue}`;
+      }
+
+      // Just return the formatted value as a fallback
       return `<b>${formattedValue}</b>`;
     }
     case 'mixed': {
@@ -430,11 +444,11 @@ export function formatTooltip(
         formattedValue = `$${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
       }
 
-      return `<span style="color:${tooltipContext.series.color}">\u25CF</span> ${seriesName}: <b>${formattedValue}</b>`;
+      return `<span style="color:${tooltipContext.series.color}">●</span> ${seriesName}: <b>${formattedValue}</b>`;
     }
     default: {
       const value = tooltipContext.y;
-      return `<span style="color:${tooltipContext.series.color}">\u25CF</span> ${tooltipContext.series.name}: <b>${value.toLocaleString()}</b>`;
+      return `<span style="color:${tooltipContext.series.color}">●</span> ${tooltipContext.series.name}: <b>${value.toLocaleString()}</b>`;
     }
   }
 }

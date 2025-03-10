@@ -2,8 +2,25 @@
 
 import { Card } from '@/lib/ui/card';
 import { DynamicChart } from './index';
-import type { ChartSchema, TooltipPoint } from './types';
+import type {
+  ChartSchema,
+  ChartTypePlugin,
+  DataTransformation,
+  TooltipPoint,
+} from './types';
 import { useTheme } from 'next-themes';
+import { registerChartType } from './plugins';
+import { useState } from 'react';
+import { Button } from '@/lib/ui/button';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/lib/ui/select';
+import Highcharts from 'highcharts';
+import HighchartsReact from 'highcharts-react-official';
 
 // Account Changes Data
 const ACCOUNT_CHANGES_DATA = [
@@ -83,60 +100,163 @@ const REVENUE_DISTRIBUTION_DATA = [
   { category: 'Other Products', value: 7000 },
 ];
 
+// Register a custom chart type plugin - Trend indicator
+const trendIndicatorPlugin: ChartTypePlugin = {
+  type: 'trend-indicator',
+  processData: (data, schema) => {
+    const categoryKey = 'category';
+    const valueKey = 'value';
+
+    // Process data to extract values and determine trends
+    const processedData = data.map(item => {
+      const value = parseFloat(item[valueKey]);
+      const isPositive = value >= 10000; // Consider values >= 10000 as positive trends
+
+      return {
+        name: item[categoryKey],
+        y: value,
+        color: isPositive ? '#22c55e' : '#ef4444', // green for positive, red for negative
+        trend: isPositive ? 'positive' : 'negative',
+      };
+    });
+
+    return {
+      series: [
+        {
+          name: 'Trend',
+          data: processedData,
+          type: 'column',
+          colorByPoint: true,
+        },
+      ],
+    };
+  },
+  formatTooltip: (tooltipContext, schema) => {
+    const point = tooltipContext.point;
+    if (!point) return '';
+
+    const trend = point.trend === 'positive' ? '↗️ Growing' : '↘️ Declining';
+    return `<b>${point.name}</b><br>Value: $${point.y.toLocaleString()}<br>Trend: ${trend}`;
+  },
+  defaultOptions: {
+    chart: {
+      height: 400,
+    },
+    title: {
+      text: 'Trend Indicators',
+    },
+    plotOptions: {
+      series: {
+        borderWidth: 0,
+        borderRadius: 5,
+      },
+    },
+  },
+};
+
+// Register the custom plugin
+if (typeof window !== 'undefined') {
+  registerChartType(trendIndicatorPlugin);
+}
+
 export function DynamicChartDemo() {
   const { resolvedTheme } = useTheme();
 
+  // Handle chart ready event
+  const handleChartReady = (chart: any) => {
+    console.log('Chart ready:', chart);
+    console.log('Chart series:', chart.series);
+    console.log('Chart series data:', chart.series[0]?.points?.length);
+    // You can manipulate the chart here if needed
+  };
+
+  // Handle point click event
+  const handlePointClick = (point: any) => {
+    console.log('Point clicked:', point);
+  };
+
   return (
     <div className="grid md:grid-cols-2 gap-5">
-      {/* Account Changes Chart */}
+      {/* Account Changes Chart - Direct implementation in Card */}
       <Card className="p-6">
-        <DynamicChart
-          type="column"
-          data={ACCOUNT_CHANGES_DATA}
-          schema={{
-            categoryKey: 'name',
-            valueKey: 'value',
-          }}
+        {/* Debug output */}
+        {(() => {
+          console.log('ACCOUNT_CHANGES_DATA:', ACCOUNT_CHANGES_DATA);
+          return null;
+        })()}
+
+        <HighchartsReact
+          highcharts={Highcharts}
           options={{
-            title: {
-              text: 'Account Changes',
-              align: 'left',
-            },
-            height: 500,
-            theme: resolvedTheme as 'light' | 'dark',
             chart: {
+              type: 'column',
               backgroundColor: 'transparent',
+              height: 500,
               style: {
                 fontFamily: 'inherit',
               },
             },
-            yAxisLabel: '$ Change',
+            title: {
+              text: 'Account Changes',
+              align: 'left',
+              style: {
+                color: resolvedTheme === 'dark' ? '#f8fafc' : '#0f172a',
+                fontSize: '16px',
+                fontWeight: '500',
+              },
+            },
+            credits: {
+              enabled: false,
+            },
+            series: [
+              {
+                name: '',
+                showInLegend: false,
+                data: ACCOUNT_CHANGES_DATA.map(item => ({
+                  name: item.name,
+                  y: item.value,
+                  color: item.isTotal
+                    ? '#0f172a'
+                    : item.isPositive
+                      ? '#16a34a'
+                      : '#2563eb',
+                })),
+              },
+            ],
+            xAxis: {
+              type: 'category',
+              labels: {
+                rotation: -45,
+                style: {
+                  fontSize: '11px',
+                  color: resolvedTheme === 'dark' ? '#cbd5e1' : '#64748b',
+                },
+              },
+            },
+            yAxis: {
+              title: {
+                text: 'Value ($)',
+                style: {
+                  color: resolvedTheme === 'dark' ? '#cbd5e1' : '#64748b',
+                },
+              },
+              labels: {
+                style: {
+                  color: resolvedTheme === 'dark' ? '#cbd5e1' : '#64748b',
+                },
+              },
+              gridLineColor: resolvedTheme === 'dark' ? '#334155' : '#e2e8f0',
+            },
             plotOptions: {
               column: {
-                colorByPoint: true,
-                grouping: false,
-                pointPadding: 0.1,
                 borderWidth: 0,
-                dataLabels: {
-                  enabled: true,
-                  formatter: function () {
-                    const value = this.y;
-                    if (typeof value !== 'number') return '';
-
-                    return value >= 0
-                      ? `+$${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-                      : `-$${Math.abs(value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-                  },
-                },
+                pointPadding: 0.1,
+                groupPadding: 0.1,
               },
             },
             tooltip: {
               useHTML: true,
-              headerFormat: '',
-              pointFormat: '',
-              footerFormat: '',
-              followPointer: true,
-              formatter: function () {
+              formatter: function (this: any): string {
                 const value = this.y;
                 if (typeof value !== 'number') return '';
 
@@ -145,11 +265,8 @@ export function DynamicChartDemo() {
                     ? `+$${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
                     : `-$${Math.abs(value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
-                return `<b>${formattedValue}</b>`;
+                return `<span style="font-size: 12px">${this.point.name}</span><br/><b>${formattedValue}</b>`;
               },
-            },
-            legend: {
-              enabled: false, // Hide the legend specifically to remove "value" label
             },
           }}
         />
@@ -184,21 +301,50 @@ export function DynamicChartDemo() {
             },
             xAxis: {
               categories: SALES_MIX_DATA.map(item => item.date),
+              labels: {
+                rotation: -45,
+                style: {
+                  fontSize: '11px',
+                },
+              },
             },
             yAxis: [
               {
-                title: { text: 'Sales ($)' },
+                // First Y-axis for sales values
+                title: {
+                  text: 'Sales ($)',
+                  style: {
+                    color: resolvedTheme === 'dark' ? '#cbd5e1' : '#64748b',
+                  },
+                },
                 labels: {
                   format: '${value:,.0f}',
+                  style: {
+                    color: resolvedTheme === 'dark' ? '#cbd5e1' : '#64748b',
+                  },
                 },
+                gridLineWidth: 1,
+                gridLineColor: resolvedTheme === 'dark' ? '#334155' : '#e2e8f0',
+                showEmpty: false,
               },
               {
-                title: { text: 'Percentage' },
+                // Second Y-axis for percentage
+                title: {
+                  text: 'Percentage',
+                  style: {
+                    color: resolvedTheme === 'dark' ? '#cbd5e1' : '#64748b',
+                  },
+                },
                 labels: {
                   format: '{value}%',
+                  style: {
+                    color: resolvedTheme === 'dark' ? '#cbd5e1' : '#64748b',
+                  },
                 },
                 opposite: true,
                 max: 100,
+                gridLineWidth: 0,
+                showEmpty: false,
               },
             ],
             tooltip: {
@@ -209,9 +355,10 @@ export function DynamicChartDemo() {
               footerFormat: '',
               crosshairs: true,
               followPointer: true,
+              outside: true,
               formatter: function () {
                 if (this.points && this.points.length > 0) {
-                  const dateStr = this.points[0].x;
+                  const dateStr = this.points[0].category;
                   let html = `<b>${dateStr}</b><br/>`;
 
                   // Sort points to ensure consistent order
@@ -238,7 +385,10 @@ export function DynamicChartDemo() {
                     if (point.series.name.includes('%')) {
                       formattedValue = `${value.toFixed(1)}%`;
                     } else {
-                      formattedValue = `$${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                      formattedValue = `$${value.toLocaleString('en-US', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}`;
                     }
 
                     html += `<span style="color:${point.series.color}">\u25CF</span> ${point.series.name}: <b>${formattedValue}</b><br/>`;
@@ -290,9 +440,9 @@ export function DynamicChartDemo() {
               },
             ],
             legend: {
-              align: 'right',
-              verticalAlign: 'middle',
-              layout: 'vertical',
+              align: 'center',
+              verticalAlign: 'bottom',
+              layout: 'horizontal',
             },
           }}
         />
@@ -318,20 +468,49 @@ export function DynamicChartDemo() {
             },
             xAxis: {
               categories: AD_RETURN_DATA.map(item => item.date),
+              labels: {
+                rotation: -45,
+                style: {
+                  fontSize: '11px',
+                },
+              },
             },
             yAxis: [
               {
-                title: { text: 'Value ($)' },
+                // First Y-axis for CPA and AOV
+                title: {
+                  text: 'Value ($)',
+                  style: {
+                    color: resolvedTheme === 'dark' ? '#cbd5e1' : '#64748b',
+                  },
+                },
                 labels: {
                   format: '${value:,.0f}',
+                  style: {
+                    color: resolvedTheme === 'dark' ? '#cbd5e1' : '#64748b',
+                  },
                 },
+                gridLineWidth: 1,
+                gridLineColor: resolvedTheme === 'dark' ? '#334155' : '#e2e8f0',
+                showEmpty: false,
               },
               {
-                title: { text: 'ROAS' },
+                // Second Y-axis for ROAS
+                title: {
+                  text: 'ROAS',
+                  style: {
+                    color: resolvedTheme === 'dark' ? '#cbd5e1' : '#64748b',
+                  },
+                },
                 labels: {
                   format: '{value}x',
+                  style: {
+                    color: resolvedTheme === 'dark' ? '#cbd5e1' : '#64748b',
+                  },
                 },
                 opposite: true,
+                gridLineWidth: 0,
+                showEmpty: false,
               },
             ],
             tooltip: {
@@ -342,9 +521,10 @@ export function DynamicChartDemo() {
               footerFormat: '',
               crosshairs: true,
               followPointer: true,
+              outside: true,
               formatter: function () {
                 if (this.points && this.points.length > 0) {
-                  const dateStr = this.points[0].x;
+                  const dateStr = this.points[0].category;
                   let html = `<b>${dateStr}</b><br/>`;
 
                   // Sort points to ensure consistent order
@@ -367,7 +547,10 @@ export function DynamicChartDemo() {
                     if (point.series.name === 'ROAS') {
                       formattedValue = `${value.toFixed(1)}x`;
                     } else {
-                      formattedValue = `$${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                      formattedValue = `$${value.toLocaleString('en-US', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}`;
                     }
 
                     html += `<span style="color:${point.series.color}">\u25CF</span> ${point.series.name}: <b>${formattedValue}</b><br/>`;
@@ -419,9 +602,9 @@ export function DynamicChartDemo() {
               },
             ],
             legend: {
-              align: 'right',
-              verticalAlign: 'middle',
-              layout: 'vertical',
+              align: 'center',
+              verticalAlign: 'bottom',
+              layout: 'horizontal',
             },
           }}
         />
@@ -485,12 +668,72 @@ export function DynamicChartDemo() {
               pointFormat: '',
               footerFormat: '',
               followPointer: true,
+              outside: true,
             },
             legend: {
-              enabled: true,
-              layout: 'vertical',
-              align: 'right',
-              verticalAlign: 'middle',
+              align: 'center',
+              verticalAlign: 'bottom',
+              layout: 'horizontal',
+            },
+          }}
+        />
+      </Card>
+
+      {/* Custom Plugin Chart - Trend Indicator */}
+      <Card className="p-6">
+        <DynamicChart
+          type="trend-indicator"
+          data={REVENUE_DISTRIBUTION_DATA}
+          schema={{
+            categoryKey: 'category',
+            valueKey: 'value',
+          }}
+          options={{
+            title: {
+              text: 'Revenue Trends',
+              align: 'left',
+            },
+            chart: {
+              backgroundColor: 'transparent',
+              style: {
+                fontFamily: 'inherit',
+              },
+              height: 500,
+            },
+            yAxis: {
+              title: {
+                text: 'Revenue ($)',
+                style: {
+                  color: resolvedTheme === 'dark' ? '#cbd5e1' : '#64748b',
+                },
+              },
+              labels: {
+                style: {
+                  color: resolvedTheme === 'dark' ? '#cbd5e1' : '#64748b',
+                },
+              },
+              gridLineColor: resolvedTheme === 'dark' ? '#334155' : '#e2e8f0',
+            },
+            tooltip: {
+              useHTML: true,
+              headerFormat: '',
+              pointFormat: '',
+              footerFormat: '',
+              followPointer: true,
+              outside: true,
+            },
+            legend: {
+              align: 'center',
+              verticalAlign: 'bottom',
+              layout: 'horizontal',
+            },
+            xAxis: {
+              labels: {
+                rotation: 0,
+                style: {
+                  fontSize: '11px',
+                },
+              },
             },
           }}
         />

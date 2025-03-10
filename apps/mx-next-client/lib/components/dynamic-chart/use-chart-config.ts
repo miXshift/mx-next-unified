@@ -3,8 +3,15 @@ import { useTheme } from 'next-themes';
 import { Options } from 'highcharts';
 import { DynamicChartProps } from './types';
 import { LIGHT_THEME, DARK_THEME } from './theme-constants';
-import { processChartData, formatTooltip } from './utils';
+import {
+  formatTooltipForChartType,
+  getDefaultOptionsForChartType,
+} from './plugins';
+import deepMerge from 'deepmerge';
 
+/**
+ * Custom hook to generate chart configuration
+ */
 export function useChartConfig({
   type,
   data,
@@ -35,10 +42,6 @@ export function useChartConfig({
     },
     [onSeriesClick]
   );
-
-  const processedData = useMemo(() => {
-    return processChartData(data, schema, type);
-  }, [data, schema, type]);
 
   return useMemo(() => {
     // Handle yAxis configuration
@@ -92,8 +95,11 @@ export function useChartConfig({
       };
     }
 
-    const config: Options = {
-      ...options,
+    // Get default options for this chart type from plugins
+    const defaultTypeOptions = getDefaultOptionsForChartType(type);
+
+    // Base configuration with theme applied
+    const baseConfig = {
       chart: {
         ...options.chart,
         type,
@@ -141,7 +147,7 @@ export function useChartConfig({
         gridLineColor: chartTheme.xAxis.gridLineColor,
         lineColor: chartTheme.xAxis.gridLineColor,
         tickColor: chartTheme.xAxis.gridLineColor,
-        ...processedData.xAxis,
+        ...options.xAxis,
       },
       yAxis: yAxisConfig,
       plotOptions: {
@@ -189,91 +195,45 @@ export function useChartConfig({
         backgroundColor: chartTheme.tooltip.backgroundColor,
         borderColor: chartTheme.tooltip.borderColor,
         style: chartTheme.tooltip.style,
-        shared: type !== 'column',
+        shared: true,
         useHTML: true,
         headerFormat: '',
         followPointer: true,
         pointFormat: '',
         footerFormat: '',
+        valueDecimals: 2,
+        outside: false,
         formatter: function () {
-          return formatTooltip(this, type, schema);
+          return formatTooltipForChartType(type, this, schema);
         },
       },
       legend: {
         enabled:
-          type !== 'waterfall' &&
-          (typeof options.legend === 'boolean'
-            ? options.legend
-            : typeof options.legend === 'object' && options.legend !== null
-              ? options.legend.enabled !== undefined
-                ? options.legend.enabled
-                : true
-              : true),
+          options.legend?.enabled !== undefined ? options.legend.enabled : true,
         itemStyle: chartTheme.legend.itemStyle,
-        align: 'center',
-        verticalAlign: 'bottom',
       },
       credits: {
         enabled: false,
       },
-      series: processedData.series?.map(series => ({
-        ...series,
-        events: {
-          ...series.events,
-          click: handleSeriesClick,
-        },
-      })),
+      accessibility: {
+        enabled: true,
+        describeSingleSeries: true,
+      },
     };
 
-    // Add interactive features
-    if (interactiveOptions.zoom) {
-      // Use Object.assign to bypass TypeScript checking for zoomType
-      Object.assign(config.chart || {}, { zoomType: 'xy' });
-    }
-
-    if (interactiveOptions.pan) {
-      config.chart = {
-        ...config.chart,
-        panning: {
-          enabled: true,
-          type: 'xy',
-        },
-        panKey: 'shift',
-      };
-    }
-
-    if (interactiveOptions.drilldown) {
-      config.drilldown = {
-        activeDataLabelStyle: {
-          cursor: 'pointer',
-          fontWeight: 'bold',
-          textDecoration: 'underline',
-        },
-      };
-    }
-
-    if (interactiveOptions.export) {
-      config.exporting = {
-        enabled: true,
-        buttons: {
-          contextButton: {
-            menuItems: ['downloadPNG', 'downloadSVG', 'downloadCSV'],
-          },
-        },
-      };
-    }
-
-    return config;
+    // Deep merge with plugin default options first, then with user options
+    return deepMerge.all([
+      baseConfig,
+      defaultTypeOptions,
+      options, // User options have highest priority
+    ]) as Options;
   }, [
-    options,
     type,
-    processedData,
-    handlePointClick,
-    handleSeriesClick,
-    onPointClick,
-    onSeriesClick,
-    interactiveOptions,
     chartTheme,
+    options,
     theme,
+    onPointClick,
+    handleSeriesClick,
+    schema,
   ]);
 }

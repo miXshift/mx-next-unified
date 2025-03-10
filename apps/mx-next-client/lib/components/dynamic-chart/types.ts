@@ -9,15 +9,23 @@ export type ChartType =
   | 'area'
   | 'column'
   | 'waterfall'
-  | 'mixed';
+  | 'mixed'
+  | string; // Allow for custom chart types via plugins
 
-export type SeriesType = 'line' | 'bar' | 'column' | 'area' | 'scatter';
+export type SeriesType =
+  | 'line'
+  | 'bar'
+  | 'column'
+  | 'area'
+  | 'scatter'
+  | string; // Allow for custom series types
 
 export type SeriesConfig = {
   key: string;
   name: string;
   type: SeriesType;
   yAxis?: number;
+  options?: Record<string, any>; // Additional series-specific options
 };
 
 export type BaseChartSchema = {
@@ -27,33 +35,39 @@ export type BaseChartSchema = {
   categoryKey?: string;
   valueKey?: string;
   series?: SeriesConfig[];
+  transformations?: DataTransformation[]; // Allow for data transformations
 };
 
 export type LineChartSchema = {
   xKey: string;
   yKey: string;
   seriesKey?: string;
+  transformations?: DataTransformation[];
 };
 
 export type PieChartSchema = {
   categoryKey: string;
   valueKey: string;
+  transformations?: DataTransformation[];
 };
 
 export type HeatmapChartSchema = {
   xKey: string;
   yKey: string;
   valueKey: string;
+  transformations?: DataTransformation[];
 };
 
 export type WaterfallChartSchema = {
   categoryKey: string;
   valueKey: string;
+  transformations?: DataTransformation[];
 };
 
 export type MixedChartSchema = {
   xKey: string;
   series: SeriesConfig[];
+  transformations?: DataTransformation[];
 };
 
 export type ChartSchema =
@@ -61,7 +75,15 @@ export type ChartSchema =
   | PieChartSchema
   | HeatmapChartSchema
   | WaterfallChartSchema
-  | MixedChartSchema;
+  | MixedChartSchema
+  | Record<string, any>; // Allow for custom schemas via plugins
+
+// Data transformation pipeline
+export interface DataTransformation {
+  name: string;
+  transform: (data: Record<string, any>[]) => Record<string, any>[];
+  options?: Record<string, any>;
+}
 
 export interface ChartOptions {
   chart?: {
@@ -71,6 +93,7 @@ export interface ChartOptions {
       fontFamily?: string;
     };
     height?: string | number;
+    zoomType?: 'x' | 'y' | 'xy';
     [key: string]: any;
   };
   colors?: string[];
@@ -105,6 +128,7 @@ export interface ChartOptions {
     line?: {
       [key: string]: any;
     };
+    [key: string]: any; // Allow for any plot options
   };
   xAxis?: {
     [key: string]: any;
@@ -125,6 +149,9 @@ export interface ChartOptions {
   legend?: {
     [key: string]: any;
   };
+  accessibility?: {
+    [key: string]: any;
+  };
   [key: string]: any;
 }
 
@@ -133,6 +160,7 @@ export interface ChartInteractiveOptions {
   pan?: boolean;
   drilldown?: boolean;
   export?: boolean;
+  [key: string]: any; // Allow for other interactive options
 }
 
 export interface DynamicChartProps {
@@ -144,6 +172,9 @@ export interface DynamicChartProps {
   className?: string;
   onPointClick?: (point: any) => void;
   onSeriesClick?: (series: any) => void;
+  onChartReady?: (chart: any) => void; // Callback when chart is ready
+  fallbackComponent?: React.ReactNode; // Component to show if chart fails
+  transformData?: (data: Record<string, any>[]) => Record<string, any>[]; // Custom data transformer
 }
 
 export interface ChartTheme {
@@ -204,6 +235,7 @@ export interface ChartTheme {
         negative: string;
       };
     };
+    [key: string]: any; // Allow for other plot options
   };
 }
 
@@ -211,6 +243,7 @@ export interface ProcessedChartData {
   series: Options['series'];
   xAxis?: Options['xAxis'];
   yAxis?: Options['yAxis'];
+  [key: string]: any; // Allow for additional properties
 }
 
 export interface TooltipPoint {
@@ -220,6 +253,7 @@ export interface TooltipPoint {
   };
   x: string | number;
   y: number;
+  [key: string]: any; // Allow for additional properties
 }
 
 export interface TooltipFormatterContextObject {
@@ -230,4 +264,16 @@ export interface TooltipFormatterContextObject {
     name: string;
     color: string;
   };
+  [key: string]: any; // Allow for additional properties
+}
+
+// Plugin architecture for chart types
+export interface ChartTypePlugin {
+  type: string;
+  processData: (
+    data: Record<string, any>[],
+    schema: ChartSchema
+  ) => ProcessedChartData;
+  formatTooltip: (tooltipContext: any, schema: ChartSchema) => string;
+  defaultOptions?: Partial<ChartOptions>;
 }

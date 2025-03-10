@@ -1,0 +1,145 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Cursor Rule File: Readable & Findable UI Theme (Light & Dark Mode)
+
+## **Guiding Principles**
+1. **Clarity** – Every element serves a clear function.
+2. **Consistency** – UI components follow a predictable structure across all screens.
+3. **Efficiency** – Users should find what they need quickly with minimal cognitive load.
+4. **Hierarchy** – Important elements stand out naturally without excessive contrast.
+5. **Accessibility** – Strong contrast ratios and WCAG AA+ compliance for all UI elements.
+
+---
+
+## **1. Color Palette (Light & Dark Mode)**
+### **Primary & Secondary Colors**
+- **Primary:** `#2563eb` (Blue-600) – Main action color, interactive elements.
+- **Secondary:** `#f59e0b` (Amber-500) – Highlights, active selections.
+
+### **Light Mode Colors**
+- **Background:** `#f8fafc` (Slate-50) – Soft, neutral for minimal eye strain.
+- **Foreground:** `#0f172a` (Slate-900) – Ensures strong contrast.
+- **Text Primary:** `#334155` (Slate-700) – Standard text color.
+- **Text Secondary:** `#64748b` (Slate-500) – Descriptive text, metadata.
+- **Borders & Dividers:** `#94a3b8` (Slate-400) – Subtle but visible.
+- **Input Fields:** `#ffffff` background, `#cbd5e1` border.
+- **Error State:** `#dc2626` (Red-600) – Error text and indicators.
+
+### **Dark Mode Colors**
+- **Background:** `#0f172a` (Slate-900) – Deep black-blue for contrast.
+- **Foreground:** `#f8fafc` (Slate-50) – White-ish for text clarity.
+- **Text Primary:** `#e2e8f0` (Slate-300) – Ensures readability in the dark.
+- **Text Secondary:** `#94a3b8` (Slate-400) – Muted text for less important elements.
+- **Borders & Dividers:** `#334155` (Slate-700) – Creates soft separation.
+- **Input Fields:** `#1e293b` background, `#475569` border.
+- **Error State:** `#f87171` (Red-400) – Softer red for dark mode.
+
+#### **Color Usage Rules**
+- **Primary color must maintain strong contrast in both modes.**
+- **Avoid pure white `#ffffff` in dark mode** (use soft whites for comfort).
+- **Border colors should be subtle yet distinguishable.**
+- **Dark mode should not use true black `#000000`.** Instead, use near-black for a softer look.
+
+---
+
+## **2. Typography & Readability**
+- **Font Family:** `Inter` (default), fallback to `SF Pro`, `system-ui`.
+- **Font Sizes:**
+  - **Headers:** `1.5rem` (24px) for section titles.
+  - **Body Text:** `1rem` (16px) – Optimal for reading.
+  - **Small Text:** `0.875rem` (14px) – Captions, metadata.
+- **Line Height:**
+  - **Body text:** `1.5` (for optimal readability).
+  - **Headings:** `1.25` (to maintain structure).
+- **Monospace:** Use `Menlo, SF Mono, Consolas` for code blocks.
+
+#### **Typography Rules**
+- **Dark mode text must be at least `#e2e8f0`** for readability.
+- **Minimum contrast ratio of `4.5:1`.** Cursor should adjust automatically.
+- **Use sentence case for all UI elements.** Avoid all-caps unless necessary.
+- **No text should be below `14px` for body content.**
+- **Light and Dark Mode maintain identical font sizes for consistency.**
+
+---
+
+## **3. Layout & Spacing**
+### **Spacing Guidelines (Apple-Inspired)**
+- **Small Padding:** `4px` (fine-tuning gaps).
+- **Medium Padding:** `8px - 12px` (content separation).
+- **Large Padding:** `16px - 24px` (section separation).
+- **Content Width:** **Max `680px`** for readability in text-heavy areas.
+
+#### **General Layout Rules**
+- **One-column layout preferred.** Exceptions for data-heavy interfaces.
+- **Form fields: At least `40px` height** for accessibility.
+- **Buttons: Minimum `44px` width/height** for touch usability.
+- **Rounded Corners:** `8px` for inputs, cards, and buttons.
+- **Subtle Shadows:** (`box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);`).
+
+---
+
+## **4. Buttons & Interactive Elements**
+### **Primary Buttons**
+- **Light Mode:** `#2563eb` background, `#ffffff` text.
+- **Dark Mode:** `#2563eb` background, `#f8fafc` text.
+- **Border-radius:** `8px`
+- **Padding:** `12px 16px`
+- **Hover States:**
+  - Light Mode: `#1d4ed8` (Blue-700)
+  - Dark Mode: `#1e40af` (Blue-800)
+- **Focus Outline:** `2px solid #f59e0b` (Amber-500)
+
+### **Secondary Buttons**
+- **Light Mode:** `#f8fafc` background, `#334155` text.
+- **Dark Mode:** `#1e293b` background, `#e2e8f0` text.
+- **Border:** `1px solid #94a3b8`
+- **Hover:** `#e2e8f0` in light mode, `#334155` in dark mode.
+
+---
+
+## **5. Forms & Input Fields**
+### **Light Mode**
+- **Background:** `#ffffff`
+- **Border:** `1px solid #cbd5e1`
+- **Text:** `#334155`
+- **Focus:** `border-color: #2563eb;`
+
+### **Dark Mode**
+- **Background:** `#1e293b`
+- **Border:** `1px solid #475569`
+- **Text:** `#e2e8f0`
+- **Focus:** `border-color: #2563eb;`
+
+#### **Input Rules**
+- **Ensure large touch targets (`40px height`).**
+- **Errors:** `#dc2626` in light mode, `#f87171` in dark mode.
+- **Provide clear, descriptive error messages.**
+- **Use floating labels for better UX.**
+
+---
+
+## **6. UX & Accessibility**
+1. **Dark mode should be equal in importance to light mode.**
+2. **Hover states should be subtle but noticeable.**
+3. **No forced light mode.** Let users control their preference.
+4. **Maintain large touch targets for all clickable elements.**
+5. **Transitions should be smooth (`0.2s ease-in-out`).**
+
+---
+
+## **7. Components & Reusability**
+- **Maintain a strict design token system for colors and spacing.**
+- **Component naming should be consistent.** (`ButtonPrimary`, `InputField`).
+- **All components should work in both light and dark modes without adjustments.**
+- **Ensure keyboard navigation compatibility.**
+
+---
+
+## **Final Notes**
+- Cursor must strictly **enforce light and dark mode parity**.
+- No low-contrast elements allowed in either mode.
+- Ensure text, buttons, and interactive elements adapt seamlessly across modes.
+- **Findability remains top priority**—users should never have to search for essential actions.
