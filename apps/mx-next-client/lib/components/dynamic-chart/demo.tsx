@@ -10,7 +10,7 @@ import type {
 } from './types';
 import { useTheme } from 'next-themes';
 import { registerChartType } from './plugins';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Button } from '@/lib/ui/button';
 import {
   Select,
@@ -100,6 +100,16 @@ const REVENUE_DISTRIBUTION_DATA = [
   { category: 'Other Products', value: 7000 },
 ];
 
+// Revenue Trend Data (adding a more specific dataset for this chart)
+const REVENUE_TREND_DATA = [
+  { month: 'Jan', revenue: 28000 },
+  { month: 'Feb', revenue: 32000 },
+  { month: 'Mar', revenue: 27500 },
+  { month: 'Apr', revenue: 35000 },
+  { month: 'May', revenue: 42000 },
+  { month: 'Jun', revenue: 38000 },
+];
+
 // Register a custom chart type plugin - Trend indicator
 const trendIndicatorPlugin: ChartTypePlugin = {
   type: 'trend-indicator',
@@ -162,6 +172,8 @@ if (typeof window !== 'undefined') {
 export function DynamicChartDemo() {
   const { resolvedTheme } = useTheme();
 
+  console.log('resolvedTheme', resolvedTheme);
+
   // Handle chart ready event
   const handleChartReady = (chart: any) => {
     console.log('Chart ready:', chart);
@@ -175,6 +187,105 @@ export function DynamicChartDemo() {
     console.log('Point clicked:', point);
   };
 
+  // Use useMemo for the Account Changes chart options to prevent unnecessary re-renders
+  const accountChangesOptions = useMemo(
+    () => ({
+      chart: {
+        type: 'column',
+        backgroundColor: 'transparent',
+        height: 500,
+        style: {
+          fontFamily: 'inherit',
+        },
+      },
+      title: {
+        text: 'Account Changes',
+        align: 'left',
+        style: {
+          color: resolvedTheme === 'dark' ? '#f8fafc' : '#0f172a',
+          fontSize: '16px',
+          fontWeight: '500',
+        },
+      },
+      credits: {
+        enabled: false,
+      },
+      series: [
+        {
+          name: '',
+          showInLegend: false,
+          data: ACCOUNT_CHANGES_DATA.map(item => ({
+            name: item.name,
+            y: item.value,
+            color: item.isTotal
+              ? '#0f172a'
+              : item.isPositive
+                ? '#16a34a'
+                : '#2563eb',
+          })),
+        },
+      ],
+      xAxis: {
+        type: 'category',
+        labels: {
+          rotation: -45,
+          style: {
+            fontSize: '11px',
+            color: resolvedTheme === 'dark' ? '#cbd5e1' : '#64748b',
+          },
+        },
+      },
+      yAxis: {
+        title: {
+          text: 'Value ($)',
+          style: {
+            color: resolvedTheme === 'dark' ? '#cbd5e1' : '#64748b',
+          },
+        },
+        labels: {
+          style: {
+            color: resolvedTheme === 'dark' ? '#cbd5e1' : '#64748b',
+          },
+        },
+        gridLineColor: resolvedTheme === 'dark' ? '#334155' : '#e2e8f0',
+      },
+      plotOptions: {
+        column: {
+          borderWidth: 0,
+          pointPadding: 0.1,
+          groupPadding: 0.1,
+        },
+      },
+      tooltip: {
+        useHTML: true,
+        formatter: function (this: any): string {
+          const value = this.y;
+          if (typeof value !== 'number') return '';
+
+          // Format the value with proper currency
+          const formattedValue =
+            value >= 0
+              ? `+$${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+              : `-$${Math.abs(value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+          // Check if we have item.isTotal to style differently
+          const isTotal = ACCOUNT_CHANGES_DATA.find(
+            item => item.name === this.key
+          )?.isTotal;
+
+          if (isTotal) {
+            return `<div style="font-weight: bold;">${this.key}</div><div style="font-size: 14px; color: ${
+              resolvedTheme === 'dark' ? '#f8fafc' : '#0f172a'
+            };">${formattedValue}</div>`;
+          }
+
+          return `<div style="font-weight: bold;">${this.key}</div><div style="font-size: 14px;">${formattedValue}</div>`;
+        },
+      },
+    }),
+    [resolvedTheme]
+  ); // Add resolvedTheme as a dependency
+
   return (
     <div className="grid md:grid-cols-2 gap-5">
       {/* Account Changes Chart - Direct implementation in Card */}
@@ -187,88 +298,7 @@ export function DynamicChartDemo() {
 
         <HighchartsReact
           highcharts={Highcharts}
-          options={{
-            chart: {
-              type: 'column',
-              backgroundColor: 'transparent',
-              height: 500,
-              style: {
-                fontFamily: 'inherit',
-              },
-            },
-            title: {
-              text: 'Account Changes',
-              align: 'left',
-              style: {
-                color: resolvedTheme === 'dark' ? '#f8fafc' : '#0f172a',
-                fontSize: '16px',
-                fontWeight: '500',
-              },
-            },
-            credits: {
-              enabled: false,
-            },
-            series: [
-              {
-                name: '',
-                showInLegend: false,
-                data: ACCOUNT_CHANGES_DATA.map(item => ({
-                  name: item.name,
-                  y: item.value,
-                  color: item.isTotal
-                    ? '#0f172a'
-                    : item.isPositive
-                      ? '#16a34a'
-                      : '#2563eb',
-                })),
-              },
-            ],
-            xAxis: {
-              type: 'category',
-              labels: {
-                rotation: -45,
-                style: {
-                  fontSize: '11px',
-                  color: resolvedTheme === 'dark' ? '#cbd5e1' : '#64748b',
-                },
-              },
-            },
-            yAxis: {
-              title: {
-                text: 'Value ($)',
-                style: {
-                  color: resolvedTheme === 'dark' ? '#cbd5e1' : '#64748b',
-                },
-              },
-              labels: {
-                style: {
-                  color: resolvedTheme === 'dark' ? '#cbd5e1' : '#64748b',
-                },
-              },
-              gridLineColor: resolvedTheme === 'dark' ? '#334155' : '#e2e8f0',
-            },
-            plotOptions: {
-              column: {
-                borderWidth: 0,
-                pointPadding: 0.1,
-                groupPadding: 0.1,
-              },
-            },
-            tooltip: {
-              useHTML: true,
-              formatter: function (this: any): string {
-                const value = this.y;
-                if (typeof value !== 'number') return '';
-
-                const formattedValue =
-                  value >= 0
-                    ? `+$${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-                    : `-$${Math.abs(value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-
-                return `<span style="font-size: 12px">${this.point.name}</span><br/><b>${formattedValue}</b>`;
-              },
-            },
-          }}
+          options={accountChangesOptions}
         />
       </Card>
 
@@ -675,6 +705,90 @@ export function DynamicChartDemo() {
               verticalAlign: 'bottom',
               layout: 'horizontal',
             },
+          }}
+        />
+      </Card>
+
+      {/* Revenue Trend Chart */}
+      <Card className="p-6">
+        <DynamicChart
+          type="line"
+          data={REVENUE_TREND_DATA}
+          schema={{
+            xKey: 'month',
+            yKey: 'revenue',
+          }}
+          options={{
+            title: {
+              text: 'Revenue Trend',
+              align: 'left',
+            },
+            chart: {
+              backgroundColor: 'transparent',
+              style: {
+                fontFamily: 'inherit',
+              },
+              height: 400,
+            },
+            yAxis: {
+              title: {
+                text: 'Revenue ($)',
+                style: {
+                  color: resolvedTheme === 'dark' ? '#cbd5e1' : '#64748b',
+                },
+              },
+              labels: {
+                formatter: function () {
+                  return '$' + this.value.toLocaleString();
+                },
+                style: {
+                  color: resolvedTheme === 'dark' ? '#cbd5e1' : '#64748b',
+                },
+              },
+              gridLineColor: resolvedTheme === 'dark' ? '#334155' : '#e2e8f0',
+            },
+            tooltip: {
+              useHTML: true,
+              backgroundColor: 'rgba(255, 255, 255, 0.9)',
+              borderWidth: 1,
+              borderColor: '#dddddd',
+              borderRadius: 8,
+              shadow: true,
+              style: {
+                fontSize: '12px',
+                fontFamily: 'inherit',
+              },
+              headerFormat: '',
+              pointFormat: '',
+              footerFormat: '',
+              followPointer: true,
+            },
+            plotOptions: {
+              series: {
+                marker: {
+                  enabled: true,
+                  symbol: 'circle',
+                  radius: 5,
+                },
+              },
+            },
+            series: [
+              {
+                id: 'revenue-trend',
+                name: 'Revenue',
+                data: REVENUE_TREND_DATA.map(item => item.revenue),
+                color: '#4a6cf7',
+                lineWidth: 3,
+              },
+            ],
+            legend: {
+              enabled: false,
+            },
+          }}
+          interactiveOptions={{
+            zoom: true,
+            pan: true,
+            export: true,
           }}
         />
       </Card>

@@ -300,6 +300,18 @@ export function formatTooltip(
   type: ChartType,
   schema: ChartSchema
 ): string {
+  // Check if this is a Revenue Trend chart
+  const isRevenueTrend =
+    tooltipContext.series &&
+    (tooltipContext.series.name === 'Revenue' ||
+      tooltipContext.series.userOptions?.id === 'revenue-trend' ||
+      (tooltipContext.points &&
+        tooltipContext.points.some(
+          (p: any) =>
+            p.series.name === 'Revenue' ||
+            p.series.userOptions?.id === 'revenue-trend'
+        )));
+
   // Shared tooltip showing multiple series
   if (tooltipContext.points && tooltipContext.points.length > 0) {
     // Skip showing tooltips for waterfall charts (handled by single point case)
@@ -378,6 +390,23 @@ export function formatTooltip(
       }
     });
 
+    // Add an interactive button if this is a Revenue Trend chart
+    if (isRevenueTrend) {
+      const date = tooltipContext.points[0].x;
+      const value = tooltipContext.points[0].y;
+
+      html += `<div style="margin-top: 8px; text-align: center;">
+        <button 
+          type="button" 
+          style="padding: 4px 8px; background: #4a6cf7; color: white; border: none; border-radius: 4px; cursor: pointer;" 
+          onclick="(function() { 
+            alert('Details for ${date}\\nRevenue: $${typeof value === 'number' ? value.toLocaleString() : value}');
+          })()">
+          Details
+        </button>
+      </div>`;
+    }
+
     return html;
   }
 
@@ -425,7 +454,24 @@ export function formatTooltip(
 
       // Add the series name instead of just showing the value
       if (tooltipContext.series && tooltipContext.series.name) {
-        return `<div style="font-weight: bold;">${tooltipContext.series.name}</div>${formattedValue}`;
+        let html = `<div style="font-weight: bold;">${tooltipContext.series.name}</div>${formattedValue}`;
+
+        // Add an interactive button if this is a Revenue Trend chart
+        if (isRevenueTrend) {
+          const seriesName = tooltipContext.series.name;
+          html += `<div style="margin-top: 8px; text-align: center;">
+            <button 
+              type="button" 
+              style="padding: 4px 8px; background: #4a6cf7; color: white; border: none; border-radius: 4px; cursor: pointer;" 
+              onclick="(function() { 
+                alert('Details for ${seriesName}\\nValue: ${formattedValue}');
+              })()">
+              Details
+            </button>
+          </div>`;
+        }
+
+        return html;
       }
 
       // Just return the formatted value as a fallback
@@ -444,11 +490,46 @@ export function formatTooltip(
         formattedValue = `$${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
       }
 
-      return `<span style="color:${tooltipContext.series.color}">●</span> ${seriesName}: <b>${formattedValue}</b>`;
+      let html = `<span style="color:${tooltipContext.series.color}">●</span> ${seriesName}: <b>${formattedValue}</b>`;
+
+      // Add an interactive button if this is a Revenue Trend chart
+      if (isRevenueTrend) {
+        html += `<div style="margin-top: 8px; text-align: center;">
+          <button 
+            type="button" 
+            style="padding: 4px 8px; background: #4a6cf7; color: white; border: none; border-radius: 4px; cursor: pointer;" 
+            onclick="(function() { 
+              alert('Details for ${seriesName}\\nValue: ${formattedValue}');
+            })()">
+            Details
+          </button>
+        </div>`;
+      }
+
+      return html;
     }
     default: {
       const value = tooltipContext.y;
-      return `<span style="color:${tooltipContext.series.color}">●</span> ${tooltipContext.series.name}: <b>${value.toLocaleString()}</b>`;
+      const seriesName = tooltipContext.series.name;
+      const formattedValue = value.toLocaleString();
+
+      let html = `<span style="color:${tooltipContext.series.color}">●</span> ${seriesName}: <b>${formattedValue}</b>`;
+
+      // Add an interactive button if this is a Revenue Trend chart
+      if (isRevenueTrend) {
+        html += `<div style="margin-top: 8px; text-align: center;">
+          <button 
+            type="button" 
+            style="padding: 4px 8px; background: #4a6cf7; color: white; border: none; border-radius: 4px; cursor: pointer;" 
+            onclick="(function() { 
+              alert('Details for ${seriesName}\\nValue: ${formattedValue}');
+            })()">
+            Details
+          </button>
+        </div>`;
+      }
+
+      return html;
     }
   }
 }

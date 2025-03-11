@@ -1,0 +1,14 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+## ABSOLUTE RULES - NO EXCEPTIONS
+
+1. ** NEVER FUCKING EVER**
+	- Create new tracking directories
+	- Delete ANY files
+	- End sessions without explicit user request
+	- Run commands from wrong directory
+	- Touch working systems
+	- Delete functional code while adding and deleting the features.

@@ -25,6 +25,24 @@ export function useChartConfig({
   const theme = options.theme || resolvedTheme || 'light';
   const chartTheme = theme === 'dark' ? DARK_THEME : LIGHT_THEME;
 
+  // Ensure chartTheme is properly initialized with defaults if any properties are missing
+  const safeChartTheme = {
+    ...LIGHT_THEME, // Use light theme as base
+    ...chartTheme,
+    tooltip: {
+      ...LIGHT_THEME.tooltip,
+      ...(chartTheme.tooltip || {}),
+    },
+    legend: {
+      ...LIGHT_THEME.legend,
+      ...(chartTheme.legend || {}),
+    },
+    plotOptions: {
+      ...LIGHT_THEME.plotOptions,
+      ...(chartTheme.plotOptions || {}),
+    },
+  };
+
   const handlePointClick = useCallback(
     (event: any) => {
       if (onPointClick) {
@@ -55,14 +73,14 @@ export function useChartConfig({
               ? axis.title
               : axis.title?.text || '',
           style: {
-            ...chartTheme.yAxis.labels.style,
+            ...safeChartTheme.yAxis.labels.style,
             ...axis.title?.style,
           },
         },
         labels: {
-          style: chartTheme.yAxis.labels.style,
+          style: safeChartTheme.yAxis.labels.style,
         },
-        gridLineColor: chartTheme.yAxis.gridLineColor,
+        gridLineColor: safeChartTheme.yAxis.gridLineColor,
       }));
     } else if (options.yAxis) {
       yAxisConfig = {
@@ -73,25 +91,25 @@ export function useChartConfig({
               ? options.yAxis.title
               : options.yAxis.title?.text || '',
           style: {
-            ...chartTheme.yAxis.labels.style,
+            ...safeChartTheme.yAxis.labels.style,
             ...options.yAxis.title?.style,
           },
         },
         labels: {
-          style: chartTheme.yAxis.labels.style,
+          style: safeChartTheme.yAxis.labels.style,
         },
-        gridLineColor: chartTheme.yAxis.gridLineColor,
+        gridLineColor: safeChartTheme.yAxis.gridLineColor,
       };
     } else {
       yAxisConfig = {
         title: {
           text: '',
-          style: chartTheme.yAxis.labels.style,
+          style: safeChartTheme.yAxis.labels.style,
         },
         labels: {
-          style: chartTheme.yAxis.labels.style,
+          style: safeChartTheme.yAxis.labels.style,
         },
-        gridLineColor: chartTheme.yAxis.gridLineColor,
+        gridLineColor: safeChartTheme.yAxis.gridLineColor,
       };
     }
 
@@ -103,9 +121,9 @@ export function useChartConfig({
       chart: {
         ...options.chart,
         type,
-        backgroundColor: chartTheme.chart.backgroundColor,
+        backgroundColor: safeChartTheme.chart.backgroundColor,
         style: {
-          ...chartTheme.chart.style,
+          ...safeChartTheme.chart.style,
           fontFamily: 'inherit',
         },
         height: options.height || 400,
@@ -113,40 +131,40 @@ export function useChartConfig({
       colors:
         type === 'waterfall'
           ? [
-              chartTheme.plotOptions?.waterfall?.colors?.positive ||
-                chartTheme.colors[0],
-              chartTheme.plotOptions?.waterfall?.colors?.negative ||
-                chartTheme.colors[2],
+              safeChartTheme.plotOptions?.waterfall?.colors?.positive ||
+                safeChartTheme.colors[0],
+              safeChartTheme.plotOptions?.waterfall?.colors?.negative ||
+                safeChartTheme.colors[2],
             ]
-          : chartTheme.colors,
+          : safeChartTheme.colors,
       title: {
         text:
           typeof options.title === 'string'
             ? options.title
             : options.title?.text || '',
-        style: chartTheme.title.style,
+        style: safeChartTheme.title.style,
       },
       subtitle: {
         text:
           typeof options.subtitle === 'string'
             ? options.subtitle
             : options.subtitle?.text || '',
-        style: chartTheme.subtitle.style,
+        style: safeChartTheme.subtitle.style,
       },
       xAxis: {
         type: 'category',
         title: {
           text: options.xAxisLabel,
-          style: chartTheme.xAxis.labels.style,
+          style: safeChartTheme.xAxis.labels.style,
         },
         labels: {
-          style: chartTheme.xAxis.labels.style,
+          style: safeChartTheme.xAxis.labels.style,
           autoRotation: [-45],
           overflow: 'justify',
         },
-        gridLineColor: chartTheme.xAxis.gridLineColor,
-        lineColor: chartTheme.xAxis.gridLineColor,
-        tickColor: chartTheme.xAxis.gridLineColor,
+        gridLineColor: safeChartTheme.xAxis.gridLineColor,
+        lineColor: safeChartTheme.xAxis.gridLineColor,
+        tickColor: safeChartTheme.xAxis.gridLineColor,
         ...options.xAxis,
       },
       yAxis: yAxisConfig,
@@ -181,7 +199,7 @@ export function useChartConfig({
           borderWidth: 0,
         },
         area: {
-          fillOpacity: chartTheme.plotOptions?.area?.fillOpacity || 0.2,
+          fillOpacity: safeChartTheme.plotOptions?.area?.fillOpacity || 0.2,
           lineWidth: 2,
           marker: {
             enabled: true,
@@ -192,9 +210,9 @@ export function useChartConfig({
       },
       tooltip: {
         enabled: true,
-        backgroundColor: chartTheme.tooltip.backgroundColor,
-        borderColor: chartTheme.tooltip.borderColor,
-        style: chartTheme.tooltip.style,
+        backgroundColor: safeChartTheme.tooltip.backgroundColor,
+        borderColor: safeChartTheme.tooltip.borderColor,
+        style: safeChartTheme.tooltip.style,
         shared: true,
         useHTML: true,
         headerFormat: '',
@@ -208,28 +226,30 @@ export function useChartConfig({
         },
       },
       legend: {
-        enabled:
-          options.legend?.enabled !== undefined ? options.legend.enabled : true,
-        itemStyle: chartTheme.legend.itemStyle,
+        enabled: options?.legend?.enabled ?? true,
+        itemStyle: safeChartTheme?.legend?.itemStyle,
       },
       credits: {
         enabled: false,
       },
-      accessibility: {
-        enabled: true,
-        describeSingleSeries: true,
-      },
     };
 
     // Deep merge with plugin default options first, then with user options
-    return deepMerge.all([
+    const mergedOptions = deepMerge.all([
       baseConfig,
       defaultTypeOptions,
-      options, // User options have highest priority
+      options || {}, // User options have highest priority
     ]) as Options;
+
+    // Remove any accessibility settings from merged options to prevent errors
+    if (mergedOptions.accessibility) {
+      delete mergedOptions.accessibility;
+    }
+
+    return mergedOptions;
   }, [
     type,
-    chartTheme,
+    safeChartTheme,
     options,
     theme,
     onPointClick,
