@@ -282,6 +282,13 @@ export function DynamicChartDemo() {
           return `<div style="font-weight: bold;">${this.key}</div><div style="font-size: 14px;">${formattedValue}</div>`;
         },
       },
+      itemStyle: {
+        color: resolvedTheme === 'dark' ? '#e2e8f0' : '#1e293b',
+        fontWeight: 'normal',
+      },
+      itemHoverStyle: {
+        color: resolvedTheme === 'dark' ? '#ffffff' : '#000000',
+      },
     }),
     [resolvedTheme]
   ); // Add resolvedTheme as a dependency
@@ -328,6 +335,11 @@ export function DynamicChartDemo() {
             title: {
               text: 'Sales Mix',
               align: 'left',
+              style: {
+                color: resolvedTheme === 'dark' ? '#e2e8f0' : '#1e293b',
+                fontSize: '18px',
+                fontWeight: '600',
+              },
             },
             xAxis: {
               categories: SALES_MIX_DATA.map(item => item.date),
@@ -335,6 +347,7 @@ export function DynamicChartDemo() {
                 rotation: -45,
                 style: {
                   fontSize: '11px',
+                  color: resolvedTheme === 'dark' ? '#cbd5e1' : '#64748b',
                 },
               },
             },
@@ -386,6 +399,11 @@ export function DynamicChartDemo() {
               crosshairs: true,
               followPointer: true,
               outside: true,
+              backgroundColor: resolvedTheme === 'dark' ? '#1e293b' : '#ffffff',
+              borderColor: resolvedTheme === 'dark' ? '#475569' : '#e2e8f0',
+              style: {
+                color: resolvedTheme === 'dark' ? '#e2e8f0' : '#1e293b',
+              },
               formatter: function () {
                 if (this.points && this.points.length > 0) {
                   const dateStr = this.points[0].category;
@@ -473,6 +491,13 @@ export function DynamicChartDemo() {
               align: 'center',
               verticalAlign: 'bottom',
               layout: 'horizontal',
+              itemStyle: {
+                color: resolvedTheme === 'dark' ? '#e2e8f0' : '#1e293b',
+                fontWeight: 'normal',
+              },
+              itemHoverStyle: {
+                color: resolvedTheme === 'dark' ? '#ffffff' : '#000000',
+              },
             },
           }}
         />
@@ -495,6 +520,11 @@ export function DynamicChartDemo() {
             title: {
               text: 'Advertising Return',
               align: 'left',
+              style: {
+                color: resolvedTheme === 'dark' ? '#e2e8f0' : '#1e293b',
+                fontSize: '18px',
+                fontWeight: '600',
+              },
             },
             xAxis: {
               categories: AD_RETURN_DATA.map(item => item.date),
@@ -502,6 +532,7 @@ export function DynamicChartDemo() {
                 rotation: -45,
                 style: {
                   fontSize: '11px',
+                  color: resolvedTheme === 'dark' ? '#cbd5e1' : '#64748b',
                 },
               },
             },
@@ -552,6 +583,11 @@ export function DynamicChartDemo() {
               crosshairs: true,
               followPointer: true,
               outside: true,
+              backgroundColor: resolvedTheme === 'dark' ? '#1e293b' : '#ffffff',
+              borderColor: resolvedTheme === 'dark' ? '#475569' : '#e2e8f0',
+              style: {
+                color: resolvedTheme === 'dark' ? '#e2e8f0' : '#1e293b',
+              },
               formatter: function () {
                 if (this.points && this.points.length > 0) {
                   const dateStr = this.points[0].category;
@@ -635,6 +671,13 @@ export function DynamicChartDemo() {
               align: 'center',
               verticalAlign: 'bottom',
               layout: 'horizontal',
+              itemStyle: {
+                color: resolvedTheme === 'dark' ? '#e2e8f0' : '#1e293b',
+                fontWeight: 'normal',
+              },
+              itemHoverStyle: {
+                color: resolvedTheme === 'dark' ? '#ffffff' : '#000000',
+              },
             },
           }}
         />
@@ -722,6 +765,11 @@ export function DynamicChartDemo() {
             title: {
               text: 'Revenue Trend',
               align: 'left',
+              style: {
+                color: resolvedTheme === 'dark' ? '#e2e8f0' : '#1e293b',
+                fontSize: '18px',
+                fontWeight: '600',
+              },
             },
             chart: {
               backgroundColor: 'transparent',
@@ -729,6 +777,14 @@ export function DynamicChartDemo() {
                 fontFamily: 'inherit',
               },
               height: 400,
+            },
+            xAxis: {
+              labels: {
+                style: {
+                  color: resolvedTheme === 'dark' ? '#cbd5e1' : '#64748b',
+                  fontSize: '11px',
+                },
+              },
             },
             yAxis: {
               title: {
@@ -749,14 +805,15 @@ export function DynamicChartDemo() {
             },
             tooltip: {
               useHTML: true,
-              backgroundColor: 'rgba(255, 255, 255, 0.9)',
+              backgroundColor: resolvedTheme === 'dark' ? '#1e293b' : '#ffffff',
               borderWidth: 1,
-              borderColor: '#dddddd',
+              borderColor: resolvedTheme === 'dark' ? '#475569' : '#e2e8f0',
               borderRadius: 8,
               shadow: true,
               style: {
                 fontSize: '12px',
                 fontFamily: 'inherit',
+                color: resolvedTheme === 'dark' ? '#e2e8f0' : '#1e293b',
               },
               headerFormat: '',
               pointFormat: '',
@@ -783,6 +840,13 @@ export function DynamicChartDemo() {
             ],
             legend: {
               enabled: false,
+              itemStyle: {
+                color: resolvedTheme === 'dark' ? '#e2e8f0' : '#1e293b',
+                fontWeight: 'normal',
+              },
+              itemHoverStyle: {
+                color: resolvedTheme === 'dark' ? '#ffffff' : '#000000',
+              },
             },
           }}
           interactiveOptions={{
@@ -806,6 +870,11 @@ export function DynamicChartDemo() {
             title: {
               text: 'Revenue Trends',
               align: 'left',
+              style: {
+                color: resolvedTheme === 'dark' ? '#e2e8f0' : '#1e293b',
+                fontSize: '18px',
+                fontWeight: '600',
+              },
             },
             chart: {
               backgroundColor: 'transparent',
@@ -835,17 +904,30 @@ export function DynamicChartDemo() {
               footerFormat: '',
               followPointer: true,
               outside: true,
+              backgroundColor: resolvedTheme === 'dark' ? '#1e293b' : '#ffffff',
+              borderColor: resolvedTheme === 'dark' ? '#475569' : '#e2e8f0',
+              style: {
+                color: resolvedTheme === 'dark' ? '#e2e8f0' : '#1e293b',
+              },
             },
             legend: {
               align: 'center',
               verticalAlign: 'bottom',
               layout: 'horizontal',
+              itemStyle: {
+                color: resolvedTheme === 'dark' ? '#e2e8f0' : '#1e293b',
+                fontWeight: 'normal',
+              },
+              itemHoverStyle: {
+                color: resolvedTheme === 'dark' ? '#ffffff' : '#000000',
+              },
             },
             xAxis: {
               labels: {
                 rotation: 0,
                 style: {
                   fontSize: '11px',
+                  color: resolvedTheme === 'dark' ? '#cbd5e1' : '#64748b',
                 },
               },
             },

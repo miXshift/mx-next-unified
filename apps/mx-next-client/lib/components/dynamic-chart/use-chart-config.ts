@@ -142,23 +142,35 @@ export function useChartConfig({
           typeof options.title === 'string'
             ? options.title
             : options.title?.text || '',
-        style: safeChartTheme.title.style,
+        style: {
+          ...safeChartTheme.title.style,
+          color: theme === 'dark' ? '#e2e8f0' : '#1e293b',
+        },
       },
       subtitle: {
         text:
           typeof options.subtitle === 'string'
             ? options.subtitle
             : options.subtitle?.text || '',
-        style: safeChartTheme.subtitle.style,
+        style: {
+          ...safeChartTheme.subtitle.style,
+          color: theme === 'dark' ? '#cbd5e1' : '#64748b',
+        },
       },
       xAxis: {
         type: 'category',
         title: {
           text: options.xAxisLabel,
-          style: safeChartTheme.xAxis.labels.style,
+          style: {
+            ...safeChartTheme.xAxis.labels.style,
+            color: theme === 'dark' ? '#cbd5e1' : '#64748b',
+          },
         },
         labels: {
-          style: safeChartTheme.xAxis.labels.style,
+          style: {
+            ...safeChartTheme.xAxis.labels.style,
+            color: theme === 'dark' ? '#cbd5e1' : '#64748b',
+          },
           autoRotation: [-45],
           overflow: 'justify',
         },
@@ -210,9 +222,14 @@ export function useChartConfig({
       },
       tooltip: {
         enabled: true,
-        backgroundColor: safeChartTheme.tooltip.backgroundColor,
-        borderColor: safeChartTheme.tooltip.borderColor,
-        style: safeChartTheme.tooltip.style,
+        backgroundColor:
+          theme === 'dark' ? '#1e293b' : safeChartTheme.tooltip.backgroundColor,
+        borderColor:
+          theme === 'dark' ? '#475569' : safeChartTheme.tooltip.borderColor,
+        style: {
+          ...safeChartTheme.tooltip.style,
+          color: theme === 'dark' ? '#e2e8f0' : '#1e293b',
+        },
         shared: true,
         useHTML: true,
         headerFormat: '',
@@ -227,7 +244,13 @@ export function useChartConfig({
       },
       legend: {
         enabled: options?.legend?.enabled ?? true,
-        itemStyle: safeChartTheme?.legend?.itemStyle,
+        itemStyle: {
+          ...safeChartTheme?.legend?.itemStyle,
+          color: theme === 'dark' ? '#e2e8f0' : '#1e293b',
+        },
+        itemHoverStyle: {
+          color: theme === 'dark' ? '#ffffff' : '#000000',
+        },
       },
       credits: {
         enabled: false,
