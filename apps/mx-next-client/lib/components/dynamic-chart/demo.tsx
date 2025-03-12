@@ -197,6 +197,11 @@ export function DynamicChartDemo() {
         style: {
           fontFamily: 'inherit',
         },
+        borderColor: resolvedTheme === 'dark' ? '#334155' : '#e2e8f0',
+        borderWidth: 0,
+        plotBorderColor: resolvedTheme === 'dark' ? '#334155' : '#e2e8f0',
+        plotBorderWidth: 0,
+        marginBottom: 100,
       },
       title: {
         text: 'Account Changes',
@@ -233,7 +238,17 @@ export function DynamicChartDemo() {
             fontSize: '11px',
             color: resolvedTheme === 'dark' ? '#cbd5e1' : '#64748b',
           },
+          y: 20,
         },
+        lineColor: resolvedTheme === 'dark' ? '#334155' : '#e2e8f0',
+        lineWidth: 0,
+        tickColor: resolvedTheme === 'dark' ? '#334155' : '#e2e8f0',
+        tickWidth: 0,
+        minorGridLineColor: resolvedTheme === 'dark' ? '#334155' : '#e2e8f0',
+        minorGridLineWidth: 0,
+        minorTickColor: resolvedTheme === 'dark' ? '#334155' : '#e2e8f0',
+        minorTickWidth: 0,
+        gridLineWidth: 0,
       },
       yAxis: {
         title: {
@@ -248,12 +263,21 @@ export function DynamicChartDemo() {
           },
         },
         gridLineColor: resolvedTheme === 'dark' ? '#334155' : '#e2e8f0',
+        lineColor: resolvedTheme === 'dark' ? '#334155' : '#e2e8f0',
+        lineWidth: 0,
+        minorGridLineColor: resolvedTheme === 'dark' ? '#334155' : '#e2e8f0',
+        minorGridLineWidth: 0,
+        minorTickColor: resolvedTheme === 'dark' ? '#334155' : '#e2e8f0',
+        minorTickWidth: 0,
       },
       plotOptions: {
         column: {
           borderWidth: 0,
           pointPadding: 0.1,
           groupPadding: 0.1,
+        },
+        series: {
+          borderColor: 'transparent',
         },
       },
       tooltip: {
