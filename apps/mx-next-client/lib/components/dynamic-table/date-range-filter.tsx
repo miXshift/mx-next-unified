@@ -47,7 +47,7 @@ export function DateRangeFilter({
                   variant="ghost"
                   size="sm"
                   className="absolute right-1 top-1/2 -translate-y-1/2 h-6 w-6 p-0 hover:bg-muted"
-                  onClick={(e) => {
+                  onClick={e => {
                     e.stopPropagation();
                     clearDates();
                   }}
@@ -61,7 +61,10 @@ export function DateRangeFilter({
             )}
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-0 border shadow bg-background" align="start">
+        <PopoverContent
+          className="w-auto p-0 border shadow bg-background"
+          align="start"
+        >
           <Calendar
             mode="multiple"
             selected={selectedDates}
