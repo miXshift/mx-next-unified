@@ -1,13 +1,14 @@
 import { useCallback, useMemo } from 'react';
 import { useTheme } from 'next-themes';
 import { Options } from 'highcharts';
-import { DynamicChartProps } from './types';
 import { LIGHT_THEME, DARK_THEME } from './theme-constants';
 import {
   formatTooltipForChartType,
   getDefaultOptionsForChartType,
-} from './plugins';
+} from '../../utils/dynamic-charts/plugins';
+import { ChartType } from './constants';
 import deepMerge from 'deepmerge';
+import { DynamicChartProps } from '@/lib/types/dynamic-charts/types';
 
 /**
  * Custom hook to generate chart configuration
@@ -239,7 +240,7 @@ export function useChartConfig({
         valueDecimals: 2,
         outside: false,
         formatter: function () {
-          return formatTooltipForChartType(type, this, schema);
+          return formatTooltipForChartType(type as ChartType, this, schema);
         },
       },
       legend: {

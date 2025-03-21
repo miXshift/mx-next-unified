@@ -1,10 +1,9 @@
 import {
   ChartSchema,
-  ChartType,
-  HeatmapChartSchema,
   PieChartSchema,
-  WaterfallChartSchema,
-} from '../types';
+  HeatmapChartSchema,
+} from '@/lib/types/dynamic-charts/types';
+import { ChartType } from '../constants';
 
 /**
  * Format tooltip for different chart types

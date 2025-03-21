@@ -2,7 +2,13 @@ import {
   ChartSchema,
   WaterfallChartSchema,
   ProcessedChartData,
-} from '../types';
+} from '@/lib/types/dynamic-charts/types';
+import {
+  applyDataTransformations,
+  parseNumericValue,
+  createCategoryAxis,
+  createSeries,
+} from '@/lib/utils/dynamic-charts/processor-utils';
 
 /**
  * Process data for waterfall charts
@@ -16,22 +22,17 @@ export function processWaterfallData(
 ): ProcessedChartData {
   const { categoryKey, valueKey } = schema as WaterfallChartSchema;
 
-  // Apply data transformations if any
-  let processedData = [...data];
-  if ('transformations' in schema && schema.transformations) {
-    for (const transformation of schema.transformations) {
-      processedData = transformation.transform(processedData);
-    }
-  }
+  // Apply data transformations
+  const processedData = applyDataTransformations(data, schema);
 
   const categories = processedData.map(item => item[categoryKey]);
   const seriesData = processedData.map(item => {
-    const value = parseFloat(item[valueKey]);
+    const value = parseNumericValue(item[valueKey]) ?? 0; // Use 0 if null
     const isTotal = 'isTotal' in item && Boolean(item.isTotal);
 
     return {
       name: item[categoryKey],
-      y: isNaN(value) ? 0 : value,
+      y: value,
       isSum: isTotal, // For sum points (displayed differently)
       isIntermediateSum:
         'isIntermediateSum' in item && Boolean(item.isIntermediateSum),
@@ -40,18 +41,13 @@ export function processWaterfallData(
     };
   });
 
+  // Create a waterfall series with additional options
+  const waterfallOptions = {
+    pointPadding: 0.2,
+  };
+
   return {
-    series: [
-      {
-        data: seriesData,
-        type: 'waterfall',
-        pointPadding: 0.2,
-        name: valueKey,
-      },
-    ],
-    xAxis: {
-      categories,
-      type: 'category',
-    },
+    series: [createSeries(valueKey, seriesData, 'waterfall', waterfallOptions)],
+    xAxis: createCategoryAxis(categories),
   };
 }

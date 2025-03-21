@@ -3,7 +3,13 @@ import {
   MixedChartSchema,
   ProcessedChartData,
   SeriesConfig,
-} from '../types';
+} from '@/lib/types/dynamic-charts/types';
+import {
+  applyDataTransformations,
+  parseNumericValue,
+  createCategoryAxis,
+  createSeries,
+} from '@/lib/utils/dynamic-charts/processor-utils';
 
 /**
  * Process data for mixed chart types (combining different chart types)
@@ -17,13 +23,8 @@ export function processMixedData(
 ): ProcessedChartData {
   const { xKey, series } = schema as MixedChartSchema;
 
-  // Apply data transformations if any
-  let processedData = [...data];
-  if ('transformations' in schema && schema.transformations) {
-    for (const transformation of schema.transformations) {
-      processedData = transformation.transform(processedData);
-    }
-  }
+  // Apply data transformations
+  const processedData = applyDataTransformations(data, schema);
 
   const categories = processedData.map(item => item[xKey]);
   const processedSeries = series.map(seriesConfig =>
@@ -32,10 +33,7 @@ export function processMixedData(
 
   return {
     series: processedSeries,
-    xAxis: {
-      categories,
-      type: 'category',
-    },
+    xAxis: createCategoryAxis(categories),
   };
 }
 
@@ -53,16 +51,13 @@ function processSeries(
 ): any {
   const { key, name, type, yAxis, options = {} } = seriesConfig;
 
-  const seriesData = data.map(item => {
-    const value = parseFloat(item[key]);
-    return isNaN(value) ? null : value;
-  });
+  const seriesData = data.map(item => parseNumericValue(item[key]));
 
-  return {
-    name,
-    type,
-    data: seriesData,
-    yAxis,
+  // Create series with appropriate options including yAxis if specified
+  const seriesOptions = {
     ...options,
+    ...(yAxis !== undefined ? { yAxis } : {}),
   };
+
+  return createSeries(name, seriesData, type, seriesOptions);
 }

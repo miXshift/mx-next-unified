@@ -1,4 +1,9 @@
-import { ChartSchema, ChartTypePlugin, ProcessedChartData } from '../types';
+import {
+  ChartSchema,
+  ChartTypePlugin,
+  ProcessedChartData,
+} from '@/lib/types/dynamic-charts/types';
+import { ChartType } from '../constants';
 import { formatTooltip } from '../formatters/tooltip';
 import * as processors from '../processors';
 
@@ -73,7 +78,7 @@ export function processDataForChartType(
  * @returns The formatted tooltip HTML
  */
 export function formatTooltipForChartType(
-  type: string,
+  type: ChartType,
   tooltipContext: any,
   schema: ChartSchema
 ): string {
@@ -82,9 +87,8 @@ export function formatTooltipForChartType(
   if (plugin) {
     return plugin.formatTooltip(tooltipContext, schema);
   }
-
   // Otherwise, use the built-in formatter
-  return formatTooltip(tooltipContext, type, schema);
+  return formatTooltip(tooltipContext, type as ChartType, schema);
 }
 
 /**
@@ -99,7 +103,3 @@ export function getDefaultOptionsForChartType(type: string): Partial<any> {
   }
   return {};
 }
-
-// Register built-in chart types
-// This will be expanded in the actual implementation
-// with proper processing functions for each chart type

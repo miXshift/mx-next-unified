@@ -7,7 +7,7 @@ import {
   HeatmapChartSchema,
   WaterfallChartSchema,
   MixedChartSchema,
-} from './types';
+} from '@/lib/types/dynamic-charts/types';
 import { SeriesOptionsType } from 'highcharts';
 
 export function processChartData(

@@ -1,4 +1,4 @@
-import { ChartTheme } from './types';
+import { ChartTheme } from '@/lib/types/dynamic-charts/types';
 
 export const LIGHT_THEME: ChartTheme = {
   colors: [
