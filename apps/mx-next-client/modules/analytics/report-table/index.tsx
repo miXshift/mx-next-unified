@@ -4,8 +4,15 @@ import { DynamicTable } from '@/lib/components/dynamic-table';
 import { Account } from './reportTable.types';
 import { mockData } from './reportTable.mock-data';
 import { columns } from './reportTable.columns';
+import { DateRangePicker } from '@/lib/components/date-range/date-range-picker';
+import { ExcludableDatePicker } from '@/lib/components/date-range/date-range-exclude';
+import { useState } from 'react';
 
 export default function ReportsDashboardTable() {
+  const [dateRange, setDateRange] = useState<{
+    from: Date;
+    to: Date;
+  } | null>(null);
   const bulkActions = [
     {
       id: 'delete',
@@ -31,6 +38,23 @@ export default function ReportsDashboardTable() {
         data={mockData}
         bulkActions={bulkActions}
         initialState={initialState}
+        customActions={
+          <>
+            <DateRangePicker
+              onSelect={range => {
+                setDateRange(range);
+                console.log('Date range selected:', range);
+              }}
+            />
+            <ExcludableDatePicker
+              defaultNumberOfDays={30}
+              onChange={dates => {
+                console.log('Included ranges:', dates.includedRanges);
+                console.log('Excluded dates:', dates.excludedDates);
+              }}
+            />
+          </>
+        }
       />
 
       <div className="text-sm text-muted-foreground">

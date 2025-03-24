@@ -66,7 +66,7 @@ export function TableToolbar<TData>({
             <Filter className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-[500px] p-4" align="start">
+        <DropdownMenuContent className="min-w-[500px] w-full p-4" align="start">
           <FilterBuilder
             columns={mappedColumns}
             initialFilters={activeFilters}
@@ -81,7 +81,7 @@ export function TableToolbar<TData>({
             <ArrowDownAZ className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-[500px] p-4" align="start">
+        <DropdownMenuContent className="min-w-[500px] w-full p-4" align="start">
           <SortBuilder
             fields={mappedColumns.map(col => col.id)}
             sortingRules={sorting}
@@ -96,7 +96,7 @@ export function TableToolbar<TData>({
             <GripVertical className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-[500px] p-4" align="start">
+        <DropdownMenuContent className="min-w-[500px] w-full p-4" align="start">
           <GroupBuilder
             fields={mappedColumns}
             groupingRules={grouping}

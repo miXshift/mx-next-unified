@@ -1,7 +1,9 @@
 import '@styles/globals.css';
+import '@styles/nprogress.css';
 import { Inter } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
 import AppProviders from '@/lib/providers/app-provider';
+import { NProgressProvider } from '@/lib/components/nprogress';
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -23,6 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
+        <NProgressProvider />
         <AppProviders>{children}</AppProviders>
         <Analytics />
       </body>
