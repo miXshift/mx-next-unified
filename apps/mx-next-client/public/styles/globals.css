@@ -1,0 +1,175 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Primary (Green) */
+    --primary-50: 138 80% 95%; /* #edfaf0 */
+    --primary-100: 138 72% 90%; /* #dbf5e1 */
+    --primary-200: 138 65% 80%; /* #b8ebc3 */
+    --primary-300: 138 60% 70%; /* #94e1a5 */
+    --primary-400: 138 55% 60%; /* #71d787 */
+    --primary-500: 138 50% 54%; /* #4CC96C - Logo color */
+    --primary-600: 138 55% 44%; /* #3ea157 */
+    --primary-700: 138 60% 34%; /* #307943 */
+    --primary-800: 138 65% 24%; /* #22512f */
+    --primary-900: 138 70% 14%; /* #142a1a */
+    --primary-950: 138 75% 7%; /* #0a150d */
+
+    /* Blue */
+    --blue-50: 210 100% 98%; /* #f0f7ff */
+    --blue-100: 210 100% 95%; /* #e0f0ff */
+    --blue-200: 210 100% 90%; /* #c2e2ff */
+    --blue-300: 210 100% 80%; /* #85c5ff */
+    --blue-400: 210 100% 70%; /* #47a9ff */
+    --blue-500: 210 100% 60%; /* #0a8dff */
+    --blue-600: 210 100% 50%; /* #0070cc */
+    --blue-700: 210 100% 40%; /* #005299 */
+    --blue-800: 210 100% 30%; /* #003566 */
+    --blue-900: 210 100% 20%; /* #001833 */
+
+    /* Light Theme Defaults */
+    --background: 0 0% 100%; /* #ffffff */
+    --foreground: 222 47% 11%; /* #0f172a */
+
+    --card: 0 0% 100%; /* #ffffff */
+    --card-foreground: 222 47% 11%; /* #0f172a */
+
+    --popover: 0 0% 100%; /* #ffffff */
+    --popover-foreground: 222 47% 11%; /* #0f172a */
+
+    --primary: 138 50% 54%; /* #4CC96C */
+    --primary-foreground: 210 40% 98%; /* #f8fafc */
+
+    --secondary: 210 40% 96%; /* #f1f5f9 */
+    --secondary-foreground: 222 47% 11%; /* #0f172a */
+
+    --muted: 210 40% 96%; /* #f1f5f9 */
+    --muted-foreground: 215 16% 47%; /* #64748b */
+
+    --accent: 210 40% 96%; /* #f1f5f9 */
+    --accent-foreground: 222 47% 11%; /* #0f172a */
+
+    --destructive: 0 84% 60%; /* #ef4444 */
+    --destructive-foreground: 210 40% 98%; /* #f8fafc */
+
+    --border: 214 32% 91%; /* #e2e8f0 */
+    --input: 214 32% 91%; /* #e2e8f0 */
+    --ring: 138 50% 54%; /* #4CC96C */
+
+    /* Navigation Colors */
+    --sidebar-bg: var(--blue-50);
+    --sidebar-hover: var(--blue-100);
+    --sidebar-active: var(--blue-200);
+    --footer-bg: var(--blue-50);
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    /* Dark Theme Defaults */
+    --background: 222 47% 11%; /* #0f172a */
+    --foreground: 210 40% 98%; /* #f8fafc */
+
+    --card: 217 33% 17%; /* #1e293b */
+    --card-foreground: 210 40% 98%; /* #f8fafc */
+
+    --popover: 217 33% 17%; /* #1e293b */
+    --popover-foreground: 210 40% 98%; /* #f8fafc */
+
+    --primary: 138 50% 54%; /* #4CC96C */
+    --primary-foreground: 210 40% 98%; /* #f8fafc */
+
+    --secondary: 217 33% 17%; /* #1e293b */
+    --secondary-foreground: 210 40% 98%; /* #f8fafc */
+
+    --muted: 217 33% 17%; /* #1e293b */
+    --muted-foreground: 215 20% 65%; /* #94a3b8 */
+
+    --accent: 217 33% 17%; /* #1e293b */
+    --accent-foreground: 210 40% 98%; /* #f8fafc */
+
+    --destructive: 0 62% 30%; /* #991b1b */
+    --destructive-foreground: 210 40% 98%; /* #f8fafc */
+
+    --border: 217 33% 17%; /* #1e293b */
+    --input: 217 33% 17%; /* #1e293b */
+    --ring: 138 50% 54%; /* #4CC96C */
+
+    /* Navigation Colors */
+    --sidebar-bg: var(--card);
+    --sidebar-hover: var(--accent);
+    --sidebar-active: var(--accent);
+    --footer-bg: var(--card);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  /* Typography */
+  h1 {
+    @apply text-4xl font-bold tracking-tight;
+  }
+  h2 {
+    @apply text-3xl font-semibold tracking-tight;
+  }
+  h3 {
+    @apply text-2xl font-semibold;
+  }
+  h4 {
+    @apply text-xl font-semibold;
+  }
+  h5 {
+    @apply text-lg font-semibold;
+  }
+  h6 {
+    @apply text-base font-semibold;
+  }
+  p {
+    @apply leading-7;
+  }
+  small {
+    @apply text-sm font-medium leading-none;
+  }
+
+  /* Interactive Elements */
+  a {
+    @apply text-primary transition-colors;
+  }
+  a:hover {
+    @apply text-primary-600 dark:text-primary-400;
+  }
+
+  /* Form Elements */
+  input,
+  textarea,
+  select {
+    @apply bg-background border-input;
+  }
+
+  /* Focus States */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+}
+
+@layer utilities {
+  .sidebar-bg {
+    background-color: hsl(var(--sidebar-bg));
+  }
+  .sidebar-hover {
+    background-color: hsl(var(--sidebar-hover));
+  }
+  .sidebar-active {
+    background-color: hsl(var(--sidebar-active));
+  }
+  .footer-bg {
+    background-color: hsl(var(--footer-bg));
+  }
+}

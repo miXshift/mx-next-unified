@@ -1,0 +1,1 @@
+export { ActivateMerchantsForm } from './form';
