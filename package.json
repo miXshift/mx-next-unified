@@ -4,6 +4,9 @@
   "license": "MIT",
   "scripts": {},
   "private": true,
+  "engines": {
+    "node": "22.x"
+  },
   "dependencies": {
     "next": "~15.2.4",
     "react": "18.3.1",
