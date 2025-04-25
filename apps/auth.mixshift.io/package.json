@@ -1,0 +1,13 @@
+{
+  "name": "@mixshift.io/auth.mixshift.io",
+  "version": "0.0.1",
+  "private": true,
+  "nx": {
+    "name": "auth.mixshift.io"
+  },
+  "dependencies": {
+    "next": "~15.2.4",
+    "react": "19.0.0",
+    "react-dom": "19.0.0"
+  }
+}
