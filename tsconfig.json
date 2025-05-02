@@ -5,6 +5,9 @@
   "references": [
     {
       "path": "./apps/auth"
+    },
+    {
+      "path": "./apps/report-center"
     }
   ]
 }
