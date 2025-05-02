@@ -1,23 +1,53 @@
-# MixshiftIo
+# MixShift.io Monorepo
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+## Node.js and Package Management
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is almost ready ✨.
+- **Node.js**: Version 22 (LTS/Jod) is required
+- **Package Manager**: This project uses pnpm with Corepack
+
+### Setting Up Corepack and pnpm
+
+Corepack is included with Node.js and manages package manager versions consistently across your team:
+
+```sh
+# Enable Corepack
+corepack enable
+
+# Use pnpm through Corepack
+corepack prepare 
+```
+
+### Common pnpm Commands
+
+```sh
+# Install dependencies
+pnpm install
+
+# Add a dependency
+pnpm add <package-name>
+
+# Run a script from package.json
+pnpm run <script-name>
+```
+
+Corepack ensures everyone working on the project uses the same package manager version, improving consistency and reliability.
+
+## NX
 
 [Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/js?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
 
-## Finish your CI setup
+### Finish your CI setup (TBD)
 
 [Click here to finish setting up your workspace!](https://cloud.nx.app/connect/im2rcBVcx0)
 
 
-## Generate a library
+### Generate a library
 
 ```sh
 npx nx g @nx/js:lib packages/pkg1 --publishable --importPath=@my-org/pkg1
 ```
 
-## Run tasks
+### Run tasks
 
 To build the library use:
 
@@ -35,7 +65,7 @@ These targets are either [inferred automatically](https://nx.dev/concepts/inferr
 
 [More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
 
-## Versioning and releasing
+### Versioning and releasing
 
 To version and release the library use
 
@@ -47,7 +77,7 @@ Pass `--dry-run` to see what would happen without actually releasing the library
 
 [Learn more about Nx release &raquo;](hhttps://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
 
-## Keep TypeScript project references up to date
+### Keep TypeScript project references up to date
 
 Nx automatically updates TypeScript [project references](https://www.typescriptlang.org/docs/handbook/project-references.html) in `tsconfig.json` files to ensure they remain accurate based on your project dependencies (`import` or `require` statements). This sync is automatically done when running tasks such as `build` or `typecheck`, which require updated references to function correctly.
 
@@ -65,16 +95,15 @@ npx nx sync:check
 
 [Learn more about nx sync](https://nx.dev/reference/nx-commands#sync)
 
-
 [Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
 
-## Install Nx Console
+### Install Nx Console
 
 Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
 
 [Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
 
-## Useful links
+### Useful links
 
 Learn more:
 

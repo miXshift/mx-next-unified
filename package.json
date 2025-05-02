@@ -4,6 +4,9 @@
   "license": "MIT",
   "scripts": {},
   "private": true,
+  "engines": {
+    "node": "22"
+  },
   "dependencies": {},
   "devDependencies": {
     "@nx/js": "20.8.1",
