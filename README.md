@@ -34,25 +34,31 @@ Corepack ensures everyone working on the project uses the same package manager v
 
 ## NX
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/js?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/js?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created.
 
-### Finish your CI setup (TBD)
+### Generate an application
 
-[Click here to finish setting up your workspace!](https://cloud.nx.app/connect/im2rcBVcx0)
+To generate a Next.js application under the `apps/` folder:
 
+```sh
+npx nx g @nx/next:app apps/my-app
+```
 
 ### Generate a library
 
+To generate a publishable library under the `libs/` folder:
+
 ```sh
-npx nx g @nx/js:lib packages/pkg1 --publishable --importPath=@my-org/pkg1
+npx nx g @nx/js:lib libs/my-lib --publishable --importPath=@my-org/my-lib
 ```
 
 ### Run tasks
 
-To build the library use:
+To build an application or library:
 
 ```sh
-npx nx build pkg1
+npx nx build my-app
+npx nx build my-lib
 ```
 
 To run any task with Nx use:
@@ -67,7 +73,7 @@ These targets are either [inferred automatically](https://nx.dev/concepts/inferr
 
 ### Versioning and releasing
 
-To version and release the library use
+To version and release the library use:
 
 ```
 npx nx release
@@ -75,27 +81,23 @@ npx nx release
 
 Pass `--dry-run` to see what would happen without actually releasing the library.
 
-[Learn more about Nx release &raquo;](hhttps://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+[Learn more about Nx release &raquo;](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
 
 ### Keep TypeScript project references up to date
 
-Nx automatically updates TypeScript [project references](https://www.typescriptlang.org/docs/handbook/project-references.html) in `tsconfig.json` files to ensure they remain accurate based on your project dependencies (`import` or `require` statements). This sync is automatically done when running tasks such as `build` or `typecheck`, which require updated references to function correctly.
+Nx automatically updates TypeScript [project references](https://www.typescriptlang.org/docs/handbook/project-references.html) in `tsconfig.json` files to ensure they remain accurate based on your project dependencies (`import` or `require` statements). This sync is automatically done when running tasks such as `build` or `typecheck`.
 
-To manually trigger the process to sync the project graph dependencies information to the TypeScript project references, run the following command:
+To manually sync project references:
 
 ```sh
 npx nx sync
 ```
 
-You can enforce that the TypeScript project references are always in the correct state when running in CI by adding a step to your CI job configuration that runs the following command:
+You can enforce correct TypeScript project references in CI by adding:
 
 ```sh
 npx nx sync:check
 ```
-
-[Learn more about nx sync](https://nx.dev/reference/nx-commands#sync)
-
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
 
 ### Install Nx Console
 
