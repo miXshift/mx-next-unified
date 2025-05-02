@@ -1,5 +1,19 @@
 # MixShift.io Monorepo
 
+## Environment Setup
+
+For local development, you need to set up environment variables:
+
+```sh
+# Copy the example environment file
+cp .env.example .env
+
+# Edit the .env file to add your specific configuration
+code .env  # or use your preferred editor
+```
+
+The `.env.example` file contains all the necessary environment variables with placeholder values. Your local `.env` file should never be committed to the repository as it may contain sensitive information.
+
 ## Node.js and Package Management
 
 - **Node.js**: Version 22 (LTS/Jod) is required

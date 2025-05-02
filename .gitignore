@@ -48,3 +48,4 @@ out
 # environment variables
 .env
 .env.*
+!.env.example
