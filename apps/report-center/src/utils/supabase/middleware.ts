@@ -30,6 +30,8 @@ export async function updateSession(request: NextRequest) {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     {
       cookieOptions: {
+        path: process.env.COOKIE_OPTION_PATH,
+        secure: process.env.COOKIE_OPTION_SECURE === 'yes',
         domain: process.env.COOKIE_OPTION_DOMAIN,
         sameSite:
           process.env.COOKIE_OPTION_SAME_SITE === 'yes'
