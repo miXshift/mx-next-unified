@@ -1,4 +1,4 @@
-# MixShift.io Monorepo
+# MixShift Monorepo
 
 ## Environment Setup
 

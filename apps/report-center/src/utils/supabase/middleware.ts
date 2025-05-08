@@ -13,11 +13,29 @@ export async function updateSession(request: NextRequest) {
     request,
   })
 
+  if (
+    process.env.COOKIE_OPTION_SAME_SITE != null &&
+    process.env.COOKIE_OPTION_SAME_SITE !== 'lax' &&
+    process.env.COOKIE_OPTION_SAME_SITE !== 'strict' &&
+    process.env.COOKIE_OPTION_SAME_SITE !== 'none' &&
+    process.env.COOKIE_OPTION_SAME_SITE !== 'yes'
+  ) {
+    throw new Error(
+      'COOKIE_OPTION_SAME_SITE must be "lax", "strict" or "none"'
+    )
+  }
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     {
+      cookieOptions: {
+        domain: process.env.COOKIE_OPTION_DOMAIN,
+        sameSite:
+          process.env.COOKIE_OPTION_SAME_SITE === 'yes'
+            ? true
+            : process.env.COOKIE_OPTION_SAME_SITE,
+      },
       cookies: {
         getAll() {
           return request.cookies.getAll()
@@ -50,10 +68,19 @@ export async function updateSession(request: NextRequest) {
     !request.nextUrl.pathname.startsWith('/login') &&
     !request.nextUrl.pathname.startsWith('/auth')
   ) {
-    // no user, potentially respond by redirecting the user to the login page
-    const url = request.nextUrl.clone()
-    url.pathname = '/login'
-    return NextResponse.redirect(url)
+    if (process.env.AUTH_APP_URL == null) {
+      throw new Error('AUTH_APP_URL is not defined');
+    }
+
+    // Redirect to the auth app with current URL as redirectUri
+    const currentUrl = new URL(request.url)
+    const authAppUrl = new URL(process.env.AUTH_APP_URL)
+    authAppUrl.pathname = '/login'
+    
+    // Set the current URL as the redirectUri query parameter
+    authAppUrl.searchParams.set('redirectUri', currentUrl.toString())
+    
+    return NextResponse.redirect(authAppUrl)
   }
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is.

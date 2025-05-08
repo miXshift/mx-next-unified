@@ -12,12 +12,30 @@ export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
   })
-
+  
+  if (
+    process.env.COOKIE_OPTION_SAME_SITE != null &&
+    process.env.COOKIE_OPTION_SAME_SITE !== 'lax' &&
+    process.env.COOKIE_OPTION_SAME_SITE !== 'strict' &&
+    process.env.COOKIE_OPTION_SAME_SITE !== 'none' &&
+    process.env.COOKIE_OPTION_SAME_SITE !== 'yes'
+  ) {
+    throw new Error(
+      'COOKIE_OPTION_SAME_SITE must be "lax", "strict" or "none"'
+    )
+  }
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     {
+      cookieOptions: {
+        domain: process.env.COOKIE_OPTION_DOMAIN,
+        sameSite:
+          process.env.COOKIE_OPTION_SAME_SITE === 'yes'
+            ? true
+            : process.env.COOKIE_OPTION_SAME_SITE,
+      },
       cookies: {
         getAll() {
           return request.cookies.getAll()
