@@ -49,3 +49,5 @@ out
 .env
 .env.*
 !.env.example
+vite.config.*.timestamp*
+vitest.config.*.timestamp*

@@ -1,11 +1,12 @@
-import { login, signup } from './actions'
+import { login, signup } from './actions';
+import { Button } from '@mixshift/ui';
 
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: { redirectUri?: string }
+  searchParams: { redirectUri?: string };
 }) {
-  const { redirectUri }  = await searchParams;
+  const { redirectUri } = await searchParams;
 
   return (
     <form>
@@ -13,9 +14,11 @@ export default async function LoginPage({
       <input id="email" name="email" type="email" required />
       <label htmlFor="password">Password:</label>
       <input id="password" name="password" type="password" required />
-      {redirectUri && <input type="hidden" name="redirectUri" value={redirectUri} />}
+      {redirectUri && (
+        <input type="hidden" name="redirectUri" value={redirectUri} />
+      )}
       <button formAction={login}>Log in</button>
-      <button formAction={signup}>Sign up</button>
+      <Button formAction={signup}>Sign up</Button>
     </form>
-  )
+  );
 }
