@@ -1,5 +1,3 @@
-import { Button } from '@mixshift/web-ui';
-
 export default function Index() {
   /*
    * Replace the elements below with your own.
@@ -8,7 +6,6 @@ export default function Index() {
    */
   return (
     <div>
-      <Button>Primary Button</Button>
       <div className="wrapper">
         <div className="container">
           <div id="welcome">
