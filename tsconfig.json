@@ -8,6 +8,16 @@
     },
     {
       "path": "./apps/report-center"
+    },
+    {
+      "path": "./libs/web-ui"
     }
-  ]
+  ],
+  "ts-node": {
+    "compilerOptions": {
+      "module": "commonjs",
+      "moduleResolution": "node10",
+      "customConditions": null
+    }
+  }
 }
