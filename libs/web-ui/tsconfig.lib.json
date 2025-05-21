@@ -14,7 +14,12 @@
     "jsx": "react-jsx",
     "module": "esnext",
     "moduleResolution": "bundler",
-    "tsBuildInfoFile": "dist/tsconfig.lib.tsbuildinfo"
+    "tsBuildInfoFile": "dist/tsconfig.lib.tsbuildinfo",
+    "paths": {
+      "@utils/*": ["./src/lib/utils/*"],
+      "@ui/*": ["./src/lib/components/ui/*"],
+      "@constants/*": ["./src/lib/constants/*"]
+    }
   },
   "exclude": [
     "out-tsc",

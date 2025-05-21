@@ -1,8 +1,7 @@
 import '../src/global.css';
-import { Preview } from '@storybook/react';
 import { themes } from '@storybook/theming';
 
-const preview: Preview = {
+const preview = {
   parameters: {
     actions: { argTypesRegex: '^on[A-Z].*' },
     controls: {
@@ -55,10 +54,10 @@ const preview: Preview = {
   decorators: [
     (Story, context) => {
       const theme = context.globals.theme;
-      // Skip attempting to modify the DOM during SSR
+      document.body.className = theme === 'dark' ? 'dark' : '';
       return Story();
     },
   ],
 };
 
-export default preview;
+export default preview; 

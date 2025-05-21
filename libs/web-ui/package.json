@@ -17,5 +17,8 @@
   "files": [
     "dist",
     "!**/*.tsbuildinfo"
-  ]
+  ],
+  "devDependencies": {
+    "@storybook/theming": "^8.6.14"
+  }
 }

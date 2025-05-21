@@ -7,6 +7,13 @@ import * as path from 'path';
 export default defineConfig(() => ({
   root: __dirname,
   cacheDir: '../../node_modules/.vite/libs/web-ui',
+  resolve: {
+    alias: {
+      '@utils': path.resolve(__dirname, './src/lib/utils'),
+      '@ui': path.resolve(__dirname, './src/lib/components/ui'),
+      '@constants': path.resolve(__dirname, './src/lib/constants'),
+    },
+  },
   plugins: [
     react(),
     dts({
@@ -38,7 +45,35 @@ export default defineConfig(() => ({
     },
     rollupOptions: {
       // External packages that should not be bundled into your library.
-      external: ['react', 'react-dom', 'react/jsx-runtime'],
+      external: [
+        'react', 
+        'react-dom', 
+        'react/jsx-runtime',
+        'class-variance-authority',
+        'lucide-react',
+        'react-day-picker',
+        'react-hook-form',
+        '@radix-ui/react-slot',
+        '@radix-ui/react-checkbox',
+        '@radix-ui/react-dialog',
+        '@radix-ui/react-dropdown-menu',
+        '@radix-ui/react-label',
+        '@radix-ui/react-popover',
+        '@radix-ui/react-progress',
+        '@radix-ui/react-radio-group',
+        '@radix-ui/react-select',
+        '@radix-ui/react-separator',
+        '@radix-ui/react-switch',
+        '@radix-ui/react-toast',
+        '@radix-ui/react-tooltip',
+        '@radix-ui/react-avatar',
+        '@radix-ui/react-collapsible',
+        'clsx',
+        'tailwind-merge',
+        'date-fns',
+        'next-themes',
+        'next/image'
+      ],
     },
   },
   test: {
