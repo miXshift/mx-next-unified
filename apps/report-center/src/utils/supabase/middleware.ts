@@ -1,5 +1,5 @@
-import { createServerClient } from '@supabase/ssr'
-import { NextResponse, type NextRequest } from 'next/server'
+import { createServerClient } from '@supabase/ssr';
+import { NextResponse, type NextRequest } from 'next/server';
 
 export async function updateSession(request: NextRequest) {
   if (process.env.NEXT_PUBLIC_SUPABASE_URL == null) {
@@ -11,7 +11,7 @@ export async function updateSession(request: NextRequest) {
 
   let supabaseResponse = NextResponse.next({
     request,
-  })
+  });
 
   if (
     process.env.COOKIE_OPTION_SAME_SITE != null &&
@@ -22,7 +22,7 @@ export async function updateSession(request: NextRequest) {
   ) {
     throw new Error(
       'COOKIE_OPTION_SAME_SITE must be "lax", "strict" or "none"'
-    )
+    );
   }
 
   const supabase = createServerClient(
@@ -40,20 +40,22 @@ export async function updateSession(request: NextRequest) {
       },
       cookies: {
         getAll() {
-          return request.cookies.getAll()
+          return request.cookies.getAll();
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => request.cookies.set(name, value))
+          cookiesToSet.forEach(({ name, value, options }) =>
+            request.cookies.set(name, value)
+          );
           supabaseResponse = NextResponse.next({
             request,
-          })
+          });
           cookiesToSet.forEach(({ name, value, options }) =>
             supabaseResponse.cookies.set(name, value, options)
-          )
+          );
         },
       },
     }
-  )
+  );
 
   // Do not run code between createServerClient and
   // supabase.auth.getUser(). A simple mistake could make it very hard to debug
@@ -63,26 +65,29 @@ export async function updateSession(request: NextRequest) {
 
   const {
     data: { user },
-  } = await supabase.auth.getUser()
+  } = await supabase.auth.getUser();
 
-  if (
-    !user &&
-    !request.nextUrl.pathname.startsWith('/login') &&
-    !request.nextUrl.pathname.startsWith('/auth')
-  ) {
+  if (!user) {
     if (process.env.AUTH_APP_URL == null) {
       throw new Error('AUTH_APP_URL is not defined');
     }
 
-    // Redirect to the auth app with current URL as redirectUri
-    const currentUrl = new URL(request.url)
-    const authAppUrl = new URL(process.env.AUTH_APP_URL)
-    authAppUrl.pathname = '/login'
-    
-    // Set the current URL as the redirectUri query parameter
-    authAppUrl.searchParams.set('redirectUri', currentUrl.toString())
-    
-    return NextResponse.redirect(authAppUrl)
+    const currentUrl = new URL(request.url);
+    const hostname =
+      request.headers.get('x-forwarded-host') ||
+      request.headers.get('host') ||
+      currentUrl.hostname;
+    const protocol =
+      request.headers.get('x-forwarded-proto') ||
+      currentUrl.protocol.replace(':', '');
+    const fullUrl = `${protocol}://${hostname}${request.nextUrl.pathname}${request.nextUrl.search}`;
+
+    const authAppUrl = new URL(process.env.AUTH_APP_URL);
+    authAppUrl.pathname = '/login';
+
+    authAppUrl.searchParams.set('redirectUri', fullUrl);
+
+    return NextResponse.redirect(authAppUrl);
   }
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is.
@@ -98,5 +103,5 @@ export async function updateSession(request: NextRequest) {
   // If this is not done, you may be causing the browser and server to go out
   // of sync and terminate the user's session prematurely!
 
-  return supabaseResponse
+  return supabaseResponse;
 }
