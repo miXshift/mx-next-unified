@@ -1,5 +1,6 @@
 import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
+import { getSessionAccessToken, setSharedAuthCookieInResponse } from '@/utils/shared-auth';
 
 export async function updateSession(request: NextRequest) {
   if (process.env.NEXT_PUBLIC_SUPABASE_URL == null) {
@@ -77,6 +78,14 @@ export async function updateSession(request: NextRequest) {
     const url = request.nextUrl.clone();
     url.pathname = '/login';
     return NextResponse.redirect(url);
+  }
+  
+  // If user is authenticated, ensure the shared auth cookie is set
+  if (user) {
+    const accessToken = await getSessionAccessToken();
+    if (accessToken) {
+      supabaseResponse = setSharedAuthCookieInResponse(supabaseResponse, accessToken);
+    }
   }
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is.

@@ -1,5 +1,6 @@
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
+import { getSharedAuthCookie, getJwtSecret } from '../shared-auth';
 
 export async function createClient() {
   if (process.env.NEXT_PUBLIC_SUPABASE_URL == null) {
@@ -10,6 +11,9 @@ export async function createClient() {
   }
 
   const cookieStore = await cookies();
+  
+  // Get the shared auth token from cookie if it exists
+  const sharedAuthToken = await getSharedAuthCookie();
   
   if (
     process.env.COOKIE_OPTION_SAME_SITE != null &&
@@ -23,7 +27,7 @@ export async function createClient() {
     );
   }
 
-  return createServerClient(
+  const client = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     {
@@ -54,4 +58,19 @@ export async function createClient() {
       },
     }
   );
+  
+  // If we have a shared auth token, set the session with JWT
+  if (sharedAuthToken) {
+    try {
+      // Set the auth using the shared JWT token
+      await client.auth.setSession({
+        access_token: sharedAuthToken,
+        refresh_token: '', // Not needed since we're using JWT auth
+      });
+    } catch (error) {
+      console.error('Error setting session with shared auth token:', error);
+    }
+  }
+  
+  return client;
 }

@@ -1,5 +1,6 @@
 import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
+import { getSharedAuthCookieFromRequest } from '../shared-auth';
 
 export async function updateSession(request: NextRequest) {
   if (process.env.NEXT_PUBLIC_SUPABASE_URL == null) {
@@ -12,6 +13,9 @@ export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
   });
+  
+  // Get the shared auth token from the request cookies
+  const sharedAuthToken = getSharedAuthCookieFromRequest(request);
 
   if (
     process.env.COOKIE_OPTION_SAME_SITE != null &&
@@ -56,6 +60,19 @@ export async function updateSession(request: NextRequest) {
       },
     }
   );
+  
+  // If we have a shared auth token, set the session with JWT
+  if (sharedAuthToken) {
+    try {
+      // Set the auth using the shared JWT token
+      await supabase.auth.setSession({
+        access_token: sharedAuthToken,
+        refresh_token: '', // Not needed since we're using JWT auth
+      });
+    } catch (error) {
+      console.error('Error setting session with shared auth token in middleware:', error);
+    }
+  }
 
   // Do not run code between createServerClient and
   // supabase.auth.getUser(). A simple mistake could make it very hard to debug
@@ -72,6 +89,7 @@ export async function updateSession(request: NextRequest) {
       throw new Error('AUTH_APP_URL is not defined');
     }
 
+    // No authenticated user and no shared token, redirect to auth app for login
     const currentUrl = new URL(request.url);
     const hostname =
       request.headers.get('x-forwarded-host') ||
@@ -85,6 +103,7 @@ export async function updateSession(request: NextRequest) {
     const authAppUrl = new URL(process.env.AUTH_APP_URL);
     authAppUrl.pathname = '/login';
 
+    // Pass current URL as redirect URI to return after successful authentication
     authAppUrl.searchParams.set('redirectUri', fullUrl);
 
     return NextResponse.redirect(authAppUrl);

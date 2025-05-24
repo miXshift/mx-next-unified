@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 import { createClient } from '@/utils/supabase/server';
+import { getSessionAccessToken, setSharedAuthCookie } from '@/utils/shared-auth';
 
 export async function login(formData: FormData) {
   const supabase = await createClient();
@@ -26,6 +27,12 @@ export async function login(formData: FormData) {
     redirect('/error');
   }
 
+  // Set the shared auth cookie for cross-app authentication
+  const accessToken = await getSessionAccessToken();
+  if (accessToken) {
+    await setSharedAuthCookie(accessToken);
+  }
+
   revalidatePath('/', 'layout');
   redirect(redirectUri);
 }
@@ -46,6 +53,12 @@ export async function signup(formData: FormData) {
 
   if (error) {
     redirect('/error');
+  }
+
+  // Set the shared auth cookie for cross-app authentication
+  const accessToken = await getSessionAccessToken();
+  if (accessToken) {
+    await setSharedAuthCookie(accessToken);
   }
 
   revalidatePath('/', 'layout');
