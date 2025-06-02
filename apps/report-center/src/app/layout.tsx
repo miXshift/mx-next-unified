@@ -1,5 +1,4 @@
 import './global.css';
-import '../../../../libs/web-ui/src/global.css';
 
 export const metadata = {
   title: 'Welcome to report-center',

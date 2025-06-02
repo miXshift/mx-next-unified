@@ -4,7 +4,11 @@
     "outDir": "out-tsc/storybook",
     "module": "esnext",
     "moduleResolution": "bundler",
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "paths": {
+      "@mixshift/web-ui": ["libs/web-ui/src/index.ts"],
+      "@utils/*": ["libs/web-ui/src/lib/utils/*"]
+    }
   },
   "exclude": [
     "src/**/*.spec.ts",
