@@ -17,7 +17,7 @@ This is the authentication service for the MixShift platform. It provides:
 ### Core Functionality
 
 - User registration and login
-- Password recovery
+- Password reset/recovery flow
 - Session management
 - Authentication API endpoints
 - Protected routes
@@ -35,25 +35,22 @@ This is the authentication service for the MixShift platform. It provides:
 2. Configure OAuth providers:
    - See [Google OAuth Setup](./GOOGLE_OAUTH_SETUP.md) for Google login configuration
 
-### Testing Authentication
-
-You can test the authentication configuration using the following endpoints:
-
-- `/api/test-google-auth` - Tests if Google OAuth is properly configured
-
 ## Auth Flow
 
-1. Users visit the `/login` page
+1. Users visit the `/auth/login` page
 2. They can choose to:
    - Login with email/password
    - Sign up with email/password
    - Continue with Google
+   - Reset password if forgotten
 3. After successful authentication, they are redirected to their requested destination or the home page
 
 ## Development
 
 ### Key Files
 
-- `/src/app/login/` - Login page and authentication actions
-- `/src/app/auth/callback/` - OAuth callback handler
+- `/src/app/auth/login/` - Login page and authentication actions
+- `/src/app/auth/reset-password/` - Password reset request page
+- `/src/app/auth/confirm/` - OAuth and Email confirmation handler (signup/reset password)
+- `/src/app/update-password/` - Password update page
 - `/src/utils/supabase/` - Supabase client configuration

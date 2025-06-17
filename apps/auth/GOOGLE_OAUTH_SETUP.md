@@ -12,11 +12,9 @@ To enable Google login in the auth app, follow these steps:
 6. For "Application type", select "Web application"
 7. Add a name for your OAuth client
 8. Add authorized JavaScript origins:
-   - For development: `http://auth.mixshift.local:3000`
+   - For development: `http://auth.mixshift-local.io:3000`
    - For production: Add your production domain
-9. Add authorized redirect URIs:
-   - For development: `http://auth.mixshift.local:3000/auth/callback`
-   - For production: Add your production domain with the same path
+9. Add authorized redirect URIs from Supabase
 10. Click "Create" and note down your Client ID and Client Secret
 
 ## 2. Configure Supabase Authentication

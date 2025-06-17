@@ -5,7 +5,7 @@
 For local development, you need to set up environment variables:
 
 ```sh
-# Copy the example environment file
+# Copy the example environment file and follow the instructions in it
 cp .env.example .env
 
 # Edit the .env file to add your specific configuration
