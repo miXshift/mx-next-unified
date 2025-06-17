@@ -23,7 +23,7 @@ type ActionState = {
 
 export async function login(
   prevState: ActionState,
-  formData: FormData
+  formData: FormData,
 ): Promise<ActionState> {
   const validation = loginFormSchema.safeParse({
     email: formData.get('email'),
@@ -71,7 +71,7 @@ export async function login(
 
 export async function signup(
   prevState: ActionState,
-  formData: FormData
+  formData: FormData,
 ): Promise<ActionState> {
   const validation = loginFormSchema.safeParse({
     email: formData.get('email'),
@@ -115,7 +115,7 @@ export async function signup(
 
 export async function signInWithGoogle(
   prevState: ActionState,
-  formData: FormData
+  formData: FormData,
 ): Promise<ActionState> {
   const next = nextschema.parse(formData.get('next') ?? undefined);
   const redirectTo = getAuthConfirmUrl(next);

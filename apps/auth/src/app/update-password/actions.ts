@@ -23,7 +23,7 @@ const updatePasswordFormSchema = z
 
 export async function updatePassword(
   prevState: ActionState,
-  formData: FormData
+  formData: FormData,
 ): Promise<ActionState> {
   const validation = updatePasswordFormSchema.safeParse({
     password: formData.get('password'),

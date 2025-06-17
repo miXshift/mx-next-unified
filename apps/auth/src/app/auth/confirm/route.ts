@@ -13,7 +13,5 @@ export async function GET(req: NextRequest) {
   }
 
   const next = searchParams.get('next') ?? '/';
-  return NextResponse.redirect(
-    new URL(decodeURIComponent(next), req.url)
-  );
+  return NextResponse.redirect(new URL(decodeURIComponent(next), req.url));
 }

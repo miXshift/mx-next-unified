@@ -7,7 +7,7 @@ import Link from 'next/link';
 export default function ResetPasswordPage() {
   const [resetState, resetAction, resetPending] = useActionState(
     requestPasswordReset,
-    {}
+    {},
   );
 
   return (

@@ -18,7 +18,7 @@ const resetPasswordFormSchema = z.object({
 
 export async function requestPasswordReset(
   prevState: ActionState,
-  formData: FormData
+  formData: FormData,
 ): Promise<ActionState> {
   const validation = resetPasswordFormSchema.safeParse({
     email: formData.get('email'),
@@ -38,7 +38,7 @@ export async function requestPasswordReset(
   const supabase = await createSupabaseClient();
   const { error } = await supabase.auth.resetPasswordForEmail(
     validation.data.email,
-    { redirectTo }
+    { redirectTo },
   );
 
   if (error) {
