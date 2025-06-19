@@ -2,6 +2,9 @@
   "name": "@mixshift/report-center",
   "version": "0.0.1",
   "private": true,
+  "scripts": {
+    "vercel-build": "nx run auth:build"
+  },
   "nx": {
     "name": "report-center"
   },

@@ -2,6 +2,9 @@
   "name": "@mixshift/auth",
   "version": "0.0.1",
   "private": true,
+  "scripts": {
+    "vercel-build": "nx run auth:build"
+  },
   "dependencies": {
     "@mixshift/shared-cookie-utils": "workspace:*",
     "@supabase/ssr": "^0.6.1",
