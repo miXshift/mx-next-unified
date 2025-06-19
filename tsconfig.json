@@ -8,6 +8,9 @@
     },
     {
       "path": "./apps/report-center"
+    },
+    {
+      "path": "./libs/utils"
     }
   ]
 }
