@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "vercel-build": "nx run auth:build"
+    "vercel-build": "nx run report-center:build"
   },
   "nx": {
     "name": "report-center"
