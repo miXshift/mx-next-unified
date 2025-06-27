@@ -77,7 +77,7 @@ export const DatePicker: Story = {
             id="date"
             type="text"
             readOnly
-            value={date?.toLocaleDateString() || ""}
+            value={date?.toLocaleDateString() || ''}
             className="h-10 rounded-md border border-input px-3 py-2 text-sm focus:outline-none"
           />
         </div>
@@ -97,10 +97,14 @@ export const Disabled: Story = {
   render: function Render() {
     const today = new Date();
     const disabledDays = [
-      { from: new Date(today.getFullYear(), today.getMonth(), 1), 
-        to: new Date(today.getFullYear(), today.getMonth(), 5) },
-      { from: new Date(today.getFullYear(), today.getMonth(), 15), 
-        to: new Date(today.getFullYear(), today.getMonth(), 18) },
+      {
+        from: new Date(today.getFullYear(), today.getMonth(), 1),
+        to: new Date(today.getFullYear(), today.getMonth(), 5),
+      },
+      {
+        from: new Date(today.getFullYear(), today.getMonth(), 15),
+        to: new Date(today.getFullYear(), today.getMonth(), 18),
+      },
       new Date(today.getFullYear(), today.getMonth(), 25),
     ];
 
@@ -127,8 +131,8 @@ export const CustomStyles: Story = {
         onSelect={setDate}
         className="rounded-md border shadow-xl"
         classNames={{
-          day_selected: "bg-blue-500 text-white hover:bg-blue-600",
-          day_today: "bg-amber-100 text-amber-700",
+          day_selected: 'bg-blue-500 text-white hover:bg-blue-600',
+          day_today: 'bg-amber-100 text-amber-700',
         }}
       />
     );
@@ -148,4 +152,4 @@ export const WeekStartsOnMonday: Story = {
       />
     );
   },
-}; 
+};

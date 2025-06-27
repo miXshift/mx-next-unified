@@ -44,7 +44,10 @@ export const Basic: Story = {
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <label htmlFor="username" className="text-right text-sm font-medium">
+            <label
+              htmlFor="username"
+              className="text-right text-sm font-medium"
+            >
               Username
             </label>
             <input
@@ -81,7 +84,7 @@ export const WithDifferentSizes: Story = {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      
+
       <Dialog>
         <DialogTrigger asChild>
           <Button variant="outline">Large Dialog</Button>
@@ -95,20 +98,22 @@ export const WithDifferentSizes: Story = {
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <p>
-              This dialog has more content than the small one. You can add forms,
-              images, or any other content you need.
+              This dialog has more content than the small one. You can add
+              forms, images, or any other content you need.
             </p>
             <p>
-              Dialog components are useful for gathering user input or displaying
-              information that requires immediate attention.
+              Dialog components are useful for gathering user input or
+              displaying information that requires immediate attention.
             </p>
           </div>
           <DialogFooter>
-            <Button variant="outline" className="mr-2">Cancel</Button>
+            <Button variant="outline" className="mr-2">
+              Cancel
+            </Button>
             <Button type="submit">Confirm</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>
   ),
-}; 
+};

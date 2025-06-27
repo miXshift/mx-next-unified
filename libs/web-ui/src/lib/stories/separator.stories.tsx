@@ -14,7 +14,9 @@ export const Horizontal: Story = {
   render: () => (
     <div>
       <div className="space-y-1">
-        <h4 className="text-sm font-medium leading-none">Horizontal Separator</h4>
+        <h4 className="text-sm font-medium leading-none">
+          Horizontal Separator
+        </h4>
         <p className="text-sm text-muted-foreground">
           A horizontal separator line to divide content sections.
         </p>
@@ -72,17 +74,21 @@ export const WithLabel: Story = {
       </div>
       <div className="space-y-4">
         <div className="grid gap-2">
-          <label htmlFor="name" className="text-sm font-medium">Name</label>
-          <input 
-            id="name" 
+          <label htmlFor="name" className="text-sm font-medium">
+            Name
+          </label>
+          <input
+            id="name"
             className="rounded-md border border-input px-3 py-2 text-sm"
             defaultValue="John Doe"
           />
         </div>
         <div className="grid gap-2">
-          <label htmlFor="email" className="text-sm font-medium">Email</label>
-          <input 
-            id="email" 
+          <label htmlFor="email" className="text-sm font-medium">
+            Email
+          </label>
+          <input
+            id="email"
             type="email"
             className="rounded-md border border-input px-3 py-2 text-sm"
             defaultValue="john.doe@example.com"
@@ -101,9 +107,11 @@ export const WithLabel: Story = {
       </div>
       <div className="space-y-4">
         <div className="grid gap-2">
-          <label htmlFor="password" className="text-sm font-medium">Password</label>
-          <input 
-            id="password" 
+          <label htmlFor="password" className="text-sm font-medium">
+            Password
+          </label>
+          <input
+            id="password"
             type="password"
             className="rounded-md border border-input px-3 py-2 text-sm"
             defaultValue="********"
@@ -112,4 +120,4 @@ export const WithLabel: Story = {
       </div>
     </div>
   ),
-}; 
+};

@@ -45,7 +45,10 @@ export const Right: Story = {
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <label htmlFor="username" className="text-right text-sm font-medium">
+            <label
+              htmlFor="username"
+              className="text-right text-sm font-medium"
+            >
               Username
             </label>
             <input
@@ -79,14 +82,24 @@ export const Left: Story = {
           </SheetDescription>
         </SheetHeader>
         <div className="flex flex-col gap-2 py-4">
-          <Button variant="ghost" className="justify-start">Dashboard</Button>
-          <Button variant="ghost" className="justify-start">Projects</Button>
-          <Button variant="ghost" className="justify-start">Calendar</Button>
-          <Button variant="ghost" className="justify-start">Settings</Button>
+          <Button variant="ghost" className="justify-start">
+            Dashboard
+          </Button>
+          <Button variant="ghost" className="justify-start">
+            Projects
+          </Button>
+          <Button variant="ghost" className="justify-start">
+            Calendar
+          </Button>
+          <Button variant="ghost" className="justify-start">
+            Settings
+          </Button>
         </div>
         <SheetFooter className="flex-col items-start">
           <SheetClose asChild>
-            <Button variant="outline" className="w-full">Close</Button>
+            <Button variant="outline" className="w-full">
+              Close
+            </Button>
           </SheetClose>
         </SheetFooter>
       </SheetContent>
@@ -103,22 +116,26 @@ export const Top: Story = {
       <SheetContent side="top" className="h-1/3">
         <SheetHeader>
           <SheetTitle>Notifications</SheetTitle>
-          <SheetDescription>
-            You have 3 unread notifications.
-          </SheetDescription>
+          <SheetDescription>You have 3 unread notifications.</SheetDescription>
         </SheetHeader>
         <div className="my-4 space-y-4">
           <div className="rounded-lg border p-4">
             <h4 className="font-medium">New message from Jane</h4>
-            <p className="text-sm text-muted-foreground">Hey, can we meet today to discuss the project?</p>
+            <p className="text-sm text-muted-foreground">
+              Hey, can we meet today to discuss the project?
+            </p>
           </div>
           <div className="rounded-lg border p-4">
             <h4 className="font-medium">Task reminder: Project deadline</h4>
-            <p className="text-sm text-muted-foreground">Your project is due tomorrow at 5 PM.</p>
+            <p className="text-sm text-muted-foreground">
+              Your project is due tomorrow at 5 PM.
+            </p>
           </div>
           <div className="rounded-lg border p-4">
             <h4 className="font-medium">System update available</h4>
-            <p className="text-sm text-muted-foreground">A new version is available for installation.</p>
+            <p className="text-sm text-muted-foreground">
+              A new version is available for installation.
+            </p>
           </div>
         </div>
         <SheetFooter>
@@ -140,9 +157,7 @@ export const Bottom: Story = {
       <SheetContent side="bottom" className="h-1/3">
         <SheetHeader>
           <SheetTitle>Quick Actions</SheetTitle>
-          <SheetDescription>
-            Choose an action to perform.
-          </SheetDescription>
+          <SheetDescription>Choose an action to perform.</SheetDescription>
         </SheetHeader>
         <div className="flex justify-center gap-4 py-4">
           <div className="flex flex-col items-center">
@@ -237,10 +252,12 @@ export const Bottom: Story = {
         </div>
         <SheetFooter>
           <SheetClose asChild>
-            <Button variant="outline" className="w-full">Cancel</Button>
+            <Button variant="outline" className="w-full">
+              Cancel
+            </Button>
           </SheetClose>
         </SheetFooter>
       </SheetContent>
     </Sheet>
   ),
-}; 
+};

@@ -115,7 +115,8 @@ export const WithAction: Story = {
         <div>
           <AlertTitle>Updates Available</AlertTitle>
           <AlertDescription>
-            A new software update is available. Update now to get the latest features.
+            A new software update is available. Update now to get the latest
+            features.
           </AlertDescription>
         </div>
         <button className="bg-primary text-primary-foreground px-3 py-1 rounded-md text-xs">
@@ -124,4 +125,4 @@ export const WithAction: Story = {
       </div>
     </Alert>
   ),
-}; 
+};

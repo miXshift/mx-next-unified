@@ -107,14 +107,25 @@ export const UseCases: Story = {
           <Badge variant="destructive">Cancelled</Badge>
         </div>
       </div>
-      
+
       <div className="space-y-2">
         <h3 className="text-lg font-medium">Feature Labels</h3>
         <div className="flex flex-wrap gap-2">
-          <Badge variant="default" className="bg-green-500 hover:bg-green-600">New</Badge>
-          <Badge variant="default" className="bg-purple-500 hover:bg-purple-600">Pro</Badge>
-          <Badge variant="default" className="bg-blue-500 hover:bg-blue-600">Updated</Badge>
-          <Badge variant="default" className="bg-amber-500 hover:bg-amber-600">Beta</Badge>
+          <Badge variant="default" className="bg-green-500 hover:bg-green-600">
+            New
+          </Badge>
+          <Badge
+            variant="default"
+            className="bg-purple-500 hover:bg-purple-600"
+          >
+            Pro
+          </Badge>
+          <Badge variant="default" className="bg-blue-500 hover:bg-blue-600">
+            Updated
+          </Badge>
+          <Badge variant="default" className="bg-amber-500 hover:bg-amber-600">
+            Beta
+          </Badge>
         </div>
       </div>
 
@@ -140,7 +151,7 @@ export const UseCases: Story = {
             </button>
             <Badge className="absolute -top-1 -right-1 px-1.5">5</Badge>
           </div>
-          
+
           <div className="relative">
             <button className="p-2 rounded-full bg-muted">
               <svg
@@ -159,7 +170,7 @@ export const UseCases: Story = {
             </button>
             <Badge className="absolute -top-1 -right-1 px-1.5">3</Badge>
           </div>
-          
+
           <div className="relative">
             <button className="p-2 rounded-full bg-muted">
               <svg
@@ -183,4 +194,4 @@ export const UseCases: Story = {
       </div>
     </div>
   ),
-}; 
+};

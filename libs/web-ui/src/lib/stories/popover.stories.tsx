@@ -105,8 +105,8 @@ export const ColorPicker: Story = {
   render: () => (
     <Popover>
       <PopoverTrigger asChild>
-        <Button 
-          variant="outline" 
+        <Button
+          variant="outline"
           className="w-[220px] justify-start text-left font-normal"
         >
           <div className="flex items-center gap-2">
@@ -124,16 +124,25 @@ export const ColorPicker: Story = {
             </p>
           </div>
           <div className="grid grid-cols-5 gap-2">
-            {['bg-red-500', 'bg-yellow-500', 'bg-green-500', 'bg-blue-500', 'bg-purple-500',
-              'bg-pink-500', 'bg-indigo-500', 'bg-emerald-500', 'bg-amber-500', 'bg-cyan-500']
-              .map((color, index) => (
-                <div 
-                  key={index}
-                  className={`h-8 w-8 cursor-pointer rounded-full ${color}`}
-                  role="button"
-                  tabIndex={0}
-                />
-              ))}
+            {[
+              'bg-red-500',
+              'bg-yellow-500',
+              'bg-green-500',
+              'bg-blue-500',
+              'bg-purple-500',
+              'bg-pink-500',
+              'bg-indigo-500',
+              'bg-emerald-500',
+              'bg-amber-500',
+              'bg-cyan-500',
+            ].map((color, index) => (
+              <div
+                key={index}
+                className={`h-8 w-8 cursor-pointer rounded-full ${color}`}
+                role="button"
+                tabIndex={0}
+              />
+            ))}
           </div>
           <div className="flex items-center gap-2">
             <div className="h-8 w-8 rounded-full bg-primary"></div>
@@ -174,18 +183,34 @@ export const DatePicker: Story = {
         <div className="rounded-md border shadow">
           <div className="p-2">
             <div className="grid grid-cols-7 gap-2">
-              <div className="text-center text-xs text-muted-foreground">Su</div>
-              <div className="text-center text-xs text-muted-foreground">Mo</div>
-              <div className="text-center text-xs text-muted-foreground">Tu</div>
-              <div className="text-center text-xs text-muted-foreground">We</div>
-              <div className="text-center text-xs text-muted-foreground">Th</div>
-              <div className="text-center text-xs text-muted-foreground">Fr</div>
-              <div className="text-center text-xs text-muted-foreground">Sa</div>
+              <div className="text-center text-xs text-muted-foreground">
+                Su
+              </div>
+              <div className="text-center text-xs text-muted-foreground">
+                Mo
+              </div>
+              <div className="text-center text-xs text-muted-foreground">
+                Tu
+              </div>
+              <div className="text-center text-xs text-muted-foreground">
+                We
+              </div>
+              <div className="text-center text-xs text-muted-foreground">
+                Th
+              </div>
+              <div className="text-center text-xs text-muted-foreground">
+                Fr
+              </div>
+              <div className="text-center text-xs text-muted-foreground">
+                Sa
+              </div>
               {[...Array(31)].map((_, i) => (
-                <div 
-                  key={i} 
+                <div
+                  key={i}
                   className={`grid h-8 w-8 place-content-center rounded text-sm ${
-                    i === 14 ? 'bg-primary text-primary-foreground' : 'hover:bg-muted'
+                    i === 14
+                      ? 'bg-primary text-primary-foreground'
+                      : 'hover:bg-muted'
                   }`}
                   role="button"
                   tabIndex={0}
@@ -196,10 +221,12 @@ export const DatePicker: Story = {
             </div>
           </div>
           <div className="border-t p-2">
-            <Button variant="outline" className="w-full justify-center text-sm">Today</Button>
+            <Button variant="outline" className="w-full justify-center text-sm">
+              Today
+            </Button>
           </div>
         </div>
       </PopoverContent>
     </Popover>
   ),
-}; 
+};

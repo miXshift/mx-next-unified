@@ -35,7 +35,7 @@ const preview: Preview = {
       story: {
         inline: false,
       },
-    }
+    },
   },
   globalTypes: {
     theme: {
@@ -46,7 +46,7 @@ const preview: Preview = {
         icon: 'circlehollow',
         items: [
           { value: 'light', icon: 'sun', title: 'Light' },
-          { value: 'dark', icon: 'moon', title: 'Dark' }
+          { value: 'dark', icon: 'moon', title: 'Dark' },
         ],
         showName: true,
       },

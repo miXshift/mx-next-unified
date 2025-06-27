@@ -77,7 +77,9 @@ export const Pricing: Story = {
       <Card className="w-[300px]">
         <CardHeader>
           <CardTitle>Basic Plan</CardTitle>
-          <CardDescription>For individuals just getting started</CardDescription>
+          <CardDescription>
+            For individuals just getting started
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="text-center">
@@ -213,4 +215,4 @@ export const Pricing: Story = {
       </Card>
     </div>
   ),
-}; 
+};

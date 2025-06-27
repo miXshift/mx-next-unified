@@ -23,25 +23,25 @@ import { cn } from '../../utils/cn';
 // Inline the useIsMobile hook
 function useIsMobile() {
   const [isMobile, setIsMobile] = React.useState(false);
-  
+
   React.useEffect(() => {
     // Only run on the client side
     if (typeof window === 'undefined') return;
-    
+
     const checkIfMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     // Initial check
     checkIfMobile();
-    
+
     // Add event listener
     window.addEventListener('resize', checkIfMobile);
-    
+
     // Cleanup
     return () => window.removeEventListener('resize', checkIfMobile);
   }, []);
-  
+
   return isMobile;
 }
 
@@ -117,7 +117,9 @@ const SidebarProvider = React.forwardRef<
 
     // Helper to toggle the sidebar.
     const toggleSidebar = React.useCallback(() => {
-      return isMobile ? setOpenMobile(open => !open) : setOpen(open => !open);
+      return isMobile
+        ? setOpenMobile((open) => !open)
+        : setOpen((open) => !open);
     }, [isMobile, setOpen, setOpenMobile]);
 
     // Adds a keyboard shortcut to toggle the sidebar.
@@ -296,7 +298,7 @@ const SidebarTrigger = React.forwardRef<
       variant="ghost"
       size="icon"
       className={cn('h-7 w-7', className)}
-      onClick={event => {
+      onClick={(event) => {
         onClick?.(event);
         toggleSidebar();
       }}

@@ -127,4 +127,4 @@ export const AvatarGroup: Story = {
       </Avatar>
     </div>
   ),
-}; 
+};

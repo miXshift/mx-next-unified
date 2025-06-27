@@ -47,7 +47,7 @@ export const Positions: Story = {
           <p>Top tooltip</p>
         </TooltipContent>
       </Tooltip>
-      
+
       <Tooltip>
         <TooltipTrigger asChild>
           <Button variant="outline">Right</Button>
@@ -56,7 +56,7 @@ export const Positions: Story = {
           <p>Right tooltip</p>
         </TooltipContent>
       </Tooltip>
-      
+
       <Tooltip>
         <TooltipTrigger asChild>
           <Button variant="outline">Bottom</Button>
@@ -65,7 +65,7 @@ export const Positions: Story = {
           <p>Bottom tooltip</p>
         </TooltipContent>
       </Tooltip>
-      
+
       <Tooltip>
         <TooltipTrigger asChild>
           <Button variant="outline">Left</Button>
@@ -105,7 +105,7 @@ export const WithIcons: Story = {
           <p>Add to favorites</p>
         </TooltipContent>
       </Tooltip>
-      
+
       <Tooltip>
         <TooltipTrigger asChild>
           <Button size="icon" variant="outline">
@@ -132,7 +132,7 @@ export const WithIcons: Story = {
           <p>Additional information</p>
         </TooltipContent>
       </Tooltip>
-      
+
       <Tooltip>
         <TooltipTrigger asChild>
           <Button size="icon" variant="outline">
@@ -216,4 +216,4 @@ export const RichContent: Story = {
       </TooltipContent>
     </Tooltip>
   ),
-}; 
+};

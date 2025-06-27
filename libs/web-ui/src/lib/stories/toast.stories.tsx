@@ -68,7 +68,8 @@ export const WithAction: Story = {
             <div className="grid gap-1">
               <ToastTitle>Undo Changes</ToastTitle>
               <ToastDescription>
-                Your changes have been saved. You can undo them within 5 seconds.
+                Your changes have been saved. You can undo them within 5
+                seconds.
               </ToastDescription>
             </div>
             <ToastAction altText="Undo" onClick={() => alert('Undo clicked')}>
@@ -104,7 +105,10 @@ export const Destructive: Story = {
                 There was a problem with your request. Please try again.
               </ToastDescription>
             </div>
-            <ToastAction altText="Try again" onClick={() => alert('Try again clicked')}>
+            <ToastAction
+              altText="Try again"
+              onClick={() => alert('Try again clicked')}
+            >
               Try again
             </ToastAction>
           </Toast>
@@ -119,22 +123,22 @@ export const MultiplePriorities: Story = {
   render: () => {
     const [defaultOpen, setDefaultOpen] = React.useState(false);
     const [destructiveOpen, setDestructiveOpen] = React.useState(false);
-    
+
     const showDefault = () => {
       setDefaultOpen(true);
       setTimeout(() => setDefaultOpen(false), 5000);
     };
-    
+
     const showDestructive = () => {
       setDestructiveOpen(true);
       setTimeout(() => setDestructiveOpen(false), 5000);
     };
-    
+
     const showBoth = () => {
       showDefault();
       setTimeout(showDestructive, 1000);
     };
-    
+
     return (
       <div className="p-10 space-x-4">
         <Button variant="outline" onClick={showDefault}>
@@ -143,22 +147,25 @@ export const MultiplePriorities: Story = {
         <Button variant="destructive" onClick={showDestructive}>
           Error Toast
         </Button>
-        <Button onClick={showBoth}>
-          Show Both
-        </Button>
+        <Button onClick={showBoth}>Show Both</Button>
         <ToastProvider duration={5000}>
           <Toast open={defaultOpen} onOpenChange={setDefaultOpen}>
             <ToastTitle>Success</ToastTitle>
-            <ToastDescription>
-              Your changes have been saved.
-            </ToastDescription>
+            <ToastDescription>Your changes have been saved.</ToastDescription>
           </Toast>
-          <Toast variant="destructive" open={destructiveOpen} onOpenChange={setDestructiveOpen}>
+          <Toast
+            variant="destructive"
+            open={destructiveOpen}
+            onOpenChange={setDestructiveOpen}
+          >
             <ToastTitle>Error</ToastTitle>
             <ToastDescription>
               There was a problem with your request.
             </ToastDescription>
-            <ToastAction altText="Try again" onClick={() => alert('Try again clicked')}>
+            <ToastAction
+              altText="Try again"
+              onClick={() => alert('Try again clicked')}
+            >
               Try again
             </ToastAction>
           </Toast>
@@ -167,4 +174,4 @@ export const MultiplePriorities: Story = {
       </div>
     );
   },
-}; 
+};

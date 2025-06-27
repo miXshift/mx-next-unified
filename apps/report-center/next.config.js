@@ -18,7 +18,10 @@ const nextConfig = {
       ...config.resolve.alias,
       '@utils': path.resolve(__dirname, '../../libs/web-ui/src/lib/utils'),
       '@ui': path.resolve(__dirname, '../../libs/web-ui/src/lib/components/ui'),
-      '@constants': path.resolve(__dirname, '../../libs/web-ui/src/lib/constants'),
+      '@constants': path.resolve(
+        __dirname,
+        '../../libs/web-ui/src/lib/constants'
+      ),
     };
     return config;
   },

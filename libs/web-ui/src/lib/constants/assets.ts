@@ -8,4 +8,4 @@ export const ASSETS = {
     light: '/images/logo-light.png',
     dark: '/images/logo-dark.png',
   },
-}; 
+};

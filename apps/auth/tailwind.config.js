@@ -18,7 +18,7 @@ module.exports = {
     '!./{src,pages,components,app}/**/*.{stories,spec}.{ts,tsx,js,jsx,html}',
     '../../libs/web-ui/**/*.{ts,tsx,js,jsx,html}',
     '!../../libs/web-ui/**/*.{stories,spec}.{ts,tsx,js,jsx,html}',
-    ...createGlobPatternsForDependencies(__dirname)
+    ...createGlobPatternsForDependencies(__dirname),
   ],
   theme: {
     container: {

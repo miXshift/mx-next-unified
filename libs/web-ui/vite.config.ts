@@ -46,8 +46,8 @@ export default defineConfig(() => ({
     rollupOptions: {
       // External packages that should not be bundled into your library.
       external: [
-        'react', 
-        'react-dom', 
+        'react',
+        'react-dom',
         'react/jsx-runtime',
         'class-variance-authority',
         'lucide-react',
@@ -72,7 +72,7 @@ export default defineConfig(() => ({
         'tailwind-merge',
         'date-fns',
         'next-themes',
-        'next/image'
+        'next/image',
       ],
     },
   },

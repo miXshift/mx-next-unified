@@ -1,5 +1,77 @@
 # Add files here to ignore them from prettier formatting
+
+# Build outputs
 /dist
 /coverage
 /.nx/cache
 /.nx/workspace-data
+
+# Next.js build outputs
+**/.next
+**/out
+**/build
+
+# Dependencies
+**/node_modules
+**/.pnpm-store
+
+# Environment and config files
+.env*
+**/.env*
+
+# Cache and temporary files
+**/.cache
+**/.temp
+**/.tmp
+**/tmp
+**/.turbo
+
+# IDE and editor files
+.vscode/
+.idea/
+**/.DS_Store
+**/*.swp
+**/*.swo
+
+# Package manager files
+pnpm-lock.yaml
+yarn.lock
+package-lock.json
+
+# Git
+.git/
+.gitignore
+
+# Generated files
+**/*.min.js
+**/*.min.css
+**/*.bundle.js
+**/*.chunk.js
+
+# Documentation build outputs
+**/docs/build
+**/docs/.docusaurus
+
+# Storybook build
+**/storybook-static
+
+# Test coverage
+**/coverage
+**/.nyc_output
+
+# Logs
+**/*.log
+**/logs
+
+# OS generated files
+**/.DS_Store
+**/Thumbs.db
+
+# TypeScript build info
+**/*.tsbuildinfo
+
+# ESLint cache
+**/.eslintcache
+
+# Cursor AI cache
+.cursor/

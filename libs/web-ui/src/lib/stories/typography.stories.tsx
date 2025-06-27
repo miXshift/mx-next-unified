@@ -1,5 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { H1, H2, H3, H4, P, Lead, Large, Small, Muted } from '../components/typography';
+import {
+  H1,
+  H2,
+  H3,
+  H4,
+  P,
+  Lead,
+  Large,
+  Small,
+  Muted,
+} from '../components/typography';
 
 const meta: Meta = {
   title: 'Typography',
@@ -64,12 +74,12 @@ export const TypographySystem: StoryObj = {
       <H4>Heading 4</H4>
       <Lead>This is a lead paragraph with important information.</Lead>
       <P>
-        This is a regular paragraph. It contains text that forms the main content
-        of your document or application.
+        This is a regular paragraph. It contains text that forms the main
+        content of your document or application.
       </P>
       <Large>This is large text, used for emphasis</Large>
       <Small>This is small text, used for captions or notes</Small>
       <Muted>This is muted text, used for secondary information</Muted>
     </div>
   ),
-}; 
+};

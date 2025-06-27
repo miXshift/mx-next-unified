@@ -153,7 +153,10 @@ export const Striped: Story = {
       </TableHeader>
       <TableBody>
         {invoices.map((invoice, index) => (
-          <TableRow key={invoice.invoice} className={index % 2 === 0 ? 'bg-muted/50' : undefined}>
+          <TableRow
+            key={invoice.invoice}
+            className={index % 2 === 0 ? 'bg-muted/50' : undefined}
+          >
             <TableCell className="font-medium">{invoice.invoice}</TableCell>
             <TableCell>{invoice.paymentStatus}</TableCell>
             <TableCell>{invoice.paymentMethod}</TableCell>
@@ -182,14 +185,14 @@ export const WithStatusIndicator: Story = {
             <TableCell className="font-medium">{invoice.invoice}</TableCell>
             <TableCell>
               <div className="flex items-center gap-2">
-                <div 
+                <div
                   className={`h-2 w-2 rounded-full ${
-                    invoice.paymentStatus === 'Paid' 
-                      ? 'bg-green-500' 
-                      : invoice.paymentStatus === 'Pending' 
-                      ? 'bg-amber-500' 
+                    invoice.paymentStatus === 'Paid'
+                      ? 'bg-green-500'
+                      : invoice.paymentStatus === 'Pending'
+                      ? 'bg-amber-500'
                       : 'bg-red-500'
-                  }`} 
+                  }`}
                 />
                 {invoice.paymentStatus}
               </div>
@@ -266,4 +269,4 @@ export const WithActions: Story = {
       </TableBody>
     </Table>
   ),
-}; 
+};
