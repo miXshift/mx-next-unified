@@ -1,4 +1,5 @@
 import { Suspense } from 'react';
+import '@mixshift/web-ui/global.css';
 import './global.css';
 
 export const metadata = {

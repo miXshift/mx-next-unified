@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 
 import { createSupabaseClient } from '@/utils/create-supabase-client';
+import { Button } from '@mixshift/web-ui';
 
 export default async function PrivatePage() {
   const supabase = await createSupabaseClient();
@@ -14,7 +15,7 @@ export default async function PrivatePage() {
     <>
       <p>Hello {data.user.email}</p>{' '}
       <form action="/logout" method="POST">
-        <button type="submit">Sign out</button>
+        <Button variant="default">Sign out</Button>
       </form>
     </>
   );

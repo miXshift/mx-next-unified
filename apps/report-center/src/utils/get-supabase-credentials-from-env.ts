@@ -7,7 +7,7 @@ const supbaseCredentialsSchema = z.object({
 type SupabaseCredentials = z.infer<typeof supbaseCredentialsSchema>;
 
 export function getSupabaseCredentialsFromEnv(
-  env: NodeJS.ProcessEnv,
+  env: NodeJS.ProcessEnv
 ): SupabaseCredentials {
   return supbaseCredentialsSchema.parse({
     url: process.env.NEXT_PUBLIC_SUPABASE_URL,

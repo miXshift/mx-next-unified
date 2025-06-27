@@ -17,6 +17,7 @@
   },
   "nx": {
     "name": "shared-cookie-utils",
+    "sourceRoot": "libs/utils/src",
     "tags": [
       "utils",
       "cookies",

@@ -24,7 +24,7 @@ const serializeOptionsSchema = z.object({
 export type SerializeOptions = z.infer<typeof serializeOptionsSchema>;
 
 export function getCookieOptionsFromEnv(
-  env: NodeJS.ProcessEnv,
+  env: NodeJS.ProcessEnv
 ): SerializeOptions {
   return serializeOptionsSchema.parse({
     maxAge: env.COOKIE_OPTION_MAX_AGE,
